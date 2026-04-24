@@ -775,6 +775,67 @@ CREATE INDEX IF NOT EXISTS idx_netl_tech_area ON raw_wos_netl_tech(technology_ar
 CREATE INDEX IF NOT EXISTS idx_netl_tech_sub ON raw_wos_netl_tech(sub_program_area);
 """
 
+RAW_WOS_NATLAB = """
+-- ============================================================
+-- raw_wos_natlab_publications: WoS pubs from other national labs
+-- ============================================================
+-- Source: Victor's WoS export (other national labs, non-NETL)
+-- Format: Excel (.xlsx), single sheet, 21 columns
+-- Coverage: ~227K publications across national lab system
+--
+-- FIELD DICTIONARY:
+--   accession_number   — WoS unique ID. PK.
+--   keywords_author    — Author-assigned keywords, array.
+--   keywords_plus      — WoS-derived keywords, array.
+--   category_heading_1 — Top-level WoS heading (Science & Technology, etc.)
+--   doc_type_1         — Primary document type.
+--   subject_cat_traditional_1 — WoS traditional category.
+--   subject_sub_heading_1 — WoS sub-heading.
+--   category_heading_2 — Secondary heading.
+--   doc_type_2         — Secondary document type.
+--   subject_cat_traditional_2 — Secondary traditional category.
+--   subject_sub_heading_2 — Secondary sub-heading.
+--   doc_type_3         — Tertiary document type.
+--   abstract           — Full abstract text.
+--   category           — WoS category field.
+--   publisher          — Publisher full name.
+--   source_title       — Journal/conference name.
+--   sub_category       — Sub-category field.
+--   subject_category   — Subject category field.
+--   subject_cat_extended — Extended subject categories.
+--   table_names        — Table names field.
+--   title              — Publication title.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS raw_wos_natlab_publications (
+    accession_number VARCHAR PRIMARY KEY,
+    keywords_author VARCHAR[],
+    keywords_plus VARCHAR[],
+    category_heading_1 VARCHAR,
+    doc_type_1 VARCHAR,
+    subject_cat_traditional_1 VARCHAR,
+    subject_sub_heading_1 VARCHAR,
+    category_heading_2 VARCHAR,
+    doc_type_2 VARCHAR,
+    subject_cat_traditional_2 VARCHAR,
+    subject_sub_heading_2 VARCHAR,
+    doc_type_3 VARCHAR,
+    abstract TEXT,
+    category VARCHAR,
+    publisher VARCHAR,
+    source_title VARCHAR,
+    sub_category VARCHAR,
+    subject_category VARCHAR,
+    subject_cat_extended VARCHAR,
+    table_names VARCHAR,
+    title VARCHAR,
+    ingested_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_wos_natlab_cat ON raw_wos_natlab_publications(subject_cat_traditional_1);
+CREATE INDEX IF NOT EXISTS idx_wos_natlab_source ON raw_wos_natlab_publications(source_title);
+"""
+
 # =============================================================================
 # ONTOLOGY LAYER — Multi-Perspective Keyword Ontology
 # =============================================================================
@@ -1024,6 +1085,7 @@ ALL_SCHEMAS = [
     RAW_WOS_PUBLICATIONS,
     RAW_WOS_KEYWORDS_PLUS,
     RAW_WOS_NETL_TECH,
+    RAW_WOS_NATLAB,
     DISCIPLINES,
     KEYWORD_SENSES,
     SENSE_RELATIONSHIPS,

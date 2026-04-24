@@ -35,7 +35,7 @@ class TestInitAllTables:
         count = conn.execute(
             "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'main'"
         ).fetchone()[0]
-        assert count == 17
+        assert count == 18
 
     def test_raw_nasa_columns(self, conn):
         init_all_tables(conn)

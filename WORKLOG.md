@@ -926,15 +926,53 @@ Cosine similarity on definition text → `related_to` edges:
 
 **Code:** `scripts/build_relationships.py` — reusable pipeline with dedup. Key fix: `_insert_new_rels()` deduplicates within the batch (not just against existing), uses temp table + SQL INSERT...SELECT to avoid DuckDB executemany VARCHAR[] pathology.
 
+### Step 3.17: Other National Labs WoS Publication Ingestion (Session 4)
+
+**Source:** `data/WoS/WoS_other_NatLAbs_keyword_Pubs.xlsx` — Victor's WoS export covering publications across the broader national lab system (non-NETL).
+
+**Scale:** 255,849 rows → 227,433 unique papers → 224,081 after dedup against existing 6,019 NETL WoS pubs (3,795 overlap skipped).
+
+**Data coverage:**
+- Author keywords: 105,839 papers (47%)
+- Keywords Plus: 173,126 papers (77%)
+- Abstracts: 203,004 papers (91%)
+- 21 columns including categories, subject headings, publishers, doc types
+
+**Pipeline:**
+1. **Parse & ingest** — streaming openpyxl read (read_only mode), temp table + SQL INSERT with `string_split()` for semicolon-delimited keyword arrays. Deduped against existing NETL WoS papers by accession_number.
+2. **Sense generation** — extracted 264,728 unique keywords from author keywords + Keywords Plus + all category-type fields. 2,644 matched existing pillar senses → cross-linked. 262,084 genuinely new → 262,483 senses created (some duplicates collapsed).
+3. **Category/meta senses** — 248 unique categories, 994 publishers, 26 doc types → 1,017 new meta senses after dedup.
+4. **Relationship rebuild** — re-ran 5-strategy pipeline, label containment added 746,272 new edges from 313K multi-word natlab senses.
+
+**Performance notes:**
+- Hit DuckDB VARCHAR[] executemany pathology again (262K rows). Killed stuck process after 10+ minutes.
+- Fix: split temp table to use only scalar columns in executemany, add VARCHAR[] columns via SQL expressions (`ARRAY[]::VARCHAR[]`, `string_split(tags_csv, ',')`).
+- This pattern should be the permanent standard: NEVER use VARCHAR[] in executemany, always add arrays via SQL.
+
+**New table:** `raw_wos_natlab_publications` (18th table in schema) — 21 columns, 224K rows.
+
+**Results:**
+| Metric | Before | After |
+|---|---|---|
+| Publications | 6,019 (NETL) | 230,100 (NETL + other labs) |
+| Total senses | 123,202 | 386,702 |
+| Natlab-derived senses | 0 | 263,500 |
+| Total relationships | 400,299 | 1,154,168 |
+| Rels/sense | 3.249 | 2.985 |
+
+**Code:** `scripts/ingest_natlab_wos.py` — 3-step pipeline (parse, senses, meta senses). `src/schema.py` updated with RAW_WOS_NATLAB DDL.
+
 ### Next steps for Phase 3
 - [x] Build MeSH parser + ingest 31K descriptors as 7th pillar source
 - [x] Generate MeSH keyword senses with discipline mapping
 - [x] Ingest OpenAlex pub-level keyword mappings (frequency signals)
 - [x] NLP pipeline for abstract keyword extraction (4,691 abstracts)
 - [x] Build 5-strategy relationship pipeline (0.045 → 3.249 rels/sense)
-- [ ] Orphan audit — how many senses still have zero connections?
+- [x] Ingest other national labs WoS data (224K pubs → 263K senses)
+- [ ] Natlab pub co-occurrence (need to build co-occurrence from natlab pubs specifically)
+- [ ] Orphan audit on expanded dataset
 - [ ] Embedding-based fuzzy matching for non-exact labels
-- [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
+- [ ] Grant agency entity resolution (2,986+ variants → ~200 canonical)
 - [ ] Build fossil energy T1 deep sub-ontology from publication keywords
 - [ ] Create lens query capability (the actual "look through the lens" feature)
 - [ ] Title keyword extraction

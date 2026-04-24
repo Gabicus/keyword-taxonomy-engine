@@ -1,11 +1,11 @@
 # Keyword Taxonomy Engine · primer
 
-Updated: 2026-04-24 6:00pm EDT
+Updated: 2026-04-24 8:00pm EDT
 Repo: https://github.com/Gabicus/keyword-taxonomy-engine
 
 ## Current status
 
-**Phase 3 ACTIVE.** 7 pillars ingested. 105,196 unified keywords → 123,202 senses with discipline assignments. 5,205 polysemous labels creating cross-domain bridges. 178 tests passing.
+**Phase 3 ACTIVE.** 7 pillars + 224K national lab publications ingested. 386,702 senses, 1.15M relationships (2.99 rels/sense). 5,205 polysemous labels. 178 tests passing.
 
 ## What this is
 
@@ -30,16 +30,17 @@ End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energ
 
 | Table | Count | Notes |
 |---|---|---|
-| keyword_senses | 123,202 | 105K base + 14K WoS pub + 3.6K WoS vocab + 400 WoS metadata |
-| sense_relationships | 400,299 | 3.25 rels/sense. 346K subtopic_of + 43K related_to + 8K bridges + 4K equivalent |
+| keyword_senses | 386,702 | 105K base + 263K natlab WoS + 14K NETL WoS + 3.6K vocab + 1K meta |
+| sense_relationships | 1,154,168 | 2.99 rels/sense. 1.09M subtopic_of + 50K related_to + 8K bridges + 4K equivalent |
 | disciplines | 14 | T1: fossil/coal/natgas, T2: materials/chem/earth/compute/EE, T3: bio/policy/space/renew/nuclear, T4: math/physics |
 | hierarchy_envelopes | 107 | NETL org: 8 programs → 26 sub → 63 tech → 10 turbine |
 | ontology_lenses | 97 | Template hats: 42 primary + 54 intersection + 1 baseline |
 | polysemous labels | 5,205 | Terms in 2+ sources — cross-domain bridges |
 
-## WoS publication data (3 staging tables)
+## WoS publication data (4 staging tables)
 
 - raw_wos_publications: 6,019 DOE/NETL pubs with keywords, abstracts, categories
+- raw_wos_natlab_publications: 224,081 other national lab pubs (21 cols, 91% with abstracts)
 - raw_wos_keywords_plus_vocab: 7,488 unique Keywords Plus terms
 - raw_wos_netl_tech: 3,877 records mapping pubs to NETL org structure
 
@@ -59,13 +60,13 @@ Sources (7 pillars + WoS publications)
   ├── NASA GCMD ─────────┐
   ├── UNESCO Thesaurus ──┤
   ├── NCBI Taxonomy ─────┤
-  ├── LoC LCSH ──────────┤──→ Parsers ──→ DuckDB (17 tables)
+  ├── LoC LCSH ──────────┤──→ Parsers ──→ DuckDB (18 tables)
   ├── DOE OSTI ──────────┤           │
   ├── OpenAlex Topics ───┤     ┌─────┴──────────┐
   └── MeSH (NIH) ───────┘     │  Ontology Layer │
                                │  14 disciplines │
-  WoS Publications ──────────→ │  123K senses    │
-                               │  5.5K relations │
+  WoS NETL (6K pubs) ───────→ │  387K senses    │
+  WoS NatLabs (224K pubs) ──→ │  1.15M relations│
                                │  97 lens hats   │
                                └─────┬──────────┘
                                      │
@@ -99,12 +100,12 @@ data/raw/, data/lake/ (gitignored)
 
 ## Next up
 
-1. [ ] Orphan sense audit — how many still have zero connections?
-2. [ ] Embedding-based fuzzy matching for non-exact labels
-3. [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
-4. [ ] Build fossil energy T1 deep sub-ontology from publication keywords
-5. [ ] Create lens query capability (the actual "look through the lens" feature)
-6. [ ] Title keyword extraction
+1. [ ] Natlab pub co-occurrence (build co-occurrence from 224K natlab pubs)
+2. [ ] Orphan sense audit on expanded dataset (387K senses)
+3. [ ] Embedding-based fuzzy matching for non-exact labels
+4. [ ] Grant agency entity resolution
+5. [ ] Build fossil energy T1 deep sub-ontology from publication keywords
+6. [ ] Create lens query capability (the actual "look through the lens" feature)
 
 ## Don't forget
 
