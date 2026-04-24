@@ -1,0 +1,232 @@
+{
+  "timestamp": "2026-04-24T13:48:44.847168+00:00",
+  "consensus_domains": {
+    "Atmospheric & Climate Science": {
+      "experts": [
+        "Physical Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Solid Earth & Geosciences": {
+      "experts": [
+        "Physical Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Ocean & Water Science": {
+      "experts": [
+        "Physical Sciences",
+        "Life Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Cryosphere Science": {
+      "experts": [
+        "Physical Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Astronomy & Space Science": {
+      "experts": [
+        "Physical Sciences",
+        "Applied Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Nuclear & Particle Physics": {
+      "experts": [
+        "Physical Sciences",
+        "Applied Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Condensed Matter & Materials": {
+      "experts": [
+        "Physical Sciences",
+        "Applied Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Chemistry": {
+      "experts": [
+        "Physical Sciences",
+        "Applied Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Fundamental Physics": {
+      "experts": [
+        "Physical Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Molecular Biology & Genetics": {
+      "experts": [
+        "Life Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Ecology & Environmental Biology": {
+      "experts": [
+        "Life Sciences",
+        "Physical Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Organism Taxonomy & Biodiversity": {
+      "experts": [
+        "Life Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Microbiology & Virology": {
+      "experts": [
+        "Life Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Medicine & Health Sciences": {
+      "experts": [
+        "Life Sciences",
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Agricultural & Food Science": {
+      "experts": [
+        "Life Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Biotechnology": {
+      "experts": [
+        "Life Sciences",
+        "Applied Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Computer Science & AI": {
+      "experts": [
+        "Applied Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Electrical & Electronic Engineering": {
+      "experts": [
+        "Applied Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Mechanical & Civil Engineering": {
+      "experts": [
+        "Applied Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Aerospace & Remote Sensing": {
+      "experts": [
+        "Applied Sciences",
+        "Physical Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Energy Science & Technology": {
+      "experts": [
+        "Physical Sciences",
+        "Applied Sciences",
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.9
+    },
+    "Instrumentation & Measurement": {
+      "experts": [
+        "Applied Sciences",
+        "Physical Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Military & Defense": {
+      "experts": [
+        "Applied Sciences"
+      ],
+      "confidence": 0.7
+    },
+    "Education & Learning": {
+      "experts": [
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Social Sciences": {
+      "experts": [
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Arts & Humanities": {
+      "experts": [
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.8
+    },
+    "Law & Policy": {
+      "experts": [
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.8
+    },
+    "Information Science & Data": {
+      "experts": [
+        "Information & Social Sciences",
+        "Applied Sciences"
+      ],
+      "confidence": 0.85
+    },
+    "Science-Society Interface": {
+      "experts": [
+        "Information & Social Sciences"
+      ],
+      "confidence": 0.8
+    },
+    "Land Surface Science": {
+      "experts": [
+        "Physical Sciences"
+      ],
+      "confidence": 0.85
+    }
+  },
+  "stats": {
+    "total_consensus_domains": 30,
+    "multi_expert_domains": 12,
+    "three_expert_domains": 1,
+    "total_expert_categories": 68,
+    "total_alignment_records": 1943,
+    "high_confidence_alignments_3plus": 501,
+    "medium_confidence_alignments_2": 1442,
+    "natural_label_overlaps_3plus": 163,
+    "natural_label_overlaps_2": 1442
+  },
+  "expert_summary": {
+    "Cross-Domain Integrator": {
+      "categories": 18,
+      "cross_domain_bridges": 0
+    },
+    "Physical Sciences": {
+      "categories": 18,
+      "cross_domain_bridges": 6
+    },
+    "Life Sciences": {
+      "categories": 19,
+      "cross_domain_bridges": 5
+    },
+    "Applied Sciences & Engineering": {
+      "categories": 16,
+      "cross_domain_bridges": 5
+    },
+    "Information & Social Sciences": {
+      "categories": 15,
+      "cross_domain_bridges": 5
+    }
+  },
+  "methodology": "5-expert ensemble with Bayesian consensus. Phase 1: Each expert independently analyzed 74K keywords through domain lens (Physical Sciences 18 cats, Life Sciences 19, Applied Sciences 16, Info/Social Sciences 15, Cross-Domain Integrator 18 bridges). Phase 2: Cross-Domain Integrator found 163 labels in 3+ sources and 1,442 in 2 sources. Phase 3: Bayesian consensus merged overlapping expert categories into 30 consensus domains. Phase 4: Label-match alignments inserted into cross_taxonomy_alignment table (1,943 records)."
+}

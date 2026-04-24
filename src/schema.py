@@ -454,6 +454,57 @@ CREATE TABLE IF NOT EXISTS raw_doe_osti (
 );
 """
 
+RAW_MESH = """
+-- ============================================================
+-- raw_mesh: NIH Medical Subject Headings (MeSH)
+-- ============================================================
+-- Source: https://nlm.nih.gov/databases/download/mesh.html
+-- Format: XML descriptor dump (desc2026.gz), parsed to JSON
+-- Coverage: ~31,110 descriptors across 16 MeSH categories
+-- Update frequency: Annual (major), weekly (minor revisions)
+--
+-- FIELD DICTIONARY:
+--   ui             — MeSH Unique Identifier (e.g., "D000001"). PK.
+--   heading        — Preferred term / descriptor name.
+--   tree_numbers   — Array of MeSH tree numbers defining position(s)
+--                    in the hierarchy. A descriptor can appear in
+--                    multiple trees (polyhierarchy). Format: "X01.234.567"
+--                    where X = category letter.
+--   scope_note     — Official definition/usage guidance from NLM.
+--                    97% fill rate. Often multi-sentence.
+--   entries        — Array of entry terms (synonyms, alternate forms).
+--                    Avg 7.6 per descriptor. Valuable for fuzzy matching.
+--   mesh_category  — Top-level MeSH category letter + name:
+--                    A=Anatomy, B=Organisms, C=Diseases,
+--                    D=Chemicals/Drugs, E=Techniques/Equipment,
+--                    F=Psychiatry/Psychology, G=Phenomena/Processes,
+--                    H=Disciplines, I=Anthropology/Education,
+--                    J=Technology/Industry/Agriculture, K=Humanities,
+--                    L=Information Science, M=Named Groups,
+--                    N=Health Care, V=Publication Characteristics,
+--                    Z=Geographicals
+--   tree_depth     — Minimum depth across all tree_numbers (0=category root)
+--   parent_uis     — Array of parent descriptor UIs derived from tree_numbers
+--   ingested_at    — When ingested
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS raw_mesh (
+    ui VARCHAR PRIMARY KEY,
+    heading VARCHAR NOT NULL,
+    tree_numbers VARCHAR[],
+    scope_note TEXT,
+    entries VARCHAR[],
+    mesh_category VARCHAR,
+    tree_depth INTEGER,
+    parent_uis VARCHAR[],
+    ingested_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_mesh_heading ON raw_mesh(heading);
+CREATE INDEX IF NOT EXISTS idx_mesh_category ON raw_mesh(mesh_category);
+CREATE INDEX IF NOT EXISTS idx_mesh_depth ON raw_mesh(tree_depth);
+"""
+
 # =============================================================================
 # CURATED LAYER — Unified Cross-Taxonomy Table
 # =============================================================================
@@ -581,6 +632,382 @@ CREATE INDEX IF NOT EXISTS idx_align_method ON cross_taxonomy_alignment(method);
 """
 
 # =============================================================================
+# WOS PUBLICATION DATA — Staging Tables
+# =============================================================================
+
+RAW_WOS_PUBLICATIONS = """
+-- ============================================================
+-- raw_wos_publications: Web of Science publication metadata
+-- ============================================================
+-- Source: Victor's WoS export (Tab 1: "keywords with Pub IDS")
+-- Format: Excel (.xlsx), comma-delimited multi-value fields
+-- Coverage: ~6,000 DOE/NETL-related publications
+-- Update frequency: Manual batch export
+--
+-- FIELD DICTIONARY:
+--   accession_number   — WoS unique ID (e.g., "WOS:001409639600386"). PK.
+--   keywords_author    — Author-assigned keywords, stored as array.
+--                        Original: comma-delimited string.
+--                        45% fill rate. 7,765 unique across dataset.
+--   keywords_plus      — WoS algorithmically-derived keywords, stored as array.
+--                        Original: comma-delimited string, ALL CAPS.
+--                        66% fill rate. 7,554 unique.
+--   subject_sub_heading_1 — WoS broad heading: Technology, Physical Sciences,
+--                          or Life Sciences & Biomedicine. 99% fill.
+--   subject_sub_heading_2 — Secondary heading. 30% fill.
+--   subject_cat_traditional_1 — WoS traditional category (91 unique).
+--                              e.g., "Chemistry, Multidisciplinary", "Energy & Fuels"
+--   subject_cat_traditional_2 — Secondary traditional category. 57% fill.
+--   subject_cat_extended — Extended categories as array. Comma-delimited.
+--                         Coarser than traditional (61 unique).
+--   category_heading_1 — Top-level: "Science & Technology" or "Social Sciences"
+--   category_heading_2 — Secondary. 0.2% fill (nearly unused).
+--   abstract           — Full abstract text. 78% fill.
+--                        Richest source for NLP keyword extraction.
+--   source_title       — Journal or conference name. 1,201 unique.
+--   title              — Publication title. May contain HTML entities.
+--   doc_type_1         — Primary document type (Article, Proceedings, etc.)
+--   doc_type_2         — Secondary type. 5% fill.
+--   grant_agencies     — Funding agencies as array. Comma-delimited.
+--                        Needs entity resolution (DOE appears as 4+ variants).
+--   data_acquired      — When this record was exported from WoS.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS raw_wos_publications (
+    accession_number VARCHAR PRIMARY KEY,
+    keywords_author VARCHAR[],
+    keywords_plus VARCHAR[],
+    subject_sub_heading_1 VARCHAR,
+    subject_sub_heading_2 VARCHAR,
+    subject_cat_traditional_1 VARCHAR,
+    subject_cat_traditional_2 VARCHAR,
+    subject_cat_extended VARCHAR[],
+    category_heading_1 VARCHAR,
+    category_heading_2 VARCHAR,
+    abstract TEXT,
+    source_title VARCHAR,
+    title VARCHAR,
+    doc_type_1 VARCHAR,
+    doc_type_2 VARCHAR,
+    grant_agencies VARCHAR[],
+    data_acquired TIMESTAMP,
+    ingested_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_wos_pub_source ON raw_wos_publications(source_title);
+CREATE INDEX IF NOT EXISTS idx_wos_pub_cat ON raw_wos_publications(subject_cat_traditional_1);
+"""
+
+RAW_WOS_KEYWORDS_PLUS = """
+-- ============================================================
+-- raw_wos_keywords_plus_vocab: Deduplicated Keywords Plus vocabulary
+-- ============================================================
+-- Source: Victor's WoS export (Tab 2: "Keywords 2")
+-- Format: Single-column flat list, ALL CAPS
+-- Coverage: 7,488 unique Keywords Plus terms
+-- Note: Appears to be from a broader/different pub set than Tab 1.
+--       No publication linkage — vocabulary only.
+--
+-- FIELD DICTIONARY:
+--   keyword        — The Keywords Plus term, ALL CAPS. PK.
+--   normalized     — Lowercase, trimmed, artifacts cleaned.
+--   ingested_at    — When ingested.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS raw_wos_keywords_plus_vocab (
+    keyword VARCHAR PRIMARY KEY,
+    normalized VARCHAR NOT NULL,
+    ingested_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+"""
+
+RAW_WOS_NETL_TECH = """
+-- ============================================================
+-- raw_wos_netl_tech: NETL organizational/technology taxonomy
+-- ============================================================
+-- Source: Victor's WoS export (Tab 3: "Keywords 3")
+-- Format: Excel with 8 columns defining NETL program hierarchy
+-- Coverage: ~3,877 publications mapped to NETL tech areas
+-- Update frequency: Changes with NETL reorganizations
+--
+-- This table captures a POINT-IN-TIME snapshot of NETL's org
+-- structure. The hierarchy: Program Area (9) → Sub-Program (27)
+-- → Technology Area (64) → Turbines Sub-Tech (6).
+-- Future reorgs should create new version rows, not overwrite.
+--
+-- FIELD DICTIONARY:
+--   article_title     — Publication title (join key to Tab 1 via fuzzy match).
+--                       Only 329 exact matches with raw_wos_publications.
+--   technology_area   — Finest NETL technology classification (64 unique).
+--                       e.g., "Post-Combustion Capture", "Advanced Turbines"
+--   program_area      — Top-level NETL program (9 unique).
+--                       e.g., "H2 with Carbon Management", "Carbon Transport & Storage"
+--   sub_program_area  — Mid-level program division (27 unique).
+--                       e.g., "Advanced Energy Systems", "Carbon Storage"
+--   technology_area_alt — Alternative technology grouping (13 unique).
+--                        54% are "#N/A". Seems to be older/parallel classification.
+--   consolidated_tech_area — Consolidated technology area (63 unique).
+--                           Nearly identical to technology_area.
+--   consolidated_tech_filter — Filter version of consolidated (63 unique).
+--                             Same values as consolidated_tech_area.
+--   turbines_sub_tech — Sub-technology for turbine publications only (6 unique).
+--                       8% fill. e.g., "Low Emissions Combustion", "Supercritical CO2"
+--   org_version       — Version tag for this org structure snapshot.
+--                       Default "NETL_pre2026" for this initial load.
+--   ingested_at       — When ingested.
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS raw_wos_netl_tech (
+    article_title VARCHAR NOT NULL,
+    technology_area VARCHAR,
+    program_area VARCHAR,
+    sub_program_area VARCHAR,
+    technology_area_alt VARCHAR,
+    consolidated_tech_area VARCHAR,
+    consolidated_tech_filter VARCHAR,
+    turbines_sub_tech VARCHAR,
+    org_version VARCHAR DEFAULT 'NETL_pre2026',
+    ingested_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_netl_tech_prog ON raw_wos_netl_tech(program_area);
+CREATE INDEX IF NOT EXISTS idx_netl_tech_area ON raw_wos_netl_tech(technology_area);
+CREATE INDEX IF NOT EXISTS idx_netl_tech_sub ON raw_wos_netl_tech(sub_program_area);
+"""
+
+# =============================================================================
+# ONTOLOGY LAYER — Multi-Perspective Keyword Ontology
+# =============================================================================
+
+DISCIPLINES = """
+-- ============================================================
+-- disciplines: The 14 primary scientific disciplines
+-- ============================================================
+-- These are the "big swaths" users look through. Each keyword
+-- sense maps to one or more disciplines. Lenses weight these.
+--
+-- FIELD DICTIONARY:
+--   discipline_id  — Short stable identifier (e.g., "fossil_energy")
+--   name           — Human-readable name
+--   description    — What this discipline covers
+--   parent_id      — For sub-disciplines (NULL for top-level 14)
+--   tier           — Resolution tier: 1=DOE core, 2=DOE adjacent,
+--                    3=other national lab, 4=broad external
+--   sort_order     — Display ordering
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS disciplines (
+    discipline_id VARCHAR PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    description TEXT,
+    parent_id VARCHAR,
+    tier INTEGER NOT NULL,
+    sort_order INTEGER
+);
+"""
+
+KEYWORD_SENSES = """
+-- ============================================================
+-- keyword_senses: One row per keyword per context
+-- ============================================================
+-- The core of the vector bundle model. A keyword label like
+-- "plasma" has multiple senses — one per source/discipline
+-- context where it carries distinct meaning.
+--
+-- FIELD DICTIONARY:
+--   sense_id         — Unique ID: "{keyword_id}@{source}#{n}"
+--   keyword_id       — FK to keywords.id
+--   keyword_source   — FK to keywords.source (composite FK with keyword_id)
+--   keyword_label    — Denormalized label for fast display
+--   origin_source    — Which pillar/dataset this sense comes from
+--   origin_path      — Hierarchical path in origin source
+--   origin_level     — Depth in origin hierarchy
+--   discipline_primary — Primary discipline this sense belongs to
+--   disciplines_secondary — Additional disciplines (for cross-discipline senses)
+--   resolution_tier  — 1-4, inherited from discipline or overridden
+--   definition_in_context — What this keyword means in THIS context
+--   scope_note       — Usage guidance for disambiguation
+--   disambiguation   — Short tag distinguishing this sense from others
+--                      e.g., "plasma (physics)" vs "plasma (biology)"
+--   relevance_tags   — Freeform tags for lens filtering
+--   confidence       — 0-1, how certain we are about this sense assignment
+--   provenance       — How this sense was created (expert, label_match, nlp, manual)
+--   created_at       — When created
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS keyword_senses (
+    sense_id VARCHAR PRIMARY KEY,
+    keyword_id VARCHAR NOT NULL,
+    keyword_source VARCHAR NOT NULL,
+    keyword_label VARCHAR NOT NULL,
+    origin_source VARCHAR NOT NULL,
+    origin_path VARCHAR,
+    origin_level INTEGER,
+    discipline_primary VARCHAR,
+    disciplines_secondary VARCHAR[],
+    resolution_tier INTEGER,
+    definition_in_context TEXT,
+    scope_note TEXT,
+    disambiguation VARCHAR,
+    relevance_tags VARCHAR[],
+    confidence FLOAT,
+    provenance VARCHAR,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_sense_keyword ON keyword_senses(keyword_id, keyword_source);
+CREATE INDEX IF NOT EXISTS idx_sense_label ON keyword_senses(keyword_label);
+CREATE INDEX IF NOT EXISTS idx_sense_discipline ON keyword_senses(discipline_primary);
+CREATE INDEX IF NOT EXISTS idx_sense_tier ON keyword_senses(resolution_tier);
+"""
+
+SENSE_RELATIONSHIPS = """
+-- ============================================================
+-- sense_relationships: Directed typed edges between senses
+-- ============================================================
+-- These are the "association vectors" in the vector bundle.
+-- Each edge connects two specific senses (not raw keywords)
+-- with a typed, directed relationship.
+--
+-- FIELD DICTIONARY:
+--   source_sense_id     — FK to keyword_senses
+--   target_sense_id     — FK to keyword_senses
+--   relationship_type   — Edge type:
+--     equivalent_sense  — same meaning in different sources
+--     cross_domain_bridge — connects different disciplines
+--     method_for        — source is a method used in target's domain
+--     measured_by       — source is measured/characterized by target
+--     applied_in        — source technique applied in target domain
+--     policy_governs    — source policy controls target activity
+--     enables           — source enables or is prerequisite for target
+--     competes_with     — source and target are alternative approaches
+--     conflated_with    — commonly confused but distinct
+--     subtopic_of       — finer grain of target
+--     related_to        — general association
+--   direction           — "toward" (same discipline), "across" (cross-discipline),
+--                         "away" (disambiguation)
+--   confidence          — 0-1
+--   provenance          — How established (expert, alignment, nlp, manual)
+--   lens_contexts       — Which lenses this relationship is most relevant for
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS sense_relationships (
+    source_sense_id VARCHAR NOT NULL,
+    target_sense_id VARCHAR NOT NULL,
+    relationship_type VARCHAR NOT NULL,
+    direction VARCHAR,
+    confidence FLOAT,
+    provenance VARCHAR,
+    lens_contexts VARCHAR[],
+    PRIMARY KEY (source_sense_id, target_sense_id, relationship_type)
+);
+
+CREATE INDEX IF NOT EXISTS idx_srel_source ON sense_relationships(source_sense_id);
+CREATE INDEX IF NOT EXISTS idx_srel_target ON sense_relationships(target_sense_id);
+CREATE INDEX IF NOT EXISTS idx_srel_type ON sense_relationships(relationship_type);
+"""
+
+HIERARCHY_ENVELOPES = """
+-- ============================================================
+-- hierarchy_envelopes: Versioned org/tech hierarchy structures
+-- ============================================================
+-- Any parent-child structure uploaded by a user becomes an
+-- envelope. NETL's org chart, a technology taxonomy, a journal
+-- classification — all stored here with versioning.
+--
+-- FIELD DICTIONARY:
+--   envelope_id    — Unique ID for this node
+--   envelope_name  — Which envelope this belongs to (e.g., "NETL_org")
+--   version        — Version tag (e.g., "FY2025", "FY2026")
+--   node_label     — Human-readable label for this node
+--   parent_id      — Parent node in this envelope (NULL for roots)
+--   level          — Depth (0=root)
+--   full_path      — Hierarchy path with " > " separator
+--   node_type      — What kind of node: "program", "sub_program",
+--                    "technology_area", "sub_technology", "org_unit", etc.
+--   metadata       — JSON blob for source-specific extra fields
+--   active         — Whether this node exists in the current version
+--   superseded_by  — If reorganized, points to replacement node
+--   created_at     — When first ingested
+--   retired_at     — When this node was removed from the hierarchy (NULL if active)
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS hierarchy_envelopes (
+    envelope_id VARCHAR NOT NULL,
+    envelope_name VARCHAR NOT NULL,
+    version VARCHAR NOT NULL,
+    node_label VARCHAR NOT NULL,
+    parent_id VARCHAR,
+    level INTEGER,
+    full_path VARCHAR,
+    node_type VARCHAR,
+    metadata JSON,
+    active BOOLEAN DEFAULT true,
+    superseded_by VARCHAR,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    retired_at TIMESTAMP,
+    PRIMARY KEY (envelope_id, envelope_name, version)
+);
+
+CREATE INDEX IF NOT EXISTS idx_envelope_name ON hierarchy_envelopes(envelope_name, version);
+CREATE INDEX IF NOT EXISTS idx_envelope_parent ON hierarchy_envelopes(parent_id, envelope_name);
+CREATE INDEX IF NOT EXISTS idx_envelope_type ON hierarchy_envelopes(node_type);
+"""
+
+ONTOLOGY_LENSES = """
+-- ============================================================
+-- ontology_lenses: Composed user perspective configurations
+-- ============================================================
+-- A lens = Role × Org × Discipline × Interest stack.
+-- Each layer contributes weights that shape graph traversal.
+-- Pre-built "hats" are lenses with is_template=true.
+--
+-- FIELD DICTIONARY:
+--   lens_id          — Unique identifier
+--   name             — Human-readable name (e.g., "NETL Director")
+--   description      — What this lens represents
+--   is_template      — True for pre-built hats, false for user-customized
+--   altitude         — 100000 (executive), 10000 (program mgr), 1000 (researcher)
+--   role_type        — Role layer: director, program_mgr, researcher,
+--                      congressional_staffer, policy_analyst, etc.
+--   org_envelope     — FK to hierarchy_envelopes.envelope_name (e.g., "NETL_org")
+--   org_version      — Version of org envelope to use
+--   org_node_id      — Specific node in org hierarchy (e.g., a division)
+--   discipline_primary — Primary discipline FK
+--   disciplines_secondary — Additional disciplines for intersection hats
+--   discipline_weights — JSON: {"fossil_energy": 0.95, "materials": 0.6, ...}
+--   interest_weights — JSON: {"budget": 0.8, "congressional": 0.7, ...}
+--                      Up to 3 interest layers stacked here.
+--   role_weights     — JSON: {"technical_detail": 0.3, "strategic": 0.9, ...}
+--   created_at       — When created
+--   created_by       — Who created (user ID or "system")
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS ontology_lenses (
+    lens_id VARCHAR PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    description TEXT,
+    is_template BOOLEAN DEFAULT false,
+    altitude INTEGER,
+    role_type VARCHAR,
+    org_envelope VARCHAR,
+    org_version VARCHAR,
+    org_node_id VARCHAR,
+    discipline_primary VARCHAR,
+    disciplines_secondary VARCHAR[],
+    discipline_weights JSON,
+    interest_weights JSON,
+    role_weights JSON,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    created_by VARCHAR DEFAULT 'system'
+);
+
+CREATE INDEX IF NOT EXISTS idx_lens_template ON ontology_lenses(is_template);
+CREATE INDEX IF NOT EXISTS idx_lens_discipline ON ontology_lenses(discipline_primary);
+CREATE INDEX IF NOT EXISTS idx_lens_role ON ontology_lenses(role_type);
+"""
+
+# =============================================================================
 # ALL SCHEMAS — for init_all_tables()
 # =============================================================================
 
@@ -593,6 +1020,15 @@ ALL_SCHEMAS = [
     RAW_DOE_OSTI,
     UNIFIED_KEYWORDS,
     ALIGNMENT_TABLE,
+    RAW_MESH,
+    RAW_WOS_PUBLICATIONS,
+    RAW_WOS_KEYWORDS_PLUS,
+    RAW_WOS_NETL_TECH,
+    DISCIPLINES,
+    KEYWORD_SENSES,
+    SENSE_RELATIONSHIPS,
+    HIERARCHY_ENVELOPES,
+    ONTOLOGY_LENSES,
 ]
 
 

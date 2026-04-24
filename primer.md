@@ -1,140 +1,119 @@
 # Keyword Taxonomy Engine · primer
 
-Updated: 2026-04-24 4:15am EDT
+Updated: 2026-04-24 6:00pm EDT
 Repo: https://github.com/Gabicus/keyword-taxonomy-engine
 
 ## Current status
 
-**Phase 1+2+2.1 COMPLETE.** All 6 pillars ingested. 74,086 keywords in unified table + all 6 raw tables populated (46,889 raw records with source-specific fields). 178 tests passing.
-
-**NEXT: Phase 2.5 — Cross-Taxonomy Alignment via Multi-Expert Bayesian Consensus**
+**Phase 3 ACTIVE.** 7 pillars ingested. 105,196 unified keywords → 123,202 senses with discipline assignments. 5,205 polysemous labels creating cross-domain bridges. 178 tests passing.
 
 ## What this is
 
-Universal scientific keyword taxonomy engine. Ingests authoritative keyword hierarchies from 6 global sources ("pillars"), normalizes into unified schema, stores in DuckDB, enables semantic matching against publication text, and cross-links concepts across taxonomies.
+Universal scientific keyword taxonomy engine. Ingests authoritative keyword hierarchies from 7 global sources ("pillars"), normalizes into unified schema, stores in DuckDB. Multi-perspective ontology with "vector bundle" keyword senses — same keyword carries different meaning depending on origin, domain context, and who's asking.
 
-End goal: multi-modal analysis tool (VOSviewer x1000) that maps publication keywords, author keywords, and abstract-extracted terms into a navigable knowledge graph with cross-domain references.
+End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energy at center. Users stand around a sphere looking in through composed lenses (Role × Org × Discipline × Interest).
 
 ## Data lake
 
 | Source | Unified | Raw | Notes |
 |---|---|---|---|
-| OpenAlex | 31,995 | 4,798 | 4 domains, 26 fields, 252 subfields, 4,516 topics, 27,197 keywords. Raw has works_count, cited_by_count |
-| Library of Congress | 29,731 | 29,731 | Science + Technology subtrees, depth 0-6, bulk SKOS N-Triples. Raw has broader/narrower/related arrays |
-| NASA GCMD | 4,849 | 4,849 | 6 keyword types, enriched (80% definitions). Raw has hierarchy columns, short/long names |
-| UNESCO Thesaurus | 4,408 | 4,408 | English filter. Raw has French/Spanish/Russian/Arabic/Chinese labels, match URIs |
-| NCBI Taxonomy | 3,044 | 3,044 | Capped at Order rank from 2.7M total. Raw has lineage, genetic codes, common names |
-| DOE OSTI | 59 | 59 | 45 categories + 9 group parents. Raw has group codes, DOE programs |
-| **Total** | **74,086** | **46,889** | |
+| OpenAlex | 31,995 | 4,798 | 4 domains → 27K keywords. works_count ranking signal |
+| **MeSH (NEW)** | **31,110** | **31,110** | **16 categories, 97% definitions, avg 7.6 synonyms. Tree hierarchy.** |
+| Library of Congress | 29,731 | 29,731 | Science + Technology subtrees, bulk SKOS |
+| NASA GCMD | 4,849 | 4,849 | 6 keyword types, 80% enriched |
+| UNESCO Thesaurus | 4,408 | 4,408 | English filter, mirror strips match triples |
+| NCBI Taxonomy | 3,044 | 3,044 | Capped at Order rank |
+| DOE OSTI | 59 | 59 | 45 categories + 9 groups |
+| **Total** | **105,196** | **77,999** | |
+
+## Ontology layer
+
+| Table | Count | Notes |
+|---|---|---|
+| keyword_senses | 123,202 | 105K base + 14K WoS pub + 3.6K WoS vocab + 400 WoS metadata |
+| sense_relationships | 5,541 | 1,953 alignment + 3,588 WoS cross-refs |
+| disciplines | 14 | T1: fossil/coal/natgas, T2: materials/chem/earth/compute/EE, T3: bio/policy/space/renew/nuclear, T4: math/physics |
+| hierarchy_envelopes | 107 | NETL org: 8 programs → 26 sub → 63 tech → 10 turbine |
+| ontology_lenses | 97 | Template hats: 42 primary + 54 intersection + 1 baseline |
+| polysemous labels | 5,205 | Terms in 2+ sources — cross-domain bridges |
+
+## WoS publication data (3 staging tables)
+
+- raw_wos_publications: 6,019 DOE/NETL pubs with keywords, abstracts, categories
+- raw_wos_keywords_plus_vocab: 7,488 unique Keywords Plus terms
+- raw_wos_netl_tech: 3,877 records mapping pubs to NETL org structure
+
+## External data pulled (data/raw/)
+
+| Source | Location | Size | Status |
+|---|---|---|---|
+| MeSH | data/raw/mesh/ | 31K descriptors | ✅ Ingested as 7th pillar |
+| OpenAlex pubs | data/raw/openalex_pubs/ | 7,983 works, 190MB | ✅ Pulled, not yet ingested |
+| Semantic Scholar | data/raw/semantic_scholar/ | 500 papers, 16 fields | ✅ Pulled, coarse taxonomy |
+| CrossRef | data/raw/crossref/ | 1,600 works | ✅ Low priority (subject deprecated) |
 
 ## Architecture
 
 ```
-Sources (6 pillars)
-  ├── NASA GCMD (CSV + JSON API) ──┐
-  ├── UNESCO Thesaurus (SKOS/RDF) ─┤
-  ├── NCBI Taxonomy (FTP dump) ────┤
-  ├── LoC LCSH (bulk SKOS NT) ─────┤──→ Parsers ──→ DuckDB (raw + unified tables)
-  ├── DOE OSTI (hardcoded list) ───┤
-  └── OpenAlex Topics (API) ───────┘
-                                        │
-                              ┌─────────┴──────────┐
-                              │  5-Expert Bayesian  │
-                              │  Alignment Engine   │
-                              └─────────┬──────────┘
-                                        │
-                              Cross-taxonomy graph
-                              with cross-domain refs
+Sources (7 pillars + WoS publications)
+  ├── NASA GCMD ─────────┐
+  ├── UNESCO Thesaurus ──┤
+  ├── NCBI Taxonomy ─────┤
+  ├── LoC LCSH ──────────┤──→ Parsers ──→ DuckDB (17 tables)
+  ├── DOE OSTI ──────────┤           │
+  ├── OpenAlex Topics ───┤     ┌─────┴──────────┐
+  └── MeSH (NIH) ───────┘     │  Ontology Layer │
+                               │  14 disciplines │
+  WoS Publications ──────────→ │  123K senses    │
+                               │  5.5K relations │
+                               │  97 lens hats   │
+                               └─────┬──────────┘
+                                     │
+                            Composed lens queries
+                            (Role × Org × Disc × Interest)
 ```
-
-### Two-layer schema
-- **Raw tables** (6): full source fidelity with source-specific columns
-- **Unified table**: `keywords` — 13 fields, cross-taxonomy queryable
-- **Alignment table**: `cross_taxonomy_alignment` — confidence, method, match_type, reviewed
 
 ### File structure
 ```
 src/
-  config.py          — URLs, source config, rank hierarchy
-  schema.py          — DDL for 8 tables with data dictionaries
-  storage.py         — KeywordStore (upsert, upsert_raw, validate, export, search, stats)
-  http_client.py     — requests-cache + retries
-  graph.py           — NetworkX graph ops (ancestors, descendants, paths, subtree)
-  cli.py             — ingest, export, stats, enrich, search, populate-raw commands
-  raw_writers.py     — per-source raw table record builders
-  parsers/           — 6 source parsers (nasa_gcmd, unesco, openalex, ncbi, loc, doe_osti)
-  enrichment/        — gcmd_enricher.py (per-concept JSON API)
-  alignment/         — unesco_matches.py (SKOS match harvester, 0 results from mirror)
-  grants/            — extractor.py (regex per agency: NSF, NIH, DOE, NASA, EU, etc.)
-tests/               — 178 tests across 11 test files
+  config.py, schema.py (17 tables), storage.py, http_client.py, graph.py, cli.py
+  raw_writers.py, ontology.py (disciplines, senses, envelopes, lenses, hats)
+  parsers/ — 8 parsers (nasa_gcmd, unesco, openalex, ncbi, loc, doe_osti, wos, mesh)
+  enrichment/, alignment/, grants/
+scripts/ — download_parse_mesh.py, fetch_openalex_pubs.py, fetch_crossref.py
+tests/ — 178 tests across 11 files
+data/raw/, data/lake/ (gitignored)
 ```
 
-## Execution plan
+## 14 Disciplines (Resolution Tiers)
 
-### Phase 1: Foundation ✅
-### Phase 2: Expansion ✅
-### Phase 2.1: Raw table population ✅
+- **T1 (DOE core):** Fossil Energy & Carbon, Coal Science, Natural Gas & Unconventional
+- **T2 (DOE adjacent):** Materials, Chemical Sciences, Earth & Environmental, Computation & Data, EE/ME Engineering
+- **T3 (Other national lab):** Biological & Medical, Policy & Economics, Space & Atmospheric, Renewable & Alternative, Nuclear & Particle
+- **T4 (Broad):** Mathematics & Physics Fundamentals
 
-### Phase 2.5: Multi-Expert Bayesian Alignment ⬅️ NEXT
+## Performance notes
 
-**Approach: 5-Expert Ensemble with Bayesian Consensus**
+- **DuckDB executemany with VARCHAR[] columns is pathologically slow.** Use temp table + SQL INSERT...SELECT instead. Seconds vs 12+ minutes for 105K rows.
+- populate_keyword_senses() rewritten to use this fast path.
 
-Each expert independently designs the cross-taxonomy structural architecture, then we use Bayesian agreement to settle on a consensus structure. The final structure must include cross-domain and cross-category references based on keyword network tangles.
+## Next up
 
-#### The 5 Expert Hats
-
-1. **Physical Sciences Expert** — Physics, chemistry, materials, energy, astronomy, earth science. Sees the world through NASA GCMD earth science hierarchy, DOE OSTI energy categories, NCBI molecular biology overlap, OpenAlex physical sciences domain.
-
-2. **Life Sciences Expert** — Biology, ecology, taxonomy, medicine, genetics. Sees through NCBI taxonomic ranks, OpenAlex health/life sciences domains, LoC biological subject headings, UNESCO environmental science concepts.
-
-3. **Applied Sciences & Engineering Expert** — Technology, engineering, computation, instrumentation. Sees through LoC Technology subtree, DOE OSTI engineering/materials categories, OpenAlex applied fields, NASA GCMD instruments/platforms.
-
-4. **Information & Social Sciences Expert** — Knowledge organization, classification theory, social dimensions of science, policy. Sees through UNESCO thesaurus structure (education, social science, communication), LoC cross-references, OpenAlex social sciences domain, DOE OSTI policy categories.
-
-5. **Cross-Domain Integrator** — Explicitly looks for concepts that span multiple domains. Interdisciplinary fields, boundary objects, methods that cross fields. Identifies the "tangles" where keyword nets from different taxonomies overlap and interweave.
-
-#### Process
-
-For each expert:
-1. Examine all 6 source taxonomies through their domain lens
-2. Identify top-level structural categories (aim for 15-30 per expert)
-3. Map which source keywords belong to each category
-4. Identify cross-references to concepts outside their domain
-5. Document reasoning and confidence levels
-
-Then:
-6. Bayesian agreement: weight each expert's structural proposals by confidence, find consensus clusters
-7. Build consensus taxonomy with cross-domain edges
-8. Populate `cross_taxonomy_alignment` table
-9. Preserve expert provenance (which expert proposed what, confidence)
-
-### Phase 3: Intelligence (Association Engine)
-- [ ] spaCy PhraseMatcher keyword loader
-- [ ] AssociationEngine class
-- [ ] Embedding fallback for semantic matches
-
-### Phase 4: Integration
-- [ ] Publication keyword ingestion hooks
-- [ ] Grant/funding extractor integration
-- [ ] Abstract NLP pipeline
-- [ ] Cross-taxonomy pivoting
-
-## Known issues
-- UNESCO mirror (skos.um.es) strips exactMatch/closeMatch triples → 0 alignment results
-- LoC has 52,951 subjects total but depth filter caps at 29,731 (depth ≤ 6)
-- NCBI actual count is 3,044 not ~1,200 as originally estimated
-- OpenAlex works_count/cited_by_count are valuable ranking signals in raw table
-
-## Data quality audit (2026-04-24)
-- 0 empty labels, 0 orphans, 0 real PK violations
-- 5 cross-source ID collisions (OpenAlex numeric IDs vs NCBI tax_ids) — handled by composite PK (id, source)
-- Definition coverage: DOE 85%, NASA 80%, OpenAlex 15%, LoC 5%, UNESCO 0.5%, NCBI 0%
-- Alias coverage: LoC 17%, OpenAlex 14%, UNESCO 6%, NCBI 4%, NASA 0.1%, DOE 0%
+1. [ ] Ingest OpenAlex pub-level keyword mappings (7,983 works → keyword frequency signals)
+2. [ ] NLP pipeline: extract keywords from 4,691 WoS abstracts
+3. [ ] Title keyword extraction
+4. [ ] Build fossil energy T1 deep sub-ontology from publication keywords
+5. [ ] Create lens query capability (the actual "look through the lens" feature)
+6. [ ] Type relationships (upgrade to richer sense-level directed edges)
+7. [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
+8. [ ] Embedding-based fuzzy matching for non-exact labels
 
 ## Don't forget
+
 - ALWAYS be devil's advocate — challenge assumptions, no glass castles
 - Audit between large steps for errors and gaps
 - Push before destructive operations (always)
-- Grant extraction is separate module, not keyword engine
-- Test against real data, not just mocks
 - Cross-domain references are FIRST CLASS — not afterthoughts
+- Keywords are vector bundles — same word, different meaning per context
+- Org structures are cluster envelopes with temporal versioning
+- Save WORKLOG.md proactively at natural breakpoints

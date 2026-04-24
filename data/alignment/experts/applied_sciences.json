@@ -1,0 +1,560 @@
+{
+  "expert": "Applied Sciences & Engineering",
+  "categories": [
+    {
+      "name": "Aerospace Engineering",
+      "description": "Aircraft, spacecraft, satellites, propulsion, aerodynamics, orbital mechanics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Aerospace Engineering (27.2M works \u2014 largest subfield!)",
+          "keyword_count": 411,
+          "confidence": 0.95
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "platforms (Air-based, Space-based)",
+          "keyword_count": 157,
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Advanced Propulsion Systems",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric physics, orbital mechanics",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 568
+    },
+    {
+      "name": "Electrical & Electronic Engineering",
+      "description": "Circuits, semiconductors, power systems, signal processing, sensors",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Electrical and Electronic Engineering (10.6M works)",
+          "keyword_count": 1070,
+          "confidence": 0.95
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "instruments > Active/Passive Remote Sensing (sensor technology)",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "condensed matter physics, optics",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 1070
+    },
+    {
+      "name": "Computer Science & Artificial Intelligence",
+      "description": "Algorithms, AI/ML, software, networks, databases, HCI, computer vision",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Computer Science (23.3M works) + AI (9.5M works)",
+          "keyword_count": 2862,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Mathematics and Computing",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Computer science subtree",
+          "confidence": 0.8
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Computer science, Information technology",
+          "confidence": 0.7
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE SERVICES > MACHINE LEARNING TRAINING DATA",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "bioinformatics, medical imaging AI",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "computational physics, simulation",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "information science, digital humanities",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 2862
+    },
+    {
+      "name": "Remote Sensing & Earth Observation",
+      "description": "Satellite instruments, radar, lidar, spectrometers, camera systems, data processing",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "instruments (120) + platforms (157) + SPECTRAL/ENGINEERING keywords",
+          "keyword_count": 277,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "related topics across Engineering",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric/ocean/land monitoring",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecological monitoring, precision agriculture",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "geospatial data management",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 477
+    },
+    {
+      "name": "Mechanical Engineering",
+      "description": "Mechanics, thermodynamics, fluid dynamics, manufacturing, automotive, robotics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Mechanical Engineering (4.3M) + Automotive Engineering",
+          "keyword_count": 693,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "fluid dynamics, thermodynamics",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 693
+    },
+    {
+      "name": "Civil & Structural Engineering",
+      "description": "Structures, construction, transportation, urban infrastructure, geotechnical",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Civil/Structural Engineering + Building + Transportation",
+          "keyword_count": 646,
+          "confidence": 0.95
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Technology > engineering subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "geotechnical/soil mechanics",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "urban planning, infrastructure policy",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 646
+    },
+    {
+      "name": "Biomedical Engineering",
+      "description": "Medical devices, prosthetics, biomaterials, tissue engineering, imaging systems",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Biomedical Engineering (4.4M) + Biomaterials",
+          "keyword_count": 659,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "medicine, anatomy, physiology",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "materials physics, optics",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 659
+    },
+    {
+      "name": "Chemical Engineering",
+      "description": "Process engineering, catalysis, separation, reaction engineering, polymers",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Chemical Engineering (all subfields)",
+          "keyword_count": 115,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "chemistry, thermodynamics",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "bioprocess engineering",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 115
+    },
+    {
+      "name": "Environmental Engineering",
+      "description": "Pollution control, waste management, water/air treatment, remediation",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Environmental Engineering + Pollution",
+          "keyword_count": 338,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Environmental Sciences (engineering aspects)",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "environmental chemistry, atmospheric science",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecotoxicology, health impacts",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "environmental regulation",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 338
+    },
+    {
+      "name": "Nuclear Engineering",
+      "description": "Reactor design, fuel cycles, nuclear safety, waste management, fusion engineering",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Nuclear Energy group (General Reactors, Fuel Cycle, Specific Reactors)",
+          "keyword_count": 5,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Nuclear Energy and Engineering",
+          "keyword_count": 8,
+          "confidence": 0.9
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "nuclear physics, radiation physics",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "nuclear policy, disarmament",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 13
+    },
+    {
+      "name": "Energy Engineering & Technology",
+      "description": "Renewable energy systems, fossil fuel technology, energy storage, grid technology",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Energy Engineering + Renewable Energy + Fuel Technology",
+          "keyword_count": 190,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Renewable + Fossil + Alternative Fuels groups",
+          "keyword_count": 14,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "thermodynamics, photovoltaic physics",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "energy policy, sustainability",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 204
+    },
+    {
+      "name": "Instrumentation & Measurement",
+      "description": "Scientific instruments, sensors, measurement techniques, calibration",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Instrumentation + Spectroscopy",
+          "keyword_count": 205,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Instrumentation categories",
+          "keyword_count": 2,
+          "confidence": 0.85
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "instruments hierarchy",
+          "keyword_count": 120,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "physics measurement",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "biomedical instruments",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 327
+    },
+    {
+      "name": "Industrial & Manufacturing Engineering",
+      "description": "Manufacturing processes, quality control, industrial systems, production optimization",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Industrial and Manufacturing Engineering",
+          "keyword_count": 194,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Engineering (subset)",
+          "confidence": 0.5
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "materials processing",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 194
+    },
+    {
+      "name": "Particle Accelerators & Beam Technology",
+      "description": "Accelerator design, beam physics, synchrotron facilities, detector technology",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Particle Accelerators",
+          "keyword_count": 1,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Particle accelerators and beam dynamics (top topic)",
+          "confidence": 0.9
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "particle physics, nuclear physics",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "medical accelerators (radiation therapy)",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 51
+    },
+    {
+      "name": "Military & Defense Technology",
+      "description": "Weapons systems, defense systems, nuclear safeguards, national security technology",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Military Technology, Weaponry, and National Defense + Nuclear Disarmament",
+          "keyword_count": 1,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Military Technology and Strategies (22.3M works!)",
+          "keyword_count": 26,
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "defense policy, international relations",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "weapons physics",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 127
+    },
+    {
+      "name": "Scientific Data Services & Infrastructure",
+      "description": "Data management, visualization, models, web services, metadata handling",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE SERVICES (10 topics)",
+          "keyword_count": 220,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Information Systems + Computer Science Applications",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "information science, data management",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "scientific computing, modeling",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 420
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "remote sensing",
+      "applied_aspect": "instruments, platforms, data processing",
+      "other_domains": [
+        "Physical Sciences: EM radiation theory",
+        "Life Sciences: ecological monitoring"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "biomedical devices",
+      "applied_aspect": "engineering design and manufacturing",
+      "other_domains": [
+        "Life Sciences: clinical application",
+        "Physical Sciences: imaging physics"
+      ],
+      "sources": [
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "nuclear technology",
+      "applied_aspect": "reactor engineering, fuel cycles",
+      "other_domains": [
+        "Physical Sciences: nuclear physics",
+        "Information & Social Sciences: nuclear policy"
+      ],
+      "sources": [
+        "DOE OSTI",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "computational modeling",
+      "applied_aspect": "simulation software, HPC",
+      "other_domains": [
+        "Physical Sciences: physical models",
+        "Life Sciences: biological simulations"
+      ],
+      "sources": [
+        "OpenAlex",
+        "DOE OSTI",
+        "NASA GCMD"
+      ]
+    },
+    {
+      "concept": "environmental monitoring technology",
+      "applied_aspect": "sensor networks, satellites",
+      "other_domains": [
+        "Physical Sciences: atmospheric measurement",
+        "Life Sciences: ecosystem monitoring"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex",
+        "DOE OSTI"
+      ]
+    }
+  ],
+  "methodology_notes": "Mapped OpenAlex Engineering field (63M works, largest by works count) and its subfields, NASA GCMD instruments/platforms hierarchy (277 entries \u2014 pure applied science), DOE OSTI Physical Sciences and Other groups (engineering/computing/military), LoC Technology subtree, and UNESCO technology roots. 16 categories covering aerospace through defense tech. NASA GCMD instruments are uniquely valuable \u2014 they provide the measurement technology axis that connects physical observation to applied science."
+}

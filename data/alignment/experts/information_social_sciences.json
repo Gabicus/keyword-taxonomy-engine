@@ -1,0 +1,553 @@
+{
+  "expert": "Information & Social Sciences",
+  "categories": [
+    {
+      "name": "Education & Learning Sciences",
+      "description": "Pedagogy, curriculum, educational psychology, adult education, distance learning, science education",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Social Sciences > Education (9.1M works)",
+          "keyword_count": 1951,
+          "confidence": 0.95
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Education-related concepts (major theme)",
+          "keyword_count": 424,
+          "confidence": 0.95
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE SERVICES > EDUCATION/OUTREACH",
+          "confidence": 0.6
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Education-related science subjects",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "educational technology, e-learning platforms",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "science education in biology",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 2375
+    },
+    {
+      "name": "Sociology & Political Science",
+      "description": "Social structures, political systems, governance, international relations, social inequality",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Sociology/Political Science (14.9M + 9.9M works)",
+          "keyword_count": 1922,
+          "confidence": 0.95
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Political concepts + social science concepts",
+          "keyword_count": 63,
+          "confidence": 0.85
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "science policy, research governance",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "health policy, bioethics",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 1985
+    },
+    {
+      "name": "Economics & Finance",
+      "description": "Economic theory, econometrics, financial markets, trade, development economics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Economics, Econometrics and Finance (13.1M works)",
+          "keyword_count": 749,
+          "confidence": 0.95
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Economic concepts",
+          "keyword_count": 97,
+          "confidence": 0.8
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Energy Planning, Policy, and Economy (economics aspect)",
+          "confidence": 0.5
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "technology economics, innovation",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "energy economics",
+          "confidence": 0.65
+        }
+      ],
+      "estimated_keyword_count": 846
+    },
+    {
+      "name": "Psychology & Behavioral Science",
+      "description": "Clinical, cognitive, social, developmental psychology, behavioral science",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Psychology (9M works)",
+          "keyword_count": 1002,
+          "confidence": 0.95
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Psychology/behavioral concepts",
+          "keyword_count": 37,
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Psychology subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "neuroscience, psychopharmacology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "human-computer interaction, ergonomics",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 1039
+    },
+    {
+      "name": "Arts, Humanities & Cultural Studies",
+      "description": "History, philosophy, literature, visual arts, music, cultural studies, archaeology",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Arts and Humanities (27.7M works)",
+          "keyword_count": 1664,
+          "confidence": 0.95
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Arts, culture, philosophy, history concepts",
+          "keyword_count": 183,
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Art and science, Philosophy and science, History subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "digital humanities, art technology",
+          "confidence": 0.6
+        }
+      ],
+      "estimated_keyword_count": 1847
+    },
+    {
+      "name": "Law & Legal Studies",
+      "description": "Legal systems, international law, intellectual property, regulatory frameworks",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Law (2.7M works)",
+          "keyword_count": 776,
+          "confidence": 0.9
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Legal/justice concepts",
+          "keyword_count": 56,
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "technology regulation, patent law",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "bioethics, health law",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 832
+    },
+    {
+      "name": "Business & Management",
+      "description": "Management, marketing, accounting, organizational behavior, innovation management",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Business, Management and Accounting (9.3M works)",
+          "keyword_count": 972,
+          "confidence": 0.95
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Management, administration concepts",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "technology management, innovation",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 972
+    },
+    {
+      "name": "Communication & Media Studies",
+      "description": "Mass communication, journalism, broadcasting, science communication, digital media",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Communication + Media Technology",
+          "keyword_count": 784,
+          "confidence": 0.9
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Communication/media concepts (major theme)",
+          "keyword_count": 71,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Communication in science, Visual communication",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "broadcasting technology, digital platforms",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 855
+    },
+    {
+      "name": "Library & Information Science",
+      "description": "Information organization, classification, metadata, digital libraries, knowledge management",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Library and Information Sciences + Health Informatics",
+          "keyword_count": 107,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Classification--Books--Science (meta-level)",
+          "confidence": 0.8
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Archives, Libraries concepts",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "database technology, search systems",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "all",
+          "concept": "knowledge organization applies to all domains",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 157
+    },
+    {
+      "name": "Demographics & Population Studies",
+      "description": "Population dynamics, migration, urbanization, demographic transitions",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Demography (1.6M works)",
+          "keyword_count": 143,
+          "confidence": 0.9
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Population/demographic concepts",
+          "keyword_count": 34,
+          "confidence": 0.85
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "public health, epidemiology",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 177
+    },
+    {
+      "name": "Linguistics & Language Studies",
+      "description": "Linguistics, sociolinguistics, language policy, translation, multilingualism",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Language and Linguistics (2.6M works)",
+          "keyword_count": 364,
+          "confidence": 0.9
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Language concepts (major theme)",
+          "keyword_count": 74,
+          "confidence": 0.9
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "NLP, computational linguistics",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 438
+    },
+    {
+      "name": "Science-Society Intersections",
+      "description": "Religion and science, feminism in science, discrimination in science, art and science \u2014 unique to LoC",
+      "source_mappings": [
+        {
+          "source": "Library of Congress",
+          "branch": "Level-1 'X and science' / 'X in science' headings",
+          "keyword_count": 46,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "History and Philosophy of Science (1.6M works)",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Science policy concepts",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "all",
+          "concept": "meta-level: how society relates to science",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 4600
+    },
+    {
+      "name": "Geography & Urban Studies",
+      "description": "Human geography, urban planning, rural development, spatial analysis",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Geography/Planning + Urban Studies",
+          "keyword_count": 222,
+          "confidence": 0.9
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Geography/urban concepts",
+          "keyword_count": 51,
+          "confidence": 0.8
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "locations (656 entries \u2014 geographic reference)",
+          "confidence": 0.5
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "GIS, spatial data, climate geography",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "urban engineering, transport",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 273
+    },
+    {
+      "name": "Public Health & Epidemiology",
+      "description": "Population health, disease surveillance, health systems, health policy, global health",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Public Health + Epidemiology + Health Professions (7.9M works)",
+          "keyword_count": 1530,
+          "confidence": 0.9
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Health-related social concepts",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "infectious disease, medicine",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "health informatics, telemedicine",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 1530
+    },
+    {
+      "name": "Science & Energy Policy",
+      "description": "Energy policy, research funding, technology transfer, science governance",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Energy Planning, Policy, and Economy",
+          "keyword_count": 2,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Management, Monitoring, Policy and Law",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Science policy concepts",
+          "confidence": 0.75
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "energy science priorities",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "technology policy",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 202
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "science communication",
+      "info_social_aspect": "public understanding, media",
+      "other_domains": [
+        "all: communication of findings"
+      ],
+      "sources": [
+        "OpenAlex",
+        "UNESCO",
+        "LoC",
+        "NASA GCMD"
+      ]
+    },
+    {
+      "concept": "environmental policy",
+      "info_social_aspect": "governance, regulation",
+      "other_domains": [
+        "Physical Sciences: climate data",
+        "Life Sciences: conservation"
+      ],
+      "sources": [
+        "DOE OSTI",
+        "UNESCO",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "bioethics",
+      "info_social_aspect": "ethical frameworks",
+      "other_domains": [
+        "Life Sciences: genetic research, clinical trials"
+      ],
+      "sources": [
+        "OpenAlex",
+        "UNESCO"
+      ]
+    },
+    {
+      "concept": "technology assessment",
+      "info_social_aspect": "societal impact evaluation",
+      "other_domains": [
+        "Applied Sciences: tech development"
+      ],
+      "sources": [
+        "UNESCO",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "health policy",
+      "info_social_aspect": "healthcare systems, regulation",
+      "other_domains": [
+        "Life Sciences: public health, medicine"
+      ],
+      "sources": [
+        "OpenAlex",
+        "UNESCO"
+      ]
+    }
+  ],
+  "unesco_analysis": {
+    "total_concepts": 4408,
+    "social_science_concepts_estimate": 742,
+    "note": "UNESCO Thesaurus is the richest single source for social science concepts. Its 583 root concepts and flat structure mean most concepts are at level 0-1 rather than deep hierarchies."
+  },
+  "loc_science_society_patterns": "LoC has a unique 'X and science' pattern at level 1 (Religion and science, Feminism and science, Art and science, etc.) with deep subtrees under each. These represent how different societal domains interact with science \u2014 a perspective no other source captures.",
+  "methodology_notes": "Mapped UNESCO social science concepts, OpenAlex Social Sciences domain (115.7M works), LoC science-society intersection headings, DOE OSTI policy categories. 15 categories covering education through science policy. UNESCO is uniquely valuable for social science coverage. LoC's 'X and science' headings capture science-society intersections not found elsewhere."
+}

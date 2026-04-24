@@ -1,0 +1,720 @@
+{
+  "expert": "Physical Sciences",
+  "categories": [
+    {
+      "name": "Atmospheric Science",
+      "description": "Atmospheric physics, meteorology, aerosols, precipitation, radiation budget, atmospheric chemistry",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > ATMOSPHERE",
+          "keyword_count": 684,
+          "confidence": 0.95,
+          "reasoning": "Primary atmospheric science hierarchy with detailed variables"
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Earth and Planetary Sciences > Atmospheric Science",
+          "keyword_count": 107,
+          "confidence": 0.9,
+          "reasoning": "Academic atmospheric science topics"
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Geosciences (partial)",
+          "confidence": 0.6,
+          "reasoning": "DOE geosciences includes atmospheric monitoring"
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Atmosphere (root concept)",
+          "confidence": 0.7,
+          "reasoning": "General atmospheric concepts"
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "air quality and health",
+          "relationship": "atmospheric pollution impacts health",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "weather instruments",
+          "relationship": "measurement technology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "climate policy",
+          "relationship": "policy implications of atmospheric data",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 791
+    },
+    {
+      "name": "Solid Earth & Geophysics",
+      "description": "Geology, geophysics, seismology, volcanology, tectonics, geochemistry, mineralogy",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > SOLID EARTH",
+          "keyword_count": 503,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Earth and Planetary Sciences > Geophysics/Geology/Geochemistry",
+          "keyword_count": 295,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Geosciences",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Science > Physical sciences (geology subtree)",
+          "keyword_count": 193,
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "mining and resource extraction",
+          "confidence": 0.75
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "paleontology overlap",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 991
+    },
+    {
+      "name": "Oceanography & Marine Physics",
+      "description": "Ocean circulation, salinity, temperature, sea level, waves, tides, marine chemistry",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > OCEANS",
+          "keyword_count": 378,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Oceanography + Ocean Engineering + Aquatic Science",
+          "keyword_count": 309,
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Geosciences (partial)",
+          "confidence": 0.5
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "marine biology",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "ocean observation instruments",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 687
+    },
+    {
+      "name": "Cryosphere & Glaciology",
+      "description": "Ice sheets, glaciers, permafrost, snow, sea ice, frozen ground",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > CRYOSPHERE",
+          "keyword_count": 148,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Global and Planetary Change (partial)",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "polar ecology",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "climate change impacts",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 198
+    },
+    {
+      "name": "Astronomy & Astrophysics",
+      "description": "Stars, galaxies, cosmology, planetary science, solar physics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Physics and Astronomy > Astronomy and Astrophysics",
+          "keyword_count": 209,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Astronomy and Astrophysics",
+          "keyword_count": 1,
+          "confidence": 0.9
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "SUN-EARTH INTERACTIONS",
+          "confidence": 0.6
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Science > Physical sciences > Astronomy",
+          "keyword_count": 169,
+          "confidence": 0.8
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Astronomy (root concept)",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "space technology/telescopes",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "astrobiology",
+          "confidence": 0.6
+        }
+      ],
+      "estimated_keyword_count": 388
+    },
+    {
+      "name": "Nuclear & Particle Physics",
+      "description": "Nuclear structure, particle physics, fusion, fission, accelerators, radiation physics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Nuclear and High Energy Physics",
+          "keyword_count": 125,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Nuclear Physics, Particle Physics, Plasma Physics/Fusion",
+          "keyword_count": 12,
+          "confidence": 0.95
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Nuclear physics subjects",
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "nuclear engineering/reactors",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "nuclear medicine, radiation biology",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 137
+    },
+    {
+      "name": "Condensed Matter Physics",
+      "description": "Solid state physics, superconductivity, superfluidity, electronic/magnetic/optical materials physics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Condensed Matter Physics + Electronic/Optical/Magnetic Materials",
+          "keyword_count": 344,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Condensed Matter Physics, Superconductivity, and Superfluidity",
+          "keyword_count": 1,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "materials engineering",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 345
+    },
+    {
+      "name": "Atomic, Molecular & Optical Physics",
+      "description": "Laser physics, quantum optics, spectroscopy, atomic structure, molecular physics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Atomic and Molecular Physics, and Optics",
+          "keyword_count": 351,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Atomic and Molecular Physics",
+          "keyword_count": 1,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "laser technology, optical instruments",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "optical microscopy, bioimaging",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 352
+    },
+    {
+      "name": "Chemistry",
+      "description": "Organic, inorganic, physical, analytical chemistry, catalysis, electrochemistry",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Chemistry (all subfields)",
+          "keyword_count": 774,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Inorganic, Organic, Physical, and Analytical Chemistry",
+          "keyword_count": 1,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Science > Physical sciences > Chemistry",
+          "keyword_count": 3228,
+          "confidence": 0.85
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Chemistry-related root concepts",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "biochemistry, medicinal chemistry",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "chemical engineering, materials synthesis",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 4003
+    },
+    {
+      "name": "Materials Science",
+      "description": "Metals, polymers, ceramics, composites, biomaterials, surfaces/coatings, electronic materials",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Materials Science (all subfields)",
+          "keyword_count": 960,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Materials Science",
+          "keyword_count": 1,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "materials science subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "materials engineering",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "biomaterials, tissue engineering",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 970
+    },
+    {
+      "name": "Energy Science",
+      "description": "Solar, wind, nuclear, fossil fuels, hydrogen, energy storage, fusion, energy conversion",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Renewable + Fossil + Nuclear + Alternative + Energy Systems groups",
+          "keyword_count": 25,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Energy (all subfields)",
+          "keyword_count": 543,
+          "confidence": 0.9
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "SPECTRAL/ENGINEERING (energy aspects)",
+          "confidence": 0.5
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "power engineering, grid technology",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "energy policy",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "biofuels, biomass energy",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 568
+    },
+    {
+      "name": "Space & Planetary Science",
+      "description": "Solar wind, magnetosphere, planetary atmospheres, space weather, heliophysics",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > SUN-EARTH INTERACTIONS",
+          "keyword_count": 49,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Space and Planetary Science",
+          "keyword_count": 7,
+          "confidence": 0.9
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "satellite technology",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 56
+    },
+    {
+      "name": "Paleoscience",
+      "description": "Paleoclimate, paleontology, ice cores, sediment records, geological time",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > PALEOCLIMATE",
+          "keyword_count": 148,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Paleontology",
+          "keyword_count": 67,
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "evolutionary biology, paleobiology",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 215
+    },
+    {
+      "name": "Hydrology & Water Science",
+      "description": "Surface water, groundwater, water cycle, water quality, hydrological modeling",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > TERRESTRIAL HYDROSPHERE",
+          "keyword_count": 235,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Water Science and Technology",
+          "keyword_count": 146,
+          "confidence": 0.85
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "aquatic ecology, water quality",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "water treatment, hydraulic engineering",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "water policy, resource management",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 381
+    },
+    {
+      "name": "Land Surface Science",
+      "description": "Surface properties, terrain, land cover/use, geomorphology, soil physics",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > LAND SURFACE",
+          "keyword_count": 388,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Earth-Surface Processes + Soil Science",
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "vegetation, ecosystems",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "remote sensing of land",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 488
+    },
+    {
+      "name": "Classical & Quantum Mechanics",
+      "description": "Theoretical physics, quantum mechanics, classical mechanics, mathematical physics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Mathematical Physics + Computational Mechanics",
+          "keyword_count": 342,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Classical and Quantum Mechanics, General Physics",
+          "keyword_count": 1,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "quantum computing",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 343
+    },
+    {
+      "name": "Radiation Sciences",
+      "description": "Radiation physics, dosimetry, radiation protection, electromagnetic radiation",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Radiation Sciences + Radiation Protection",
+          "keyword_count": 3,
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Radiation (subfield)",
+          "confidence": 0.85
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "SPECTRAL/ENGINEERING (radiation aspects)",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "radiation biology, nuclear medicine",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "radiation instrumentation",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 203
+    },
+    {
+      "name": "Environmental Physical Sciences",
+      "description": "Pollution physics, environmental monitoring, climate indicators, environmental chemistry",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Environmental Science",
+          "keyword_count": 1355,
+          "confidence": 0.8
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "CLIMATE INDICATORS + HUMAN DIMENSIONS (physical aspects)",
+          "keyword_count": 198,
+          "confidence": 0.7
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Environmental Sciences",
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecotoxicology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "environmental policy",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "environmental engineering",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 1553
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "geochemistry",
+      "physical_aspect": "chemical processes in earth systems",
+      "other_domains": [
+        "Life Sciences: biogeochemistry"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex",
+        "LoC"
+      ]
+    },
+    {
+      "concept": "remote sensing physics",
+      "physical_aspect": "electromagnetic radiation interaction with matter",
+      "other_domains": [
+        "Applied Sciences: instrument design",
+        "Life Sciences: vegetation monitoring"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "biophysics",
+      "physical_aspect": "physics of biological systems",
+      "other_domains": [
+        "Life Sciences: molecular biology"
+      ],
+      "sources": [
+        "OpenAlex",
+        "LoC",
+        "UNESCO"
+      ]
+    },
+    {
+      "concept": "atmospheric chemistry",
+      "physical_aspect": "chemical reactions in atmosphere",
+      "other_domains": [
+        "Life Sciences: air quality health",
+        "Applied Sciences: pollution monitoring"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "nuclear medicine",
+      "physical_aspect": "radiation physics",
+      "other_domains": [
+        "Life Sciences: diagnostics/therapy"
+      ],
+      "sources": [
+        "DOE OSTI",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "environmental physics",
+      "physical_aspect": "physical processes in environment",
+      "other_domains": [
+        "Life Sciences: ecology",
+        "Applied Sciences: monitoring tech"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex",
+        "DOE OSTI"
+      ]
+    }
+  ],
+  "methodology_notes": "Mapped NASA GCMD Earth Science branches, OpenAlex Physical Sciences/Earth Science fields, DOE OSTI Physics groups, LoC Physical sciences subtree, and UNESCO physical science roots. 18 categories covering the full scope from fundamental physics to earth system science. Cross-domain refs identified for each category where physical science concepts reach into other domains."
+}

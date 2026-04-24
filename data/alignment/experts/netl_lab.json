@@ -1,0 +1,495 @@
+{
+  "expert": "NETL Lab",
+  "lab_description": "National Energy Technology Laboratory \u2014 DOE's only government-owned, government-operated lab focused on fossil energy and carbon management. Manages ~$1.9B/year in research. Key areas: carbon capture/storage, natural gas, coal, power systems, water-energy nexus, materials, computational science.",
+  "categories": [
+    {
+      "name": "Fossil Fuel Science & Extraction",
+      "description": "Coal science, petroleum geology, oil/gas extraction, reservoir engineering, drilling technology. NETL's historical core mission.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Fossil Fuels group (Coal/Natural Gas/Petroleum/Oil Shales/Synthetic Fuels)",
+          "confidence": 0.95,
+          "reasoning": "Direct DOE classification for fossil energy R&D"
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > SOLID EARTH > ROCKS/MINERALS (petroleum geology)",
+          "confidence": 0.6
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Energy > Fuel Technology + Earth and Planetary Sciences > Geology",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Petroleum, Coal, Mining subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 90,
+        "OpenAlex": 35,
+        "NASA GCMD": 11,
+        "UNESCO Thesaurus": 9,
+        "DOE OSTI": 4
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "geochemistry, sedimentary geology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "paleontology (fossil record context)",
+          "confidence": 0.5
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "energy policy, resource economics",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 149,
+      "netl_relevance": "Core mission \u2014 NETL manages DOE's fossil energy research portfolio"
+    },
+    {
+      "name": "Natural Gas & Unconventional Resources",
+      "description": "Shale gas, methane hydrates, tight gas, coalbed methane, hydraulic fracturing, LNG",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Fossil Fuels > Natural Gas",
+          "confidence": 0.95
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE keywords (methane, hydrates)",
+          "confidence": 0.7
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Fuel Technology + Geotechnical Engineering",
+          "confidence": 0.8
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 28,
+        "OpenAlex": 25,
+        "NASA GCMD": 12,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "thermodynamics of gas mixtures, subsurface flow",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "environmental impacts on aquatic/terrestrial ecosystems",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 66,
+      "netl_relevance": "Major NETL focus area \u2014 unconventional gas research, methane hydrate program"
+    },
+    {
+      "name": "Carbon Capture, Utilization & Storage (CCUS)",
+      "description": "CO2 capture technologies, geological storage, carbon utilization pathways, direct air capture, monitoring/verification",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Environmental Science + Chemical Engineering (CCUS topics)",
+          "confidence": 0.85
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > ATMOSPHERE > ATMOSPHERIC CHEMISTRY (CO2 monitoring)",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Carbon sequestration, Carbon dioxide subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 49,
+        "Library of Congress": 47,
+        "NASA GCMD": 14,
+        "UNESCO Thesaurus": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric chemistry, geophysics (subsurface CO2)",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "process engineering, materials for capture",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ocean acidification, ecological impacts",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "climate policy, carbon markets",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 111,
+      "netl_relevance": "NETL's largest growing program area \u2014 billions in DOE CCUS funding"
+    },
+    {
+      "name": "Power Generation & Combustion Systems",
+      "description": "Gas turbines, coal combustion, gasification, combined cycle, power plant efficiency, emissions control",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Energy Engineering + Mechanical Engineering (combustion/turbine topics)",
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Energy Systems (Direct Energy Conversion, Energy Conservation)",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Combustion, Turbines, Power plants subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 244,
+        "OpenAlex": 38,
+        "UNESCO Thesaurus": 4,
+        "NASA GCMD": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "thermodynamics, fluid dynamics",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "materials for high-temperature environments",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 287,
+      "netl_relevance": "Core NETL \u2014 fossil energy power systems optimization"
+    },
+    {
+      "name": "Water Management for Energy",
+      "description": "Produced water treatment, water-energy nexus, cooling systems, desalination, subsurface fluid management",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Water Science and Technology + Environmental Engineering",
+          "confidence": 0.8
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "TERRESTRIAL HYDROSPHERE (water quality)",
+          "confidence": 0.6
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Water treatment, Water quality subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 41,
+        "NASA GCMD": 11,
+        "Library of Congress": 11,
+        "UNESCO Thesaurus": 3
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "aquatic ecology, water toxicology",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "hydrology, geochemistry",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 66,
+      "netl_relevance": "Growing NETL priority \u2014 water-energy nexus research"
+    },
+    {
+      "name": "Materials for Extreme Environments",
+      "description": "High-temperature alloys, corrosion-resistant materials, coatings, ceramics for energy applications",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Materials Science > Metals and Alloys + Ceramics + Surfaces/Coatings",
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Physical Sciences > Materials Science",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Alloys, Corrosion, Ceramics subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 125,
+        "OpenAlex": 112,
+        "UNESCO Thesaurus": 3,
+        "NASA GCMD": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "condensed matter physics, metallurgy",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "manufacturing, coatings technology",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 241,
+      "netl_relevance": "NETL Materials Science Division \u2014 alloys and coatings for power systems"
+    },
+    {
+      "name": "Computational Science for Energy",
+      "description": "CFD, multiphysics simulation, reservoir modeling, combustion simulation, HPC for energy",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Computational Mechanics + Modeling and Simulation + Computer Science",
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Mathematics and Computing",
+          "confidence": 0.7
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE SERVICES > MODELS",
+          "confidence": 0.6
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 260,
+        "Library of Congress": 24,
+        "UNESCO Thesaurus": 2,
+        "NASA GCMD": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "physics-based models",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "HPC, software engineering",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 287,
+      "netl_relevance": "NETL Computational Science Division \u2014 MFIX, CCSI tools"
+    },
+    {
+      "name": "Subsurface Science & Geology",
+      "description": "Reservoir characterization, subsurface flow, geomechanics, seismic imaging, well logging",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > SOLID EARTH (seismology, geology)",
+          "confidence": 0.8
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Earth and Planetary Sciences > Geology + Geophysics",
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Life and Environmental Sciences > Geosciences",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Geology, Seismology subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 208,
+        "OpenAlex": 120,
+        "NASA GCMD": 95,
+        "UNESCO Thesaurus": 15,
+        "NCBI Taxonomy": 3
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "geophysics, fluid dynamics in porous media",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "drilling technology, reservoir engineering",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 441,
+      "netl_relevance": "NETL Research Innovation Center \u2014 subsurface characterization"
+    },
+    {
+      "name": "Environmental Remediation & Monitoring",
+      "description": "Site cleanup, groundwater remediation, environmental monitoring, pollutant transport, waste management",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Environmental Engineering + Pollution",
+          "confidence": 0.8
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Radioactive Waste Management + Environmental Sciences",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Remediation, Pollution subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 72,
+        "OpenAlex": 40,
+        "UNESCO Thesaurus": 3,
+        "NASA GCMD": 3,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecotoxicology, environmental health",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "contaminant transport modeling",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "environmental regulation, EPA compliance",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 119,
+      "netl_relevance": "NETL manages DOE environmental site remediation for legacy fossil energy sites"
+    },
+    {
+      "name": "Hydrogen & Fuel Cell Technology",
+      "description": "Hydrogen production, storage, transport, fuel cells, electrolyzers, hydrogen economy",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Alternative Fuels > Hydrogen",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Energy + Electrochemistry + Chemical Engineering",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Hydrogen, Fuel cells subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 66,
+        "Library of Congress": 37,
+        "NASA GCMD": 15,
+        "NCBI Taxonomy": 5,
+        "DOE OSTI": 1,
+        "UNESCO Thesaurus": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "electrochemistry, thermodynamics",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "materials for fuel cells, storage tanks",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 125,
+      "netl_relevance": "NETL Hydrogen Program \u2014 DOE Hydrogen Shot initiative"
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "carbon cycle",
+      "netl_aspect": "CO2 capture and geological storage",
+      "other_domains": [
+        "Physical Sciences: atmospheric CO2 monitoring",
+        "Life Sciences: ocean/terrestrial carbon sinks",
+        "Information & Social Sciences: carbon markets/policy"
+      ]
+    },
+    {
+      "concept": "subsurface characterization",
+      "netl_aspect": "reservoir imaging for energy extraction",
+      "other_domains": [
+        "Physical Sciences: seismology, geophysics",
+        "Applied Sciences: drilling technology",
+        "Life Sciences: subsurface microbiology"
+      ]
+    },
+    {
+      "concept": "high-temperature materials",
+      "netl_aspect": "turbine alloys, boiler materials",
+      "other_domains": [
+        "Physical Sciences: condensed matter",
+        "Applied Sciences: manufacturing processes"
+      ]
+    },
+    {
+      "concept": "computational fluid dynamics",
+      "netl_aspect": "combustion/reactor modeling",
+      "other_domains": [
+        "Physical Sciences: fluid mechanics",
+        "Applied Sciences: HPC infrastructure"
+      ]
+    }
+  ],
+  "gaps_identified": [
+    "No dedicated 'carbon management' or 'CCUS' category in any source taxonomy \u2014 concepts scattered across Environmental Science, Chemical Engineering, Geology",
+    "DOE OSTI's Fossil Fuels group is the closest structured representation but too coarse (only 5 subcategories for a massive field)",
+    "Water-energy nexus concepts split across hydrology, environmental engineering, and water science \u2014 no unified view",
+    "Computational science for energy not well-represented as a distinct domain in any source"
+  ],
+  "methodology_notes": "Analyzed all 74K keywords through NETL's mission lens. NETL sits at the intersection of fossil energy, carbon management, materials science, computational science, and environmental remediation. DOE OSTI is the most structurally aligned source but too coarse. OpenAlex provides the richest keyword coverage. NASA GCMD contributes earth science context (atmospheric CO2, geology)."
+}

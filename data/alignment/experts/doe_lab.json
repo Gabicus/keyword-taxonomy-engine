@@ -1,0 +1,655 @@
+{
+  "expert": "DOE Lab",
+  "lab_description": "All 17 DOE National Laboratories collectively. DOE operates the largest system of national labs in the world, with missions spanning basic science (Office of Science), applied energy (EERE, NE, FE), national security (NNSA), and environmental management. Annual budget ~$18B.",
+  "categories": [
+    {
+      "name": "Nuclear Energy & Reactor Technology",
+      "description": "Reactor design (light water, advanced, SMR), fuel cycles, nuclear safety, spent fuel management. Core to Idaho, Oak Ridge, Argonne, Sandia.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Nuclear Energy group (4 categories)",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Nuclear Energy and Engineering + related topics",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Nuclear reactors, Nuclear fuels subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 47,
+        "OpenAlex": 14,
+        "UNESCO Thesaurus": 6,
+        "DOE OSTI": 4
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "nuclear physics, neutronics",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "radiation biology, health physics",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "nuclear policy, nonproliferation",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 71,
+      "lead_labs": [
+        "Idaho National Laboratory",
+        "Oak Ridge",
+        "Argonne",
+        "Sandia"
+      ]
+    },
+    {
+      "name": "Particle Physics & Accelerator Science",
+      "description": "High energy physics, accelerator design, detector technology, beam physics. Core to Fermilab, SLAC, Brookhaven, Jefferson.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Physics > Physics of Elementary Particles and Fields + Particle Accelerators",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Nuclear and High Energy Physics + Particle accelerators topic",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Particle physics, Accelerator subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 92,
+        "OpenAlex": 67,
+        "NASA GCMD": 9,
+        "UNESCO Thesaurus": 1,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "detector engineering, superconducting magnets",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "medical accelerators, proton therapy",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 170,
+      "lead_labs": [
+        "Fermilab",
+        "SLAC",
+        "Brookhaven",
+        "Thomas Jefferson"
+      ]
+    },
+    {
+      "name": "Fusion Energy Science",
+      "description": "Magnetic confinement, inertial confinement, plasma physics, fusion materials, ITER. Core to Princeton Plasma, LLNL, Oak Ridge.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Physics > Plasma Physics and Fusion Technology",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Magnetic confinement fusion research (9.3M works!)",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Fusion, Plasma subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 85,
+        "Library of Congress": 43,
+        "NASA GCMD": 6,
+        "UNESCO Thesaurus": 4,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "plasma physics, electromagnetism",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "superconducting magnets, materials under extreme conditions",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 139,
+      "lead_labs": [
+        "Princeton Plasma Physics Lab",
+        "LLNL",
+        "Oak Ridge",
+        "LBNL"
+      ]
+    },
+    {
+      "name": "Renewable Energy & Clean Energy",
+      "description": "Solar, wind, geothermal, bioenergy, grid integration, energy efficiency. Core to NREL, Sandia, LBNL.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Renewable Energy group (4 categories) + Alternative Fuels > Biomass",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Renewable Energy, Sustainability + Energy Engineering",
+          "confidence": 0.85
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE (solar radiation, wind data)",
+          "confidence": 0.6
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Solar energy, Wind energy, Renewable energy",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 52,
+        "Library of Congress": 21,
+        "NASA GCMD": 8,
+        "DOE OSTI": 5,
+        "UNESCO Thesaurus": 4
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "photovoltaic physics, atmospheric science (wind/solar resource)",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "energy policy, grid economics",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "bioenergy, crop science for biofuels",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 90,
+      "lead_labs": [
+        "NREL",
+        "Sandia",
+        "LBNL",
+        "Argonne"
+      ]
+    },
+    {
+      "name": "Nuclear Weapons & National Security Science",
+      "description": "Stockpile stewardship, nonproliferation, weapons physics, national security tech. Core to LANL, LLNL, Sandia.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Nuclear Disarmament, Safeguards + Military Technology",
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Military Technology and Strategies (22.3M works)",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Nuclear weapons, Arms control subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 19,
+        "OpenAlex": 8,
+        "UNESCO Thesaurus": 5,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "nuclear/plasma physics, hydrodynamics",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "nonproliferation policy, arms treaties",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 33,
+      "lead_labs": [
+        "LANL",
+        "LLNL",
+        "Sandia",
+        "Savannah River"
+      ]
+    },
+    {
+      "name": "Computational Science & High Performance Computing",
+      "description": "Exascale computing, scientific simulation, AI/ML for science, quantum computing. Core to Oak Ridge, Argonne, LBNL, LANL, LLNL.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Mathematics and Computing",
+          "confidence": 0.8
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Computer Science + Artificial Intelligence + Computational Mechanics",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Computing, Supercomputer subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 71,
+        "Library of Congress": 31,
+        "NASA GCMD": 3,
+        "UNESCO Thesaurus": 2
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "physics simulation, climate modeling",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "computational biology, protein folding",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "engineering simulation, materials design",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 107,
+      "lead_labs": [
+        "Oak Ridge (Summit/Frontier)",
+        "Argonne (Aurora)",
+        "LBNL (NERSC)",
+        "LANL",
+        "LLNL"
+      ]
+    },
+    {
+      "name": "Materials Science & Nanoscience",
+      "description": "Advanced materials, nanomaterials, synchrotron characterization, materials by design. Core to Ames, Argonne, Brookhaven, LBNL, Oak Ridge.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Physical Sciences > Materials Science + Nanoscience and Nanotechnology",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Materials Science (all subfields, 9.7M works)",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Materials science, Nanoscience subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 83,
+        "Library of Congress": 19,
+        "DOE OSTI": 2,
+        "UNESCO Thesaurus": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "condensed matter, crystallography",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "manufacturing, coatings",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "biomaterials, drug delivery nanoparticles",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 105,
+      "lead_labs": [
+        "Ames",
+        "Argonne (APS)",
+        "Brookhaven (NSLS-II)",
+        "LBNL (ALS)",
+        "Oak Ridge (SNS)"
+      ]
+    },
+    {
+      "name": "Biological & Environmental Science",
+      "description": "Genomics, bioenergy, environmental remediation, climate science, ecosystem monitoring. Core to LBNL (JGI), PNNL, Oak Ridge, Brookhaven.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Life and Environmental Sciences group (8 categories)",
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Agricultural/Biological Sciences + Environmental Science",
+          "confidence": 0.85
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "BIOSPHERE + CLIMATE INDICATORS + LAND SURFACE",
+          "confidence": 0.8
+        },
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Full organism taxonomy (DOE JGI focus)",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 242,
+        "OpenAlex": 193,
+        "NASA GCMD": 17,
+        "UNESCO Thesaurus": 7,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "molecular biology, ecology",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "climate science, atmospheric chemistry",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "bioinformatics, environmental monitoring tech",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 460,
+      "lead_labs": [
+        "LBNL (JGI)",
+        "PNNL",
+        "Oak Ridge (ARM)",
+        "Brookhaven"
+      ]
+    },
+    {
+      "name": "Quantum Information Science",
+      "description": "Quantum computing, quantum networking, quantum sensors, quantum materials. Cross-cutting DOE initiative across multiple labs.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Physics and Astronomy + Computer Science (quantum topics)",
+          "confidence": 0.85
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Physics (quantum mechanics) + Mathematics and Computing",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Quantum computing, Quantum theory subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 103,
+        "Library of Congress": 52,
+        "DOE OSTI": 1,
+        "UNESCO Thesaurus": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "quantum mechanics, AMO physics",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "quantum hardware, cryogenics",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "quantum-safe cryptography policy",
+          "confidence": 0.6
+        }
+      ],
+      "estimated_keyword_count": 157,
+      "lead_labs": [
+        "Argonne",
+        "Fermilab",
+        "LBNL",
+        "Brookhaven",
+        "Oak Ridge (5 QIS centers)"
+      ]
+    },
+    {
+      "name": "Energy Storage & Grid Science",
+      "description": "Batteries, grid modernization, electricity storage, grid cybersecurity. Core to Argonne, Sandia, PNNL, NREL.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Energy Systems > Energy Storage + Energy Conservation",
+          "confidence": 0.85
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Energy + Electrochemistry + Electrical Engineering",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Batteries, Electric grid subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 97,
+        "Library of Congress": 66,
+        "NASA GCMD": 2,
+        "DOE OSTI": 1,
+        "UNESCO Thesaurus": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "electrochemistry, materials science",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "power systems engineering",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "energy policy, grid economics",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 167,
+      "lead_labs": [
+        "Argonne (JCESR)",
+        "Sandia",
+        "PNNL",
+        "NREL"
+      ]
+    },
+    {
+      "name": "Radiation Science & Medical Isotopes",
+      "description": "Radiation detection, dosimetry, medical isotope production, radiation therapy. Core to Oak Ridge, Brookhaven, LANL.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Radiation Sciences + Radiology and Nuclear Medicine + Radiation Protection",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Radiation + Radiology + Nuclear Medicine",
+          "confidence": 0.85
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 143,
+        "OpenAlex": 77,
+        "NASA GCMD": 31,
+        "UNESCO Thesaurus": 7,
+        "DOE OSTI": 5
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "radiation biology, cancer treatment",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "nuclear physics, radiation transport",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 263,
+      "lead_labs": [
+        "Oak Ridge (HFIR)",
+        "Brookhaven",
+        "LANL",
+        "Idaho"
+      ]
+    },
+    {
+      "name": "Chemistry & Chemical Sciences",
+      "description": "Catalysis, separations science, spectroscopy, photochemistry. Core to Argonne, PNNL, LBNL, Ames.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Inorganic, Organic, Physical, and Analytical Chemistry",
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Chemistry (all subfields) + Catalysis + Spectroscopy",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Chemistry subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 155,
+        "OpenAlex": 139,
+        "UNESCO Thesaurus": 2,
+        "NASA GCMD": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "physical chemistry, molecular physics",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "chemical engineering, industrial chemistry",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "biochemistry, enzymology",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 297,
+      "lead_labs": [
+        "Argonne",
+        "PNNL",
+        "LBNL",
+        "Ames"
+      ]
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "user facilities",
+      "doe_aspect": "synchrotron light sources, neutron sources, sequencing centers, computing centers \u2014 shared infrastructure",
+      "other_domains": [
+        "all: used by researchers across every domain"
+      ]
+    },
+    {
+      "concept": "energy-water nexus",
+      "doe_aspect": "water for cooling, produced water, hydropower",
+      "other_domains": [
+        "Physical Sciences: hydrology",
+        "Life Sciences: water ecology"
+      ]
+    },
+    {
+      "concept": "nuclear nonproliferation",
+      "doe_aspect": "technical verification of arms treaties",
+      "other_domains": [
+        "Information & Social Sciences: international law",
+        "Physical Sciences: nuclear detection"
+      ]
+    },
+    {
+      "concept": "AI for science",
+      "doe_aspect": "ML/AI for scientific discovery across DOE missions",
+      "other_domains": [
+        "all: cross-cutting methodology"
+      ]
+    }
+  ],
+  "inter_lab_overlaps": {
+    "description": "Many DOE labs work on overlapping topics \u2014 this creates natural alignment needs",
+    "examples": [
+      "Materials Science: Ames, Argonne, Brookhaven, LBNL, Oak Ridge all have major programs",
+      "Nuclear: Idaho (reactors), Oak Ridge (isotopes), LANL/LLNL (weapons), Fermilab (neutrinos)",
+      "Computing: All major labs have HPC \u2014 Oak Ridge, Argonne, LBNL lead in leadership computing",
+      "Batteries: Argonne (JCESR), Sandia, PNNL, NREL all have battery programs",
+      "Climate: PNNL, LBNL, Oak Ridge, Brookhaven, ANL all contribute to Earth System modeling"
+    ]
+  },
+  "methodology_notes": "Analyzed 74K keywords through the lens of DOE's 17 national laboratory system. DOE OSTI categories are the most directly aligned taxonomy but far too coarse. Mapped DOE mission areas to source branches. Key finding: DOE lab work spans all 4 original expert domains \u2014 labs are inherently interdisciplinary."
+}

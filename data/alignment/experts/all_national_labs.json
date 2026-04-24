@@ -1,0 +1,604 @@
+{
+  "expert": "All National Labs",
+  "lab_description": "All US federal research laboratories across agencies: DOE (17 labs), NIH (27 institutes), NASA (10 centers), NOAA (7 labs), NIST (6 labs), USDA ARS (90+ labs), DoD (ARL/NRL/AFRL), EPA (ORD), USGS (7 centers), and more. Collectively the largest scientific research enterprise in the world.",
+  "categories": [
+    {
+      "name": "Fundamental Science (DOE Office of Science)",
+      "description": "Basic energy sciences, high energy physics, nuclear physics, biological/environmental research, advanced scientific computing, fusion. DOE SC funds 6 programs across 10 labs.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Physics group + Physical Sciences group + Life/Environmental Sciences group",
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Physical Sciences domain + Life Sciences domain (basic research subsets)",
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "all",
+          "concept": "basic research underpins all applied domains",
+          "confidence": 0.95
+        }
+      ],
+      "estimated_keyword_count": 3000,
+      "agency_labs": "DOE: Argonne, Brookhaven, Fermilab, LBNL, Oak Ridge, SLAC, Ames, Princeton Plasma, Thomas Jefferson, PNNL"
+    },
+    {
+      "name": "Biomedical & Clinical Research (NIH)",
+      "description": "NIH intramural research plus 27 institutes/centers. Genomics, disease mechanisms, drug development, clinical trials, public health.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Health Sciences > Medicine (52.7M works) + Neuroscience + Pharmacology",
+          "confidence": 0.9
+        },
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Full taxonomy (NCBI is part of NIH NLM)",
+          "confidence": 0.95
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Medical/health subjects under Life sciences",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 904,
+        "Library of Congress": 538,
+        "UNESCO Thesaurus": 28,
+        "NASA GCMD": 8
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "molecular biology, genetics",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "medical devices, imaging technology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "health policy, bioethics",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 1478,
+      "agency_labs": "NIH: NCI, NIAID, NHLBI, NINDS, NIEHS, NHGRI, NLM/NCBI + 20 more institutes"
+    },
+    {
+      "name": "Earth & Space Science (NASA Centers)",
+      "description": "Earth observation, planetary exploration, heliophysics, astrophysics, aeronautics. 10 NASA centers.",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "ALL (4,849 keywords \u2014 GCMD is NASA's taxonomy)",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Earth and Planetary Sciences + Aerospace Engineering + Space and Planetary Science",
+          "confidence": 0.85
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 425,
+        "OpenAlex": 185,
+        "NASA GCMD": 75,
+        "UNESCO Thesaurus": 22
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric physics, astronomy",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "aerospace engineering, instrumentation",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "astrobiology, space medicine",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 5556,
+      "agency_labs": "NASA: GSFC, JPL, Ames, Langley, Glenn, Marshall, Stennis, Johnson, Kennedy, Armstrong"
+    },
+    {
+      "name": "Ocean & Atmospheric Research (NOAA)",
+      "description": "Weather prediction, ocean monitoring, fisheries science, coastal management, climate services. NOAA's 7 research labs.",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > ATMOSPHERE + OCEANS + CLIMATE INDICATORS",
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Atmospheric Science + Oceanography + Aquatic Science",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Weather, Oceanography, Fisheries subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 477,
+        "OpenAlex": 129,
+        "NASA GCMD": 109,
+        "UNESCO Thesaurus": 17,
+        "NCBI Taxonomy": 6
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric dynamics, ocean physics",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "marine biology, fisheries ecology",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "weather services, coastal policy",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 1238,
+      "agency_labs": "NOAA: GFDL, PMEL, AOML, NSSL, ESRL/GSL, GLERL, NCEI"
+    },
+    {
+      "name": "Standards & Measurement Science (NIST)",
+      "description": "Physical measurement standards, materials characterization, cybersecurity standards, quantum standards, manufacturing metrology.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Instrumentation + Spectroscopy + Safety/Risk/Reliability/Quality",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Metrology subtree + Standards subjects",
+          "confidence": 0.85
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Standards, Measurement concepts",
+          "confidence": 0.6
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 160,
+        "Library of Congress": 85,
+        "UNESCO Thesaurus": 16,
+        "NASA GCMD": 15
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "fundamental constants, atomic clocks",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "manufacturing standards, testing",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "regulatory standards, trade standards",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 276,
+      "agency_labs": "NIST: 6 research labs in Gaithersburg + Boulder"
+    },
+    {
+      "name": "Agricultural Research (USDA ARS/FS)",
+      "description": "Crop science, animal science, soil science, food safety, forestry, pest management. USDA's Agricultural Research Service (90+ labs) and Forest Service labs.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Agricultural and Biological Sciences (22.2M works)",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Agriculture subtree",
+          "confidence": 0.85
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Agriculture, Agronomy, Animal husbandry",
+          "confidence": 0.8
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > AGRICULTURE + BIOSPHERE > VEGETATION",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 541,
+        "OpenAlex": 261,
+        "NASA GCMD": 109,
+        "UNESCO Thesaurus": 33,
+        "NCBI Taxonomy": 3
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "plant biology, genetics, ecology",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "soil chemistry, hydrology",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "agricultural economics, food policy",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 947,
+      "agency_labs": "USDA: ARS (90+ labs), Forest Service Research Stations (5), ERS, NASS"
+    },
+    {
+      "name": "Defense Research (DoD Labs)",
+      "description": "Military technology, materials under extreme conditions, communications, cybersecurity, autonomous systems. Army/Navy/Air Force/DARPA labs.",
+      "source_mappings": [
+        {
+          "source": "DOE OSTI",
+          "branch": "Military Technology, Weaponry, and National Defense",
+          "confidence": 0.8
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Military Technology and Strategies (22.3M works)",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Military technology subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 172,
+        "OpenAlex": 67,
+        "UNESCO Thesaurus": 9,
+        "NASA GCMD": 2,
+        "DOE OSTI": 1
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "all engineering disciplines",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "physics of weapons, radar science",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "defense policy, strategy",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 251,
+      "agency_labs": "DoD: ARL, NRL, AFRL, DARPA, Lincoln Lab (MIT), Sandia (shared w/ DOE)"
+    },
+    {
+      "name": "Environmental Protection Research (EPA)",
+      "description": "Air/water quality, toxicology, risk assessment, pollution control, ecological health. EPA's research enterprise.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Environmental Science > Pollution + Health/Toxicology + Environmental Engineering",
+          "confidence": 0.85
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "HUMAN DIMENSIONS > ENVIRONMENTAL GOVERNANCE",
+          "confidence": 0.6
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Pollution, Toxicology, Environmental subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "Library of Congress": 111,
+        "OpenAlex": 80,
+        "NASA GCMD": 15,
+        "UNESCO Thesaurus": 12
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecotoxicology, human health effects",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric chemistry, water chemistry",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "environmental regulation, risk communication",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 218,
+      "agency_labs": "EPA: ORD (3 national labs, 4 centers), regional labs"
+    },
+    {
+      "name": "Earth Science & Natural Resources (USGS)",
+      "description": "Earthquake monitoring, volcanic hazards, water resources, mineral resources, ecosystems, geologic mapping.",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "EARTH SCIENCE > SOLID EARTH + LAND SURFACE + TERRESTRIAL HYDROSPHERE",
+          "confidence": 0.9
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Earth and Planetary Sciences > Geology + Geophysics + Earth-Surface Processes",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Geology, Earthquakes, Volcanoes subjects",
+          "confidence": 0.8
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 47,
+        "Library of Congress": 43,
+        "NASA GCMD": 41,
+        "UNESCO Thesaurus": 13
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "geophysics, seismology",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecosystem science, water ecology",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "hazard monitoring instrumentation",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 644,
+      "agency_labs": "USGS: 7 science centers + 180+ science centers/offices"
+    },
+    {
+      "name": "Climate & Earth System Science (Multi-Agency)",
+      "description": "Climate modeling, observations, impacts, mitigation. USGCRP spans NASA, NOAA, DOE, NSF, USDA, EPA, USGS, DOI.",
+      "source_mappings": [
+        {
+          "source": "NASA GCMD",
+          "branch": "CLIMATE INDICATORS + ATMOSPHERE + OCEANS + CRYOSPHERE + PALEOCLIMATE",
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Global and Planetary Change + Atmospheric Science + Ecological Modeling",
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Environmental Sciences + Geosciences",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Climate, Environment concepts",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 37,
+        "Library of Congress": 22,
+        "NASA GCMD": 15,
+        "UNESCO Thesaurus": 3
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "atmospheric/ocean physics, radiative transfer",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Life Sciences",
+          "concept": "ecosystem impacts, species distribution",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "climate models on HPC, observation systems",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "climate policy, economic impacts",
+          "confidence": 0.9
+        }
+      ],
+      "estimated_keyword_count": 577,
+      "agency_labs": "Multi-agency: USGCRP coordinates across 13 federal agencies"
+    },
+    {
+      "name": "Cybersecurity & Critical Infrastructure (Multi-Agency)",
+      "description": "Grid security, network defense, cryptography, infrastructure protection. NIST, DOE, DoD, DHS labs.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Computer Science > Computer Networks + Information Systems",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Cybersecurity, Computer security subjects",
+          "confidence": 0.75
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 33,
+        "NASA GCMD": 6,
+        "Library of Congress": 4
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "network engineering, cryptographic hardware",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "security policy, privacy law",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 43,
+      "agency_labs": "Multi-agency: NIST, DOE labs (INL, Sandia, PNNL), DoD (NSA, CYBERCOM), DHS (CISA)"
+    },
+    {
+      "name": "Advanced Manufacturing (Multi-Agency)",
+      "description": "Additive manufacturing, robotics, smart manufacturing, digital twins. DOE, NIST, DoD Manufacturing USA institutes.",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Industrial and Manufacturing Engineering + Mechanical Engineering",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Manufacturing, Robotics subjects",
+          "confidence": 0.7
+        }
+      ],
+      "source_keyword_counts": {
+        "OpenAlex": 43,
+        "Library of Congress": 15,
+        "UNESCO Thesaurus": 5
+      },
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "materials science, process engineering",
+          "confidence": 0.95
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "laser physics (for additive mfg)",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 63,
+      "agency_labs": "Multi-agency: DOE (ORNL MDF), NIST (MML), DoD Manufacturing USA, NSF (ERC)"
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "user facilities",
+      "all_labs_aspect": "synchrotrons, neutron sources, sequencing centers, computing centers, telescopes, research vessels",
+      "agencies": [
+        "DOE",
+        "NASA",
+        "NOAA",
+        "NIH"
+      ],
+      "note": "Shared infrastructure that serves researchers from all domains"
+    },
+    {
+      "concept": "earth observation",
+      "all_labs_aspect": "satellite constellation, ground stations, data archives",
+      "agencies": [
+        "NASA",
+        "NOAA",
+        "USGS",
+        "DOE",
+        "EPA"
+      ],
+      "note": "Multi-agency observation systems feeding identical datasets to different missions"
+    },
+    {
+      "concept": "genomics",
+      "all_labs_aspect": "genome sequencing and analysis",
+      "agencies": [
+        "NIH (NHGRI)",
+        "DOE (JGI)",
+        "USDA"
+      ],
+      "note": "DOE JGI and NIH NHGRI both sequence genomes but for different purposes (energy vs health)"
+    },
+    {
+      "concept": "climate science",
+      "all_labs_aspect": "modeling, observations, impacts, adaptation",
+      "agencies": [
+        "NASA",
+        "NOAA",
+        "DOE",
+        "USDA",
+        "EPA",
+        "USGS",
+        "NSF"
+      ],
+      "note": "USGCRP coordinates 13 agencies \u2014 the most multi-agency topic"
+    },
+    {
+      "concept": "materials science",
+      "all_labs_aspect": "characterization at user facilities",
+      "agencies": [
+        "DOE",
+        "NIST",
+        "DoD",
+        "NASA"
+      ],
+      "note": "DOE synchrotrons serve materials researchers from all agencies"
+    },
+    {
+      "concept": "AI for science",
+      "all_labs_aspect": "ML/AI applied to scientific problems",
+      "agencies": [
+        "all"
+      ],
+      "note": "Every agency is integrating AI \u2014 cross-cutting like computing itself"
+    }
+  ],
+  "inter_agency_tensions": [
+    "DOE and NIH both fund genomics (JGI vs NHGRI) \u2014 different organisms, different goals, overlapping methods",
+    "NASA, NOAA, and USGS all do earth observation \u2014 different instruments, overlapping geophysical variables",
+    "DOE and DoD both do materials science \u2014 different performance requirements, shared characterization tools",
+    "EPA and USGS both monitor water quality \u2014 regulatory vs scientific framing of same data",
+    "Climate science: NASA does global modeling, NOAA does weather/seasonal prediction, DOE does Earth system modeling \u2014 same physics, different timescales"
+  ],
+  "methodology_notes": "Analyzed 74K keywords through the lens of the entire US federal laboratory system. Each agency's labs see the same scientific landscape through different mission lenses. Key insight: most major scientific domains are studied by 3+ agencies simultaneously, creating natural taxonomy alignment opportunities but also terminology drift. DOE OSTI categories align best with DOE lab structure. NASA GCMD aligns perfectly with NASA centers. OpenAlex captures the academic research that all labs participate in. NCBI is directly an NIH product. UNESCO and LoC provide the broadest cross-agency vocabulary."
+}

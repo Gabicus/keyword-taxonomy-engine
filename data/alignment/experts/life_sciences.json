@@ -1,0 +1,728 @@
+{
+  "expert": "Life Sciences",
+  "categories": [
+    {
+      "name": "Animal Biology & Zoology",
+      "description": "Animal taxonomy, physiology, behavior, anatomy \u2014 Metazoa and subgroups",
+      "source_mappings": [
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Metazoa (Arthropoda, Chordata, Mollusca, etc.)",
+          "keyword_count": 737,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Animal Science and Zoology + Ecology, Evolution, Behavior and Systematics",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Science > Life sciences > Biology > Zoology",
+          "confidence": 0.8
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Zoology, Animal ecology",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "veterinary science",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "conservation policy",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 1237
+    },
+    {
+      "name": "Plant Science & Botany",
+      "description": "Plant taxonomy, physiology, agriculture, forestry, plant genetics",
+      "source_mappings": [
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Viridiplantae",
+          "keyword_count": 235,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Plant Science (10.6M works) + Agronomy and Crop Science + Forestry + Horticulture",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Science > Life sciences > Biology > Botany + Agriculture",
+          "confidence": 0.8
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "BIOSPHERE > VEGETATION",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Botany, Agriculture, Agronomy",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "agricultural technology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "remote sensing of vegetation",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 1235
+    },
+    {
+      "name": "Mycology & Fungal Biology",
+      "description": "Fungal taxonomy, mycorrhizae, fermentation biology",
+      "source_mappings": [
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Fungi (Ascomycota, Basidiomycota, etc.)",
+          "keyword_count": 358,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Mycorrhizal Fungi and Plant Interactions (top topic!)",
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "fermentation/food technology",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 458
+    },
+    {
+      "name": "Microbiology",
+      "description": "Bacteria, archaea, microbial ecology, microbial physiology",
+      "source_mappings": [
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Bacterial + Archaeal superkingdoms",
+          "keyword_count": 841,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Immunology and Microbiology > Microbiology",
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Microbiology subjects",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Microbiology",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "biotechnology, industrial microbiology",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "environmental microbiology (soil/water)",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 1041
+    },
+    {
+      "name": "Virology",
+      "description": "Viral taxonomy, viral evolution, pathogenesis",
+      "source_mappings": [
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Viral realms (Orthornavirae, Bamfordvirae, etc.)",
+          "keyword_count": 171,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Virology subfield",
+          "confidence": 0.9
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "vaccine development",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "public health policy",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 221
+    },
+    {
+      "name": "Molecular Biology & Genetics",
+      "description": "DNA/RNA, gene expression, genomics, proteomics, cell biology, biochemistry",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Biochemistry/Genetics/Molecular Biology + Genetics + Cell Biology",
+          "keyword_count": 2065,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Basic Biological Sciences + Human Genome Studies",
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Genetics, Molecular biology subjects",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Genetics, Biochemistry",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "bioinformatics, genetic engineering",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "biophysics, structural biology",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 2065
+    },
+    {
+      "name": "Ecology & Environmental Biology",
+      "description": "Ecosystems, biodiversity, conservation biology, ecological modeling, population biology",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Ecology + Ecological Modeling + Nature and Landscape Conservation",
+          "keyword_count": 682,
+          "confidence": 0.95
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "BIOSPHERE + BIOLOGICAL CLASSIFICATION",
+          "keyword_count": 479,
+          "confidence": 0.85
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Ecology, Environmental sciences",
+          "confidence": 0.8
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Ecology root concept + related",
+          "confidence": 0.7
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Environmental Sciences",
+          "confidence": 0.6
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "climate/atmospheric effects on ecosystems",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "remote sensing for ecological monitoring",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "conservation policy, environmental law",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 1161
+    },
+    {
+      "name": "Marine & Aquatic Biology",
+      "description": "Marine organisms, aquatic ecosystems, fisheries biology, limnology",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Aquatic Science + related topics",
+          "keyword_count": 101,
+          "confidence": 0.9
+        },
+        {
+          "source": "NASA GCMD",
+          "branch": "OCEANS > MARINE BIOLOGY (subset)",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Aquatic biology/sciences",
+          "confidence": 0.8
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "ocean physics, oceanography",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "aquaculture technology",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 201
+    },
+    {
+      "name": "Medicine & Clinical Science",
+      "description": "Clinical medicine, surgery, internal medicine, diagnostics, therapeutics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Health Sciences > Medicine (52.7M works, many subfields)",
+          "keyword_count": 5241,
+          "confidence": 0.95
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Biology and Medicine + Radiology and Nuclear Medicine",
+          "confidence": 0.7
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Medical subjects under Life sciences",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "biomedical engineering, medical devices",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "radiation therapy, imaging physics",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "health policy, public health",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 5241
+    },
+    {
+      "name": "Neuroscience",
+      "description": "Brain, nervous system, cognitive neuroscience, behavioral neuroscience, neuroimaging",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Neuroscience (4.4M works) + Cognitive Neuroscience + Developmental Neuroscience",
+          "keyword_count": 495,
+          "confidence": 0.95
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Neuroscience subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "brain-computer interfaces, neuroimaging tech",
+          "confidence": 0.8
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "cognitive psychology, neuroethics",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 495
+    },
+    {
+      "name": "Immunology",
+      "description": "Immune system, autoimmunity, vaccination, immunotherapy",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Immunology and Microbiology > Immunology + Immunology and Allergy",
+          "keyword_count": 338,
+          "confidence": 0.95
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "vaccine technology",
+          "confidence": 0.85
+        }
+      ],
+      "estimated_keyword_count": 338
+    },
+    {
+      "name": "Pharmacology & Toxicology",
+      "description": "Drug action, toxicology, pharmaceutical science, drug discovery",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Pharmacology, Toxicology and Pharmaceutics",
+          "keyword_count": 357,
+          "confidence": 0.95
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Pharmacology subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "medicinal chemistry",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "pharmaceutical engineering",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 357
+    },
+    {
+      "name": "Agricultural & Food Science",
+      "description": "Crop science, soil biology, food technology, animal husbandry, forestry",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Agricultural and Biological Sciences > Agronomy/Food Science",
+          "keyword_count": 1628,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Agriculture subtree",
+          "keyword_count": 1493,
+          "confidence": 0.8
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Agriculture, Agronomy, Animal husbandry",
+          "confidence": 0.8
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Applied Life Sciences (partial)",
+          "confidence": 0.5
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "agricultural engineering",
+          "confidence": 0.85
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "soil physics, soil chemistry",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "agricultural economics, food policy",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 3121
+    },
+    {
+      "name": "Evolutionary Biology",
+      "description": "Evolution, phylogenetics, speciation, population genetics, systematics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Ecology, Evolution, Behavior and Systematics",
+          "keyword_count": 330,
+          "confidence": 0.9
+        },
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "entire hierarchy (taxonomic relationships)",
+          "confidence": 0.8
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Evolution subjects",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "geochronology, radiometric dating",
+          "confidence": 0.6
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "philosophy of biology, classification theory",
+          "confidence": 0.7
+        }
+      ],
+      "estimated_keyword_count": 430
+    },
+    {
+      "name": "Anatomy & Physiology",
+      "description": "Body structure and function, organ systems, developmental biology",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Anatomy + Physiology",
+          "keyword_count": 409,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Anatomy, Physiology subjects",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Anatomy",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "biomedical imaging",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 509
+    },
+    {
+      "name": "Entomology & Arthropod Biology",
+      "description": "Insects, arachnids, crustaceans \u2014 taxonomy, ecology, pest management",
+      "source_mappings": [
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "Metazoa > Arthropoda",
+          "keyword_count": 148,
+          "confidence": 0.95
+        },
+        {
+          "source": "OpenAlex",
+          "branch": "Insect Science",
+          "keyword_count": 110,
+          "confidence": 0.9
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "pest control technology",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 258
+    },
+    {
+      "name": "Parasitology & Infectious Disease",
+      "description": "Parasites, infectious agents, epidemiology, tropical medicine",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Parasitology + Infectious Diseases",
+          "keyword_count": 48,
+          "confidence": 0.9
+        },
+        {
+          "source": "NCBI Taxonomy",
+          "branch": "parasitic organisms across kingdoms",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "public health, epidemiology policy",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 98
+    },
+    {
+      "name": "Biotechnology & Bioengineering",
+      "description": "Genetic engineering, bioprocessing, synthetic biology, bioinformatics",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Biotechnology + Bioengineering + Applied Microbiology",
+          "keyword_count": 118,
+          "confidence": 0.9
+        },
+        {
+          "source": "DOE OSTI",
+          "branch": "Applied Life Sciences + Biomass Fuels",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Biotechnology",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "bioprocess engineering",
+          "confidence": 0.9
+        },
+        {
+          "target_domain": "Physical Sciences",
+          "concept": "biophysics techniques",
+          "confidence": 0.7
+        },
+        {
+          "target_domain": "Information & Social Sciences",
+          "concept": "bioethics",
+          "confidence": 0.75
+        }
+      ],
+      "estimated_keyword_count": 168
+    },
+    {
+      "name": "Developmental Biology",
+      "description": "Embryology, morphogenesis, stem cells, regeneration",
+      "source_mappings": [
+        {
+          "source": "OpenAlex",
+          "branch": "Developmental Biology",
+          "keyword_count": 30,
+          "confidence": 0.9
+        },
+        {
+          "source": "Library of Congress",
+          "branch": "Embryology",
+          "confidence": 0.7
+        },
+        {
+          "source": "UNESCO Thesaurus",
+          "branch": "Embryology",
+          "confidence": 0.7
+        }
+      ],
+      "cross_domain_refs": [
+        {
+          "target_domain": "Applied Sciences",
+          "concept": "tissue engineering, regenerative medicine",
+          "confidence": 0.8
+        }
+      ],
+      "estimated_keyword_count": 60
+    }
+  ],
+  "cross_domain_bridges": [
+    {
+      "concept": "bioinformatics",
+      "life_aspect": "genomic data analysis",
+      "other_domains": [
+        "Applied Sciences: computational methods",
+        "Information Sciences: data management"
+      ],
+      "sources": [
+        "OpenAlex",
+        "DOE OSTI"
+      ]
+    },
+    {
+      "concept": "environmental biology",
+      "life_aspect": "organism-environment interactions",
+      "other_domains": [
+        "Physical Sciences: climate, geochemistry",
+        "Applied Sciences: remote sensing"
+      ],
+      "sources": [
+        "NASA GCMD",
+        "OpenAlex",
+        "UNESCO"
+      ]
+    },
+    {
+      "concept": "biomaterials",
+      "life_aspect": "biocompatible materials",
+      "other_domains": [
+        "Applied Sciences: materials engineering",
+        "Physical Sciences: polymer physics"
+      ],
+      "sources": [
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "radiation biology",
+      "life_aspect": "radiation effects on organisms",
+      "other_domains": [
+        "Physical Sciences: radiation physics",
+        "Applied Sciences: nuclear medicine tech"
+      ],
+      "sources": [
+        "DOE OSTI",
+        "OpenAlex"
+      ]
+    },
+    {
+      "concept": "food science",
+      "life_aspect": "nutrition, food safety",
+      "other_domains": [
+        "Applied Sciences: food processing",
+        "Information & Social Sciences: food policy"
+      ],
+      "sources": [
+        "OpenAlex",
+        "UNESCO",
+        "LoC"
+      ]
+    }
+  ],
+  "ncbi_mapping_notes": "NCBI Taxonomy is a biological classification (organism taxonomy) rather than a subject heading system. Its value is in the organism hierarchy \u2014 mapping species, genera, families, orders, classes, phyla, kingdoms. This maps to the 'about what organism' axis, orthogonal to the 'about what topic' axis of other sources. Cross-references from NCBI to other sources should be at the kingdom/phylum level (e.g., NCBI Arthropoda \u2194 OpenAlex Insect Science \u2194 LoC Entomology).",
+  "methodology_notes": "Mapped NCBI taxonomic hierarchy to organismal categories, OpenAlex life science fields/subfields to topic categories, NASA GCMD biosphere/biology keywords, DOE OSTI life sciences group, LoC biology subtree, and UNESCO biology-related roots. 16 categories covering organism taxonomy through applied biotechnology. Special attention to NCBI's unique organism-based classification vs. other sources' topic-based classification."
+}
