@@ -810,15 +810,131 @@ This is the vector bundle concept working: same keyword, completely different vi
 **Cross-domain bridges found:** Photobioreactors (bio→fossil), Microalgae (bio→fossil), Electrolysis (bio→fossil)
 **NETL Director hat summary:** 4,935 visible senses, 20 bridge senses
 
+### Step 3.15: NLP Abstract Keyword Extraction — COMPLETE (2026-04-24, Session 4)
+
+**Goal:** Extract research keywords from 4,691 WoS publication abstracts to validate vocabulary coverage and discover new terminology not captured by our 7 pillar sources.
+
+**Method — TF-IDF + Vocabulary Matching:**
+
+We chose a lightweight, reproducible approach over a heavy NLP pipeline (no spaCy/NLTK installed, and sklearn was available). The pipeline has two phases:
+
+**Phase 1: Vocabulary Matching**
+1. Built vocabulary index from all 109,807 unique lowercase keyword_labels in keyword_senses
+2. For each abstract:
+   - Stripped HTML entities (`<sub>`, `<sup>`, etc.)
+   - Removed non-alphanumeric characters except hyphens
+   - Lowercased
+   - Matched against vocabulary index (exact match for single-word, substring for multi-word)
+3. Result: 4,932 unique vocabulary terms found across all 4,691 abstracts (100% coverage)
+
+**Phase 2: New Term Discovery via TF-IDF**
+1. Used sklearn TfidfVectorizer with:
+   - `ngram_range=(1, 3)` — unigrams through trigrams
+   - `min_df=3` — term must appear in 3+ abstracts (noise filter)
+   - `max_df=0.7` — skip terms in >70% of abstracts (too generic)
+   - `max_features=20000` — cap for performance
+   - `stop_words='english'` — remove common English words
+2. Extracted 20,000 TF-IDF features from corpus
+3. Filtered for multi-word terms (>4 chars, contains space) not already in vocabulary
+4. Result: 72 candidate new terms (most were boilerplate like "rights reserved", "published elsevier")
+
+**Key findings:**
+
+1. **Vocabulary coverage is excellent.** 100% of abstracts had matches. Our 109K vocabulary from 7 pillars covers research terminology comprehensively. The NLP extraction validates the pillar-first approach — we didn't need to mine abstracts for vocabulary; the taxonomies already had it.
+
+2. **Single-word matches reveal polysemy, not new knowledge.** "gas" (1,504 papers), "temperature" (1,224), "energy" (1,189), "carbon" (899), "model" (1,172) — these are polysemous terms whose discipline assignment depends on context. The lens system handles this by ranking through composed weights.
+
+3. **The "new terms" are mostly noise.** Of 72 candidates, the top ones were copyright boilerplate ("elsevier rights reserved"), methodological phrases ("experimental data", "density functional"), and institution names ("national energy technology laboratory"). The few genuinely new terms like "oxide fuel cell" and "ray diffraction" already exist as parts of longer existing senses.
+
+4. **What this means for the project:** Abstract NLP is more valuable for *enriching existing senses with usage frequency* than for discovering new terms. We already tagged 6,748 senses with OpenAlex pub frequency (Step 3.13). The abstract text confirms those frequency signals — terms like "co2" (980 abstracts), "combustion" (implicit via fossil_energy terms), and "carbon capture" appear at rates consistent with our WoS keyword assignments.
+
+**Performance:** Full pipeline (109K vocab index + TF-IDF on 4,691 abstracts) completed in ~15 seconds on a single core.
+
+**Decision:** No new senses created from abstract extraction. The pillar vocabularies are sufficient. Future NLP work should focus on:
+- Abstract-to-sense *linking* (which specific senses are discussed in each abstract)
+- Semantic embedding similarity for non-exact matches
+- Named entity extraction for chemical formulas, materials specifications, measurement values
+
+### Step 3.16: Relationship Density Attack — 5-Strategy Pipeline (Session 4)
+
+**Problem:** 93% orphan senses. Only 5,541 relationships for 123,202 senses = 0.045 rels/sense. Need >2.0 for a useful ontology graph. Orphan senses can't participate in lens queries, cross-domain navigation, or hierarchy browsal.
+
+**Solution:** 5-strategy relationship building pipeline.
+
+#### Strategy 1: Hierarchy Edges from Raw Tables
+Extracted parent→child `subtopic_of` edges from every source's native hierarchy:
+- **MeSH tree hierarchy:** 38,623 edges (tree_numbers → parent_uis mapping, deepest tree of any source)
+- **LoC broader_ids:** 39,622 edges (SKOS broader relations from Library of Congress)
+- **OpenAlex parent_id:** 4,794 edges (topic→subtopic hierarchy)
+- **NASA GCMD parent_uuid:** 4,816 edges (science keyword → parent mapping)
+- **NCBI filtered_parent_id:** 2,816 edges (taxonomy rank→parent, capped at Order)
+- **Subtotal:** 90,671 new hierarchy edges
+
+Implementation note: First attempt used inline Python with executemany — process killed after 12 min with only MeSH inserted. Second attempt used temp table + SQL INSERT...SELECT (seconds). Same DuckDB VARCHAR[] executemany lesson from Step 3.12.
+
+#### Strategy 2: Label Containment
+Multi-word senses containing single-word senses → `subtopic_of` relationship.
+- "carbon capture" subtopic_of "carbon", "coal gasification" subtopic_of "coal"
+- Filter: single words must be >3 chars (avoids noise from "of", "and", etc.)
+- Same-discipline = "toward" direction, cross-discipline = "across"
+- **261,846 candidates → 254,929 new edges** (dominant strategy — 90K multi-word senses × 26K single-word labels)
+
+#### Strategy 3: Publication Co-occurrence
+WoS keyword pairs appearing together in ≥3 papers → `related_to` edges.
+- Built co-occurrence matrix from 6,019 WoS publications (keywords_author + keywords_plus)
+- 5,306 significant pairs (≥3 co-occurrences)
+- Confidence scaled: 0.5 + count × 0.02, capped at 0.9
+- **12,686 new edges**
+
+#### Strategy 4: Polysemy Bridges
+Same label appearing in 2+ sources with different disciplines:
+- Same discipline → `equivalent_sense` (confirmed match across sources)
+- Different discipline → `cross_domain_bridge` (the golden cross-domain links)
+- **7,334 candidates → 6,425 new edges** (from 5,205 polysemous labels)
+
+#### Strategy 5: TF-IDF Similarity
+Cosine similarity on definition text → `related_to` edges:
+- 41,090 senses have definitions (33% of total — mostly MeSH scope_notes + enriched GCMD)
+- TF-IDF vectorizer: 10K features, (1,2)-grams, English stop words
+- Processed in 2K-row chunks to avoid memory explosion
+- Threshold: 0.4 similarity, top 20 matches per sense, capped at 30K total
+- **30,000 new edges**
+
+#### Results
+
+| Metric | Before | After | Change |
+|---|---|---|---|
+| Total relationships | 5,541 | 400,299 | **72× increase** |
+| Rels/sense | 0.045 | 3.249 | **72× increase** |
+| Orphan rate | ~93% | TBD | Dramatically reduced |
+
+**By relationship type:**
+- subtopic_of: 345,647 (hierarchy + label containment)
+- related_to: 42,686 (co-occurrence + TF-IDF)
+- cross_domain_bridge: 7,643
+- equivalent_sense: 4,323
+
+**By provenance:**
+- label_containment: 254,976
+- loc_hierarchy: 39,622
+- mesh_hierarchy: 38,623
+- tfidf_similarity: 30,000
+- pub_cooccurrence: 12,686
+- polysemy_bridge: 6,425
+- gcmd/openalex/ncbi hierarchy: 12,426
+- alignment + wos: 5,541 (pre-existing)
+
+**Code:** `scripts/build_relationships.py` — reusable pipeline with dedup. Key fix: `_insert_new_rels()` deduplicates within the batch (not just against existing), uses temp table + SQL INSERT...SELECT to avoid DuckDB executemany VARCHAR[] pathology.
+
 ### Next steps for Phase 3
 - [x] Build MeSH parser + ingest 31K descriptors as 7th pillar source
-- [ ] Generate MeSH keyword senses with discipline mapping
-- [ ] Ingest OpenAlex pub-level keyword mappings (frequency signals)
-- [ ] Process Semantic Scholar results when agent completes
-- [ ] NLP pipeline for abstract keyword extraction (4,691 abstracts)
-- [ ] Title keyword extraction
-- [ ] Build fossil energy Tier 1 deep sub-ontology from publication keywords
-- [ ] Create initial lens profiles with actual query capability
-- [ ] Type relationships (upgrade to sense-level directed edges with richer types)
-- [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
+- [x] Generate MeSH keyword senses with discipline mapping
+- [x] Ingest OpenAlex pub-level keyword mappings (frequency signals)
+- [x] NLP pipeline for abstract keyword extraction (4,691 abstracts)
+- [x] Build 5-strategy relationship pipeline (0.045 → 3.249 rels/sense)
+- [ ] Orphan audit — how many senses still have zero connections?
 - [ ] Embedding-based fuzzy matching for non-exact labels
+- [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
+- [ ] Build fossil energy T1 deep sub-ontology from publication keywords
+- [ ] Create lens query capability (the actual "look through the lens" feature)
+- [ ] Title keyword extraction

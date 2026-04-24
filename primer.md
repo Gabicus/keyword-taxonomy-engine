@@ -31,7 +31,7 @@ End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energ
 | Table | Count | Notes |
 |---|---|---|
 | keyword_senses | 123,202 | 105K base + 14K WoS pub + 3.6K WoS vocab + 400 WoS metadata |
-| sense_relationships | 5,541 | 1,953 alignment + 3,588 WoS cross-refs |
+| sense_relationships | 400,299 | 3.25 rels/sense. 346K subtopic_of + 43K related_to + 8K bridges + 4K equivalent |
 | disciplines | 14 | T1: fossil/coal/natgas, T2: materials/chem/earth/compute/EE, T3: bio/policy/space/renew/nuclear, T4: math/physics |
 | hierarchy_envelopes | 107 | NETL org: 8 programs → 26 sub → 63 tech → 10 turbine |
 | ontology_lenses | 97 | Template hats: 42 primary + 54 intersection + 1 baseline |
@@ -99,14 +99,12 @@ data/raw/, data/lake/ (gitignored)
 
 ## Next up
 
-1. [ ] Ingest OpenAlex pub-level keyword mappings (7,983 works → keyword frequency signals)
-2. [ ] NLP pipeline: extract keywords from 4,691 WoS abstracts
-3. [ ] Title keyword extraction
+1. [ ] Orphan sense audit — how many still have zero connections?
+2. [ ] Embedding-based fuzzy matching for non-exact labels
+3. [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
 4. [ ] Build fossil energy T1 deep sub-ontology from publication keywords
 5. [ ] Create lens query capability (the actual "look through the lens" feature)
-6. [ ] Type relationships (upgrade to richer sense-level directed edges)
-7. [ ] Grant agency entity resolution (2,986 variants → ~200 canonical)
-8. [ ] Embedding-based fuzzy matching for non-exact labels
+6. [ ] Title keyword extraction
 
 ## Don't forget
 
