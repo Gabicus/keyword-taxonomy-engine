@@ -1225,6 +1225,201 @@ def populate_tab2_vocab_senses(conn) -> int:
     return new_count
 
 
+# =============================================================================
+# Lens Query Engine
+# =============================================================================
+
+def query_lens(conn, lens_id: str, limit: int = 50, search: str | None = None) -> list[dict]:
+    """Query keyword senses through a composed lens.
+
+    Returns senses ranked by: lens_weight × confidence × tier_boost.
+    Cross-domain bridges are flagged.
+    """
+    lens = conn.execute(
+        "SELECT * FROM ontology_lenses WHERE lens_id = ?", [lens_id]
+    ).fetchone()
+    if not lens:
+        raise ValueError(f"Lens {lens_id} not found")
+
+    cols = [desc[0] for desc in conn.description]
+    lens_dict = dict(zip(cols, lens))
+
+    disc_primary = lens_dict["discipline_primary"]
+    disc_secondary = lens_dict.get("disciplines_secondary") or []
+    altitude = lens_dict.get("altitude") or 10000
+    disc_weights_raw = lens_dict.get("discipline_weights")
+
+    if disc_weights_raw and isinstance(disc_weights_raw, str):
+        import json as _json
+        disc_weights = _json.loads(disc_weights_raw)
+    elif isinstance(disc_weights_raw, dict):
+        disc_weights = disc_weights_raw
+    else:
+        disc_weights = {}
+
+    if not disc_weights and disc_primary:
+        disc_weights = {disc_primary: 1.0}
+        for d in disc_secondary:
+            disc_weights[d] = 0.5
+
+    tier_boost = {1: 2.0, 2: 1.5, 3: 1.0, 4: 0.5}
+    level_filter = None
+    if altitude >= 100000:
+        level_filter = 2
+    elif altitude >= 10000:
+        level_filter = 4
+    # altitude 1000 = no filter (researcher sees everything)
+
+    where_clauses = ["1=1"]
+    params = []
+
+    if search:
+        where_clauses.append("LOWER(keyword_label) LIKE ?")
+        params.append(f"%{search.lower()}%")
+
+    if level_filter is not None:
+        where_clauses.append("(origin_level IS NULL OR origin_level <= ?)")
+        params.append(level_filter)
+
+    where_sql = " AND ".join(where_clauses)
+
+    senses = conn.execute(f"""
+        SELECT sense_id, keyword_label, discipline_primary,
+               disciplines_secondary, resolution_tier, confidence,
+               origin_source, origin_path, disambiguation,
+               definition_in_context, relevance_tags
+        FROM keyword_senses
+        WHERE {where_sql}
+    """, params).fetchall()
+
+    results = []
+    for row in senses:
+        (sid, label, disc, disc_sec, tier, conf,
+         osrc, opath, disambig, defn, tags) = row
+
+        weight = disc_weights.get(disc, 0.1)
+        for d in (disc_sec or []):
+            w = disc_weights.get(d, 0)
+            if w > 0:
+                weight = max(weight, w * 0.7)
+
+        boost = tier_boost.get(tier, 0.5)
+        score = weight * (conf or 0.5) * boost
+
+        is_bridge = False
+        if disc_sec:
+            bridge_discs = set(disc_sec) & set(disc_weights.keys())
+            if bridge_discs and disc not in disc_weights:
+                is_bridge = True
+            elif bridge_discs and disc in disc_weights:
+                is_bridge = len(bridge_discs) > 0
+
+        results.append({
+            "sense_id": sid,
+            "label": label,
+            "discipline": disc,
+            "score": round(score, 4),
+            "confidence": conf,
+            "tier": tier,
+            "source": osrc,
+            "path": opath,
+            "disambiguation": disambig,
+            "definition": defn,
+            "is_bridge": is_bridge,
+            "relevance_tags": tags,
+        })
+
+    results.sort(key=lambda x: -x["score"])
+    return results[:limit]
+
+
+def query_discipline(conn, discipline_id: str, limit: int = 50, search: str | None = None) -> list[dict]:
+    """Quick query: all senses in a discipline, ranked by confidence."""
+    where = "discipline_primary = ?"
+    params = [discipline_id]
+    if search:
+        where += " AND LOWER(keyword_label) LIKE ?"
+        params.append(f"%{search.lower()}%")
+
+    rows = conn.execute(f"""
+        SELECT sense_id, keyword_label, discipline_primary, resolution_tier,
+               confidence, origin_source, disambiguation, definition_in_context
+        FROM keyword_senses
+        WHERE {where}
+        ORDER BY confidence DESC, keyword_label
+        LIMIT ?
+    """, params + [limit]).fetchall()
+
+    return [
+        {"sense_id": r[0], "label": r[1], "discipline": r[2], "tier": r[3],
+         "confidence": r[4], "source": r[5], "disambiguation": r[6], "definition": r[7]}
+        for r in rows
+    ]
+
+
+def get_bridges(conn, discipline_a: str, discipline_b: str, limit: int = 30) -> list[dict]:
+    """Find cross-domain bridges between two disciplines."""
+    rows = conn.execute("""
+        SELECT s.sense_id, s.keyword_label, s.discipline_primary,
+               s.disciplines_secondary, s.confidence, s.origin_source,
+               s.disambiguation
+        FROM keyword_senses s
+        WHERE (s.discipline_primary = ? AND list_contains(s.disciplines_secondary, ?))
+           OR (s.discipline_primary = ? AND list_contains(s.disciplines_secondary, ?))
+        ORDER BY s.confidence DESC
+        LIMIT ?
+    """, [discipline_a, discipline_b, discipline_b, discipline_a, limit]).fetchall()
+
+    return [
+        {"sense_id": r[0], "label": r[1], "primary_discipline": r[2],
+         "secondary_disciplines": r[3], "confidence": r[4], "source": r[5],
+         "disambiguation": r[6]}
+        for r in rows
+    ]
+
+
+def lens_summary(conn, lens_id: str) -> dict:
+    """Get summary stats for a lens view."""
+    lens = conn.execute(
+        "SELECT discipline_primary, disciplines_secondary, altitude FROM ontology_lenses WHERE lens_id = ?",
+        [lens_id]
+    ).fetchone()
+    if not lens:
+        return {}
+
+    disc_primary, disc_sec, altitude = lens
+    all_discs = [disc_primary] + (disc_sec or [])
+
+    total = conn.execute("""
+        SELECT COUNT(*) FROM keyword_senses
+        WHERE discipline_primary = ANY(?)
+           OR EXISTS (
+               SELECT 1 FROM UNNEST(disciplines_secondary) AS d(v)
+               WHERE d.v = ANY(?)
+           )
+    """, [all_discs, all_discs]).fetchone()[0]
+
+    by_source = conn.execute("""
+        SELECT origin_source, COUNT(*) FROM keyword_senses
+        WHERE discipline_primary = ANY(?)
+        GROUP BY origin_source ORDER BY COUNT(*) DESC
+    """, [all_discs]).fetchall()
+
+    bridges = conn.execute("""
+        SELECT COUNT(*) FROM keyword_senses
+        WHERE discipline_primary = ANY(?)
+          AND array_length(disciplines_secondary) > 0
+    """, [all_discs]).fetchone()[0]
+
+    return {
+        "lens_id": lens_id,
+        "total_senses": total,
+        "bridge_senses": bridges,
+        "by_source": {r[0]: r[1] for r in by_source},
+        "altitude": altitude,
+    }
+
+
 def init_ontology(conn) -> dict:
     """Initialize the full ontology layer."""
     stats = {}

@@ -786,6 +786,30 @@ Regenerated all senses to include MeSH keywords. Fixed critical performance bott
 
 **Key insight:** Polysemy tripled (1,605→5,205) because MeSH shares thousands of terms with existing pillars. Terms like "Carbon Dioxide", "Methane", "Combustion", "Electrode", "Catalysis" now have senses in both MeSH and T1/T2 disciplines — creating exactly the cross-domain bridges the lens system needs.
 
+### Step 3.13: OpenAlex Pub Keyword Frequency Tagging — COMPLETE (2026-04-24, Session 4)
+
+Tagged 6,748 existing senses with publication frequency from 7,983 OpenAlex papers.
+
+**Analysis results:**
+- 8,937 unique keywords across 7,983 papers (99% have keywords)
+- 3,899 keywords match existing senses (44%)
+- 4,455 MeSH terms on papers match existing senses (99.8%!)
+- 1,841 unique funders (DOE is 3rd with 262 papers)
+- Used temp table + batch UPDATE (seconds vs minutes for per-keyword loop)
+
+### Step 3.14: Lens Query Engine — COMPLETE (2026-04-24, Session 4)
+
+Built `query_lens()`, `query_discipline()`, `get_bridges()`, `lens_summary()` in ontology.py.
+
+**Key demonstration — same search, different lens:**
+- "carbon" through **Fossil Energy researcher**: carbon capture, carbon dioxide, carbon sequestration, carbon nanotubes
+- "carbon" through **Biological Medical researcher**: Carbon Monoxide Poisoning, Carbon-13 MR Spectroscopy, One-Carbon Metabolism
+
+This is the vector bundle concept working: same keyword, completely different view depending on who's asking.
+
+**Cross-domain bridges found:** Photobioreactors (bio→fossil), Microalgae (bio→fossil), Electrolysis (bio→fossil)
+**NETL Director hat summary:** 4,935 visible senses, 20 bridge senses
+
 ### Next steps for Phase 3
 - [x] Build MeSH parser + ingest 31K descriptors as 7th pillar source
 - [ ] Generate MeSH keyword senses with discipline mapping
