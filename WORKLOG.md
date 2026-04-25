@@ -969,10 +969,77 @@ Cosine similarity on definition text → `related_to` edges:
 - [x] NLP pipeline for abstract keyword extraction (4,691 abstracts)
 - [x] Build 5-strategy relationship pipeline (0.045 → 3.249 rels/sense)
 - [x] Ingest other national labs WoS data (224K pubs → 263K senses)
-- [ ] Natlab pub co-occurrence (need to build co-occurrence from natlab pubs specifically)
+- [x] Natlab pub co-occurrence (322K significant pairs → new edges)
+- [x] Polysemy bridges v2 (expanded label set → 9,420 new edges)
+- [x] Journal/publisher discipline mapping
+- [x] Category pair relationships (1st↔2nd column co-occurrence)
+- [x] HTML artifact cleanup (389/428 fixed, 39 edge cases remain)
+- [ ] Abstract/title keyword frequency tagging (IN PROGRESS — pillar-only labels)
 - [ ] Orphan audit on expanded dataset
 - [ ] Embedding-based fuzzy matching for non-exact labels
 - [ ] Grant agency entity resolution (2,986+ variants → ~200 canonical)
 - [ ] Build fossil energy T1 deep sub-ontology from publication keywords
 - [ ] Create lens query capability (the actual "look through the lens" feature)
-- [ ] Title keyword extraction
+
+### Step 3.18: Full Field Enrichment Pipeline (Session 5, continued)
+
+After natlab ingestion, ran comprehensive per-field enrichment across all WoS data:
+
+#### 3.18a: Sense Rebuild with Per-Field Provenance
+Rebuilt all natlab senses to track which WoS field each keyword came from via `relevance_tags` array:
+- `author_keyword`, `keywords_plus`, `subject_cat_traditional`, `category_heading`, `subject_sub_heading`, `doc_type`
+- Keywords appearing in multiple fields get multiple tags (e.g., a term that's both an author keyword and a Keywords Plus term)
+
+#### 3.18b: Category Pair Relationships
+Built co-occurrence relationships from 1st/2nd column pairs in WoS data:
+- 1st_Subject_Category ↔ 2nd_Subject_Category co-occurrence → `related_to` edges
+- 1st_Category_Heading ↔ 2nd_Category_Heading → `related_to` edges
+- 1st_Subject_Sub_Heading ↔ 2nd_Subject_Sub_Heading → `related_to` edges
+- Pure SQL INSERT...SELECT with `ARRAY[]::VARCHAR[]` literal — no executemany
+
+#### 3.18c: Journal/Publisher Discipline Mapping
+Mapped 10,563 natlab journal senses and 990 publisher senses to disciplines:
+- Used WoS `subject_cat_traditional_1` as primary signal for journal→discipline mapping
+- Applied same `_classify_wos_keyword()` logic from ontology.py
+
+#### 3.18d: Natlab Publication Co-occurrence
+Built co-occurrence from 224K natlab publications (author + Keywords Plus keywords):
+- 322K significant keyword pairs (≥3 co-occurrences)
+- Created `related_to` edges with confidence scaled by count
+
+#### 3.18e: Polysemy Bridges v2
+Re-ran polysemy bridge detection with expanded label set (now 387K senses):
+- 9,420 new cross-domain bridge and equivalent_sense edges
+- Labels appearing in 2+ sources with different disciplines get bridge edges
+
+#### 3.18f: HTML Artifact Cleanup
+Found 428 senses with HTML tags (`<italic>`, `<sub>`, `&#8208;`, `<p>`, `</span>`):
+- Regex cleanup fixed 389 senses
+- 39 edge cases remain (complex nested HTML)
+- Mostly from NETL WoS abstracts/titles
+
+#### 3.18g: Abstract/Title Keyword Frequency Extraction (IN PROGRESS)
+**Challenge:** 305K labels × 207K abstracts = infeasible at scale.
+**Solution:** Reduce to 60K pillar-source labels only (7 pillars: OpenAlex, MeSH, LoC, NASA GCMD, UNESCO, NCBI, DOE OSTI). Natlab-derived labels came FROM these abstracts — checking them is circular.
+- 45,662 multi-word labels + 14,000 single-word labels = ~60K vocabulary
+- Processing 207K abstracts + 230K titles with Python set lookup + regex boundaries
+
+**Performance breakthrough — n-gram set intersection:**
+Previous approaches (substring scan, SQL LIKE cross-join, Python `in` operator) all killed after 10+ min at 305K labels × 207K texts. Solution: reduce to 60K pillar labels, extract n-grams from each text, check membership in label set. O(text_words × max_ngram) instead of O(labels × texts). Result: abstracts in 102s (2,037/s), titles in 6s (38,318/s).
+
+**Abstract extraction results:**
+- 21,411 unique labels found, 11,674 significant (≥5 abstracts)
+- Top: energy (46K), analysis (37K), system (33K), properties (32K), structure (32K)
+- 26,408 senses tagged with abstract_freq
+
+**Title extraction results:**
+- 13,653 unique labels found, 7,909 significant (≥3 titles)
+- Top: analysis (8.5K), energy (7.6K), structure (6.4K), x-ray (6.3K), modeling (5.6K)
+- 19,379 senses tagged with title_freq
+
+**Final database state after full enrichment:**
+- 421,819 senses
+- 2,360,061 relationships (5.595 rels/sense)
+- 35,070 orphans (8.3%)
+- 26,408 abstract_freq + 19,379 title_freq + 6,748 pub_freq tags
+- ALL WoS fields processed: keywords, categories, subjects, headings, doc types, publishers, journals, grants, abstracts, titles
