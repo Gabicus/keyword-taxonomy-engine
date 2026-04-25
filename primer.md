@@ -5,7 +5,7 @@ Repo: https://github.com/Gabicus/keyword-taxonomy-engine
 
 ## Current status
 
-**Phase 3 ACTIVE — Full enrichment complete.** 7 pillars + 224K national lab publications ingested. 421,819 senses, 2.36M relationships (5.60 rels/sense). All WoS fields processed with per-field provenance. 8.3% orphan rate. 178 tests passing.
+**Phase 3 ACTIVE — Deep enrichment complete.** 7 pillars + 224K natlab pubs. 421,819 senses, 2.44M relationships (5.78 rels/sense). Semantic embeddings (63K labels, 384-dim). T1 sub-ontology (18 subcats). 1.6% orphans. 178 tests passing.
 
 ## What this is
 
@@ -31,12 +31,14 @@ End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energ
 | Table | Count | Notes |
 |---|---|---|
 | keyword_senses | 421,819 | 105K base + 263K natlab WoS + 14K NETL WoS + 3.6K vocab + 1K meta |
-| sense_relationships | 2,360,061 | 5.60 rels/sense. 2.05M subtopic_of + 289K related_to + 13K bridges + 8K equivalent |
+| sense_relationships | 2,437,580 | 5.78 rels/sense. 2.05M subtopic_of + 366K related_to + 13K bridges + 8K equivalent |
 | disciplines | 14 | T1: fossil/coal/natgas, T2: materials/chem/earth/compute/EE, T3: bio/policy/space/renew/nuclear, T4: math/physics |
 | hierarchy_envelopes | 107 | NETL org: 8 programs → 26 sub → 63 tech → 10 turbine |
 | ontology_lenses | 97 | Template hats: 42 primary + 54 intersection + 1 baseline |
 | polysemous labels | 5,205 | Terms in 2+ sources — cross-domain bridges |
-| orphan senses | 35,070 (8.3%) | Down from 93% pre-relationships |
+| orphan senses | 6,652 (1.6%) | Down from 93% → 8.3% → 1.6% |
+| semantic embeddings | 63,434 labels × 384 dim | all-MiniLM-L6-v2, saved to data/lake/ |
+| T1 sub-ontology | 18 subcategories | carbon_capture, combustion, gasification, fuel_cells, etc. |
 
 ## Enrichment tags on senses
 
@@ -111,12 +113,13 @@ data/raw/, data/lake/ (gitignored)
 
 ## Next up
 
-1. [ ] Orphan sense reduction (35K orphans, 8.3% — attack with additional relationship strategies)
-2. [ ] Embedding-based fuzzy matching for non-exact labels
-3. [ ] Grant agency entity resolution (2,986+ variants → ~200 canonical)
-4. [ ] Build fossil energy T1 deep sub-ontology from publication keywords
+1. [x] Embedding-based fuzzy matching (50K semantic edges, all-MiniLM-L6-v2)
+2. [x] T1 Fossil Energy deep sub-ontology (18 subcategories, 4,212 senses tagged)
+3. [x] Orphan reduction (8.2% → 1.6%, 27K new connections)
+4. [x] Grant agency entity resolution (12 canonical groups, 46 edges)
 5. [ ] Create lens query capability (the actual "look through the lens" feature)
 6. [ ] Ingest OpenAlex pub-level data (7,983 works with keyword-to-paper mappings)
+7. [ ] Build interactive visualization prototype
 
 ## Don't forget
 

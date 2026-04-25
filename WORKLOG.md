@@ -974,12 +974,12 @@ Cosine similarity on definition text → `related_to` edges:
 - [x] Journal/publisher discipline mapping
 - [x] Category pair relationships (1st↔2nd column co-occurrence)
 - [x] HTML artifact cleanup (389/428 fixed, 39 edge cases remain)
-- [ ] Abstract/title keyword frequency tagging (IN PROGRESS — pillar-only labels)
-- [ ] Orphan audit on expanded dataset
-- [ ] Embedding-based fuzzy matching for non-exact labels
-- [ ] Grant agency entity resolution (2,986+ variants → ~200 canonical)
-- [ ] Build fossil energy T1 deep sub-ontology from publication keywords
-- [ ] Create lens query capability (the actual "look through the lens" feature)
+- [x] Abstract/title keyword frequency tagging (26K abstract + 19K title senses tagged)
+- [ ] Embedding-based fuzzy matching for non-exact labels (PRIORITY 1 — most analytical depth)
+- [ ] Build fossil energy T1 deep sub-ontology from publication keywords (PRIORITY 2)
+- [ ] Orphan sense reduction (35K orphans, 8.3%) (PRIORITY 3)
+- [ ] Grant agency entity resolution (2,986+ variants → ~200 canonical) (PRIORITY 4)
+- [ ] Create lens query capability (the actual "look through the lens" feature) (PRIORITY 5 — the product)
 
 ### Step 3.18: Full Field Enrichment Pipeline (Session 5, continued)
 
@@ -1037,9 +1037,53 @@ Previous approaches (substring scan, SQL LIKE cross-join, Python `in` operator) 
 - Top: analysis (8.5K), energy (7.6K), structure (6.4K), x-ray (6.3K), modeling (5.6K)
 - 19,379 senses tagged with title_freq
 
-**Final database state after full enrichment:**
-- 421,819 senses
-- 2,360,061 relationships (5.595 rels/sense)
-- 35,070 orphans (8.3%)
+**Database state after abstract/title extraction:**
+- 421,819 senses, 2,360,061 relationships (5.595 rels/sense), 35,070 orphans (8.3%)
 - 26,408 abstract_freq + 19,379 title_freq + 6,748 pub_freq tags
 - ALL WoS fields processed: keywords, categories, subjects, headings, doc types, publishers, journals, grants, abstracts, titles
+
+### Step 3.19: Embedding-Based Semantic Similarity (Session 5)
+
+Installed sentence-transformers (all-MiniLM-L6-v2, 384-dim). GPU too old (GTX 1050 CC 6.1 vs PyTorch needs CC 7.5+), ran on CPU.
+
+**Encoding:** 63,434 pillar + NETL labels in 200s on CPU (batch_size=256).
+**Matching:** Chunked cosine similarity, threshold 0.60, skip word-subset matches (already covered by label containment). Capped at 50K matches.
+
+**Results:** 50,000 new semantic_embedding relationships.
+- Top matches: case/hyphenation variants ("in-situ-combustion" ↔ "in-situ combustion", 0.993)
+- Bottom matches: borderline semantic similarity (0.600)
+- Embeddings saved: `data/lake/keyword_embeddings.npy` (63K × 384)
+
+### Step 3.20: T1 Fossil Energy Deep Sub-Ontology (Session 5)
+
+Built hierarchical subcategories within fossil_energy/coal_science/natural_gas:
+- 18 sub-categories: carbon_capture, combustion, gasification, fuel_cells, co2_storage, hydrogen, turbines_power, co2_utilization, emissions, power_systems, coal_chemistry, coal_processing, coal_combustion, coal_conversion, shale_gas, methane_hydrates, natural_gas_processing, methane_emissions
+- Fine-grained sub-levels (e.g., carbon_capture/post_combustion, combustion/chemical_looping)
+- Pattern matching tagged 1,989 senses
+- Embedding expansion (centroid similarity) added 2,223 more
+- **Total: 4,212/15,626 T1 senses categorized (27%)**
+- 73% untagged are generic terms broadly classified as fossil_energy from WoS categories
+
+### Step 3.21: Orphan Sense Reduction (Session 5)
+
+Two strategies to reduce 34,506 orphans (8.2%):
+1. **Discipline membership:** Connected 10,783 orphan journals/publishers to discipline anchors
+2. **Embedding nearest-neighbor:** Encoded 19,237 orphan keyword labels, matched each to nearest connected sense (threshold 0.50). Added 16,690 links.
+
+**Result:** 34,506 orphans (8.2%) → **6,652 orphans (1.6%)**
+
+### Step 3.22: Grant Agency Entity Resolution (Session 5)
+
+Resolved 2,986 grant agency variants:
+- 12 canonical groups: DOE (9 variants), NSF (4), NETL (4), DOE Fossil Energy (3), EPSRC (3), etc.
+- Manual mapping: 35 matched → 24 equivalent_sense edges
+- Embedding matching: 22 additional matches
+- 41 small/niche agencies remain unresolved
+
+**Final database state after all Session 5 work:**
+- 421,819 senses
+- 2,437,580 relationships (5.779 rels/sense)
+- 6,652 orphans (1.6%)
+- 14 provenance types, 50K semantic embedding edges
+- T1 sub-ontology with 18 subcategories
+- Grant agencies resolved to 12 canonical entities
