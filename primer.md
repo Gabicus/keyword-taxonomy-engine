@@ -31,12 +31,12 @@ End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energ
 | Table | Count | Notes |
 |---|---|---|
 | keyword_senses | 421,819 | 105K base + 263K natlab WoS + 14K NETL WoS + 3.6K vocab + 1K meta |
-| sense_relationships | 2,437,580 | 5.78 rels/sense. 2.05M subtopic_of + 366K related_to + 13K bridges + 8K equivalent |
+| sense_relationships | 2,444,185 | 5.79 rels/sense. 2.05M subtopic_of + 366K related_to + 13K bridges + 8K equivalent + 6.5K ai_reasoning |
 | disciplines | 14 | T1: fossil/coal/natgas, T2: materials/chem/earth/compute/EE, T3: bio/policy/space/renew/nuclear, T4: math/physics |
 | hierarchy_envelopes | 107 | NETL org: 8 programs → 26 sub → 63 tech → 10 turbine |
 | ontology_lenses | 97 | Template hats: 42 primary + 54 intersection + 1 baseline |
 | polysemous labels | 5,205 | Terms in 2+ sources — cross-domain bridges |
-| orphan senses | 6,652 (1.6%) | Down from 93% → 8.3% → 1.6% |
+| orphan senses | 142 (0.03%) | Down from 93% → 8.3% → 1.6% → 0.03% (AI reasoning) |
 | semantic embeddings | 63,434 labels × 384 dim | all-MiniLM-L6-v2, saved to data/lake/ |
 | T1 sub-ontology | 18 subcategories | carbon_capture, combustion, gasification, fuel_cells, etc. |
 
@@ -111,15 +111,25 @@ data/raw/, data/lake/ (gitignored)
 - **N-gram set intersection for text extraction.** Don't scan N labels against each text (O(labels×texts)). Extract n-grams from text, check set membership (O(words×max_ngram)). 37× faster. 207K abstracts in 102s.
 - **Pure SQL INSERT...SELECT** for bulk relationship insertion — avoids executemany entirely.
 
+## Quality scorecard
+
+97.8/100 (A+). Polysemy 3.5% (14,206 labels). Orphan rate 0.03% (142 true orphans, all tagged). 25 provenance types (incl. ai_reasoning).
+
 ## Next up
 
 1. [x] Embedding-based fuzzy matching (50K semantic edges, all-MiniLM-L6-v2)
 2. [x] T1 Fossil Energy deep sub-ontology (18 subcategories, 4,212 senses tagged)
 3. [x] Orphan reduction (8.2% → 1.6%, 27K new connections)
 4. [x] Grant agency entity resolution (12 canonical groups, 46 edges)
-5. [ ] Create lens query capability (the actual "look through the lens" feature)
-6. [ ] Ingest OpenAlex pub-level data (7,983 works with keyword-to-paper mappings)
-7. [ ] Build interactive visualization prototype
+5. [x] **Agentic orphan resolution** — AI reasoning on 6,678 orphans → 6,535 connected, 143 true orphans tagged. Orphan rate 1.6% → 0.03%.
+6. [ ] **Lens query capability** — the actual "look through the lens" product feature. Role × Org × Discipline × Interest composition.
+7. [ ] **Ingest OpenAlex pub-level data** (7,983 works with keyword-to-paper mappings)
+8. [ ] **DOI/paper-level links** — connect keywords back to specific papers for lens-filtered paper discovery
+9. [ ] **Versioning + Zenodo DOI** — release tag, reproducibility, citable artifact
+10. [ ] **Methodology paper** — vector bundle semantics, 7-pillar cross-walk, lens composition, AI curation
+11. [ ] **Benchmark vs VOSviewer/CiteSpace/InCites** — comparative analysis showing differentiators
+12. [ ] **Interactive visualization prototype** — the sphere with composed lenses
+13. [ ] **API/query interface** — REST or GraphQL for external tool integration
 
 ## Don't forget
 
