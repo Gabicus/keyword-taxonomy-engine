@@ -122,7 +122,7 @@ data/raw/, data/lake/ (gitignored)
 3. [x] Orphan reduction (8.2% → 1.6%, 27K new connections)
 4. [x] Grant agency entity resolution (12 canonical groups, 46 edges)
 5. [x] **Agentic orphan resolution** — AI reasoning on 6,678 orphans → 6,535 connected, 143 true orphans tagged. Orphan rate 1.6% → 0.03%.
-6. [ ] **Lens query capability** — the actual "look through the lens" product feature. Role × Org × Discipline × Interest composition.
+6. [x] **Lens query capability** — 4 CLI commands: `lens`, `lens-explore`, `lens-compare`, `lens-list`. Vector bundle in action.
 7. [ ] **Ingest OpenAlex pub-level data** (7,983 works with keyword-to-paper mappings)
 8. [ ] **DOI/paper-level links** — connect keywords back to specific papers for lens-filtered paper discovery
 9. [ ] **Versioning + Zenodo DOI** — release tag, reproducibility, citable artifact

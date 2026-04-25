@@ -138,6 +138,133 @@ def cmd_search(args):
                 print(f"    aliases: {r['aliases']}")
 
 
+def cmd_lens(args):
+    """Query through a lens — the core product feature."""
+    import duckdb
+    from .ontology import compose_lens, query_through_lens
+
+    conn = duckdb.connect("data/lake/keywords.duckdb", read_only=True)
+
+    lens = compose_lens(conn, args.discipline, args.role,
+                        interests=args.interest, org_node=args.org)
+
+    results = query_through_lens(conn, lens, search=args.search,
+                                 limit=args.limit, min_score=args.min_score,
+                                 source_filter=args.source)
+
+    print(f"\n{'=' * 70}")
+    print(f"  LENS: {lens.get('name', lens['lens_id'])}")
+    print(f"  Role: {lens.get('role_type', 'researcher')}  |  "
+          f"Discipline: {lens.get('discipline_primary')}  |  "
+          f"Altitude: {lens.get('altitude', 1000):,}")
+    if args.search:
+        print(f"  Search: \"{args.search}\"")
+    print(f"{'=' * 70}")
+    print(f"  {'Score':>6}  {'Conf':>5}  {'Rels':>4}  {'Source':<20}  Label")
+    print(f"  {'─' * 6}  {'─' * 5}  {'─' * 4}  {'─' * 20}  {'─' * 30}")
+
+    for r in results:
+        bridge = " ⟷" if r["is_bridge"] else ""
+        label = r["label"]
+        if r["disambiguation"]:
+            label += f" ({r['disambiguation']})"
+        print(f"  {r['score']:6.3f}  {r['confidence'] or 0:5.2f}  "
+              f"{r['rel_count']:4d}  {r['source']:<20}  {label}{bridge}")
+
+    print(f"\n  {len(results)} results shown")
+    if any(r["is_bridge"] for r in results):
+        print(f"  ⟷ = cross-domain bridge")
+    conn.close()
+
+
+def cmd_lens_explore(args):
+    """Explore relationships from a keyword through a lens."""
+    import duckdb
+    from .ontology import compose_lens, explore_from_keyword
+
+    conn = duckdb.connect("data/lake/keywords.duckdb", read_only=True)
+
+    lens = compose_lens(conn, args.discipline, args.role)
+    result = explore_from_keyword(conn, args.keyword, lens, limit=args.limit)
+
+    print(f"\n{'=' * 70}")
+    print(f"  EXPLORE: \"{result['keyword']}\"")
+    print(f"  Through: {lens.get('name', lens['lens_id'])}")
+    print(f"{'=' * 70}")
+
+    if not result["senses"]:
+        print(f"  No senses found for \"{args.keyword}\"")
+        conn.close()
+        return
+
+    print(f"\n  Senses ({len(result['senses'])}):")
+    for s in result["senses"]:
+        disambig = f" ({s['disambiguation']})" if s.get("disambiguation") else ""
+        print(f"    [{s['source']}] {s['discipline']} "
+              f"(conf={s['confidence'] or 0:.2f}, lens_wt={s['lens_weight']:.2f}){disambig}")
+
+    print(f"\n  Connected keywords ({len(result['neighbors'])} of {result['total_neighbors']}):")
+    print(f"  {'Score':>6}  {'Conf':>5}  {'Rel':<18}  {'Discipline':<22}  Label")
+    print(f"  {'─' * 6}  {'─' * 5}  {'─' * 18}  {'─' * 22}  {'─' * 25}")
+
+    for n in result["neighbors"]:
+        print(f"  {n['lens_score']:6.3f}  {n['confidence'] or 0:5.2f}  "
+              f"{n['relationship']:<18}  {n['discipline']:<22}  {n['label']}")
+
+    conn.close()
+
+
+def cmd_lens_compare(args):
+    """Compare how a keyword appears through different lenses."""
+    import duckdb
+    from .ontology import compare_lenses
+
+    conn = duckdb.connect("data/lake/keywords.duckdb", read_only=True)
+    result = compare_lenses(conn, args.keyword, args.lenses)
+
+    print(f"\n{'=' * 70}")
+    print(f"  COMPARE: \"{result['keyword']}\" across {len(args.lenses)} lenses")
+    print(f"{'=' * 70}")
+
+    for lid, data in result["perspectives"].items():
+        print(f"\n  ┌─ {data['lens_name']}")
+        print(f"  │  Role: {data['role']}  |  Primary: {data['primary_discipline']}")
+        print(f"  │  Senses: {data['senses_found']}  |  "
+              f"Connections: {data['total_connections']}")
+
+        if data["discipline_spread"]:
+            spread = ", ".join(f"{d}: {c}" for d, c in data["discipline_spread"].items())
+            print(f"  │  Neighbor disciplines: {spread}")
+
+        if data["top_neighbors"]:
+            print(f"  │  Top neighbors:")
+            for n in data["top_neighbors"][:5]:
+                print(f"  │    {n['lens_score']:.3f}  {n['label']} "
+                      f"({n['relationship']}, {n['discipline']})")
+        print(f"  └─")
+
+    conn.close()
+
+
+def cmd_lens_list(args):
+    """List available template lenses."""
+    import duckdb
+    from .ontology import list_lenses
+
+    conn = duckdb.connect("data/lake/keywords.duckdb", read_only=True)
+    lenses = list_lenses(conn, role=args.role, discipline=args.discipline)
+
+    print(f"\n  Available lenses ({len(lenses)}):")
+    print(f"  {'Lens ID':<35}  {'Role':<12}  {'Discipline':<22}  {'Alt':>7}")
+    print(f"  {'─' * 35}  {'─' * 12}  {'─' * 22}  {'─' * 7}")
+
+    for l in lenses:
+        print(f"  {l['lens_id']:<35}  {l['role']:<12}  "
+              f"{l['discipline']:<22}  {l['altitude']:>7,}")
+
+    conn.close()
+
+
 def main():
     parser = argparse.ArgumentParser(description="Keyword Taxonomy Engine")
     sub = parser.add_subparsers(dest="command")
@@ -169,6 +296,38 @@ def main():
     p_search.add_argument("query", help="Search pattern")
     p_search.add_argument("--source", default=None, help="Filter by source")
     p_search.set_defaults(func=cmd_search)
+
+    # === Lens Query Commands ===
+    p_lens = sub.add_parser("lens", help="Query through a composed lens")
+    p_lens.add_argument("discipline", help="Primary discipline (e.g., fossil_energy, materials)")
+    p_lens.add_argument("--role", default="researcher",
+                        choices=["director", "program_mgr", "researcher"],
+                        help="Role perspective (default: researcher)")
+    p_lens.add_argument("--search", default=None, help="Filter by keyword pattern")
+    p_lens.add_argument("--interest", nargs="+", default=None, help="Interest weights")
+    p_lens.add_argument("--org", default=None, help="Org envelope node ID")
+    p_lens.add_argument("--source", default=None, help="Filter by origin source")
+    p_lens.add_argument("--limit", type=int, default=50, help="Max results")
+    p_lens.add_argument("--min-score", type=float, default=0.0, help="Minimum lens score")
+    p_lens.set_defaults(func=cmd_lens)
+
+    p_explore = sub.add_parser("lens-explore", help="Explore keyword relationships through a lens")
+    p_explore.add_argument("keyword", help="Keyword to explore")
+    p_explore.add_argument("--discipline", default="fossil_energy", help="Lens discipline")
+    p_explore.add_argument("--role", default="researcher", help="Role perspective")
+    p_explore.add_argument("--limit", type=int, default=30, help="Max neighbors")
+    p_explore.set_defaults(func=cmd_lens_explore)
+
+    p_compare = sub.add_parser("lens-compare", help="Compare keyword across lenses")
+    p_compare.add_argument("keyword", help="Keyword to compare")
+    p_compare.add_argument("--lenses", nargs="+", required=True,
+                           help="Lens IDs to compare (e.g., hat:fossil_energy:researcher hat:materials:director)")
+    p_compare.set_defaults(func=cmd_lens_compare)
+
+    p_lenslist = sub.add_parser("lens-list", help="List available template lenses")
+    p_lenslist.add_argument("--role", default=None, help="Filter by role")
+    p_lenslist.add_argument("--discipline", default=None, help="Filter by discipline")
+    p_lenslist.set_defaults(func=cmd_lens_list)
 
     args = parser.parse_args()
     if not args.command:

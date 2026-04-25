@@ -1179,6 +1179,50 @@ All connections carry `provenance = 'ai_reasoning:{strategy}:{detail}'` for full
 True orphans tagged in `relevance_tags` with `true_orphan:{reason}`.
 Discipline anchor connections use low confidence (0.30-0.35) — honest signal that we know the discipline but not the specific meaning.
 
+### Step 3.26: Lens Query Engine — The Product Feature (Session 6)
+
+Built the core "look through the lens" capability. Four CLI commands:
+
+**1. `lens` — Query through a composed lens**
+```bash
+python -m src.cli lens fossil_energy --search "carbon capture" --limit 20
+python -m src.cli lens materials --role director --search "corrosion"
+python -m src.cli lens earth_environmental --search "methane" --source OpenAlex
+```
+Composes Role × Discipline on the fly, scores senses by `lens_weight × confidence × tier_boost + enrichment_bonus`. Flags cross-domain bridges with ⟷.
+
+**2. `lens-explore` — Explore keyword relationships through a lens**
+```bash
+python -m src.cli lens-explore "carbon capture" --discipline fossil_energy
+```
+Shows all senses of a keyword, then follows relationships outward, scoring neighbors through the lens. The key product moment: same keyword, different neighborhoods depending on who's looking.
+
+**3. `lens-compare` — Compare keyword across lenses**
+```bash
+python -m src.cli lens-compare "carbon capture" \
+  --lenses hat:fossil_energy:researcher hat:materials:researcher hat:earth_environmental:director
+```
+THE showcase feature. Side-by-side comparison showing:
+- Fossil energy researcher → co2 capture, efficient co2 capture (operational view)
+- Materials researcher → CO2 Capture Technology, Activated Carbon (materials angle)
+- Earth & environmental director → Carbon Balance, Carbon Loss, Carbon Feedback (strategic impact)
+Same keyword, three completely different worlds. The vector bundle in action.
+
+**4. `lens-list` — List available template lenses**
+```bash
+python -m src.cli lens-list --role researcher
+python -m src.cli lens-list --discipline fossil_energy
+```
+
+**Architecture:**
+- `compose_lens()` — build lens on the fly from Role × Discipline × Interest × Org
+- `query_through_lens()` — enhanced query with enrichment signals, bridge detection, relationship counts
+- `explore_from_keyword()` — graph traversal from a keyword through lens perspective
+- `compare_lenses()` — multi-lens comparison with discipline spread analysis
+- `list_lenses()` — template lens discovery
+
+All in `src/ontology.py` (functions) + `src/cli.py` (CLI wiring). 178 tests still passing.
+
 ### Step 3.25: Product Viability & Adoption Assessment
 
 **What makes this genuinely novel (publishable differentiators):**

@@ -12,6 +12,10 @@ python -m src.cli stats                 # show counts by source
 python -m src.cli search "climate"      # search keywords
 python -m src.cli enrich --source nasa_gcmd  # enrich GCMD with API definitions
 python -m src.cli export                # export to parquet
+python -m src.cli lens fossil_energy --search "carbon"  # query through lens
+python -m src.cli lens-explore "combustion" --discipline materials  # explore relationships
+python -m src.cli lens-compare "methane" --lenses hat:fossil_energy:researcher hat:earth_environmental:director
+python -m src.cli lens-list --role researcher  # list available lenses
 python -m pytest tests/ -v              # run tests (178 passing)
 ```
 

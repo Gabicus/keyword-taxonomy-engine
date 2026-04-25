@@ -1420,6 +1420,331 @@ def lens_summary(conn, lens_id: str) -> dict:
     }
 
 
+# =============================================================================
+# Lens Query Engine — the product feature
+# =============================================================================
+
+def compose_lens(conn, discipline: str, role: str = "researcher",
+                 interests: list[str] | None = None,
+                 org_node: str | None = None) -> dict:
+    """Compose a lens on the fly from Role × Discipline × Interest × Org.
+
+    Returns a lens dict (not persisted) that can be passed to query functions.
+    """
+    template_id = f"hat:{discipline}:{role}"
+    template = conn.execute(
+        "SELECT * FROM ontology_lenses WHERE lens_id = ?", [template_id]
+    ).fetchone()
+
+    if template:
+        cols = [desc[0] for desc in conn.description]
+        lens = dict(zip(cols, template))
+    else:
+        disc_row = conn.execute(
+            "SELECT discipline_id, long_name FROM disciplines WHERE discipline_id = ?",
+            [discipline]
+        ).fetchone()
+        if not disc_row:
+            raise ValueError(f"Unknown discipline: {discipline}")
+
+        altitudes = {"director": 100000, "program_mgr": 10000, "researcher": 1000}
+        lens = {
+            "lens_id": f"composed:{discipline}:{role}",
+            "name": f"{disc_row[1]} {role.replace('_', ' ').title()}",
+            "discipline_primary": discipline,
+            "disciplines_secondary": [],
+            "altitude": altitudes.get(role, 1000),
+            "role_type": role,
+            "discipline_weights": {discipline: 0.95},
+        }
+
+    dw = lens.get("discipline_weights") or {}
+    if isinstance(dw, str):
+        dw = json.loads(dw)
+    lens["discipline_weights"] = dw
+
+    if interests:
+        iw = {}
+        for interest in interests:
+            iw[interest] = 1.0
+        lens["interest_weights"] = iw
+
+    if org_node:
+        lens["org_node_id"] = org_node
+
+    return lens
+
+
+def query_through_lens(conn, lens: dict, search: str | None = None,
+                       limit: int = 50, min_score: float = 0.0,
+                       source_filter: str | None = None) -> list[dict]:
+    """Query senses through a composed lens with scoring and relationship context.
+
+    Enhanced version: includes relationship counts, enrichment signals, and
+    cross-domain bridge detection.
+    """
+    disc_weights = lens.get("discipline_weights", {})
+    altitude = lens.get("altitude", 1000)
+
+    tier_boost = {1: 2.0, 2: 1.5, 3: 1.0, 4: 0.5}
+
+    level_filter = None
+    if altitude >= 100000:
+        level_filter = 2
+    elif altitude >= 10000:
+        level_filter = 4
+
+    where_clauses = ["1=1"]
+    params = []
+
+    if search:
+        where_clauses.append("LOWER(ks.keyword_label) LIKE ?")
+        params.append(f"%{search.lower()}%")
+
+    if level_filter is not None:
+        where_clauses.append("(ks.origin_level IS NULL OR ks.origin_level <= ?)")
+        params.append(level_filter)
+
+    if source_filter:
+        where_clauses.append("ks.origin_source = ?")
+        params.append(source_filter)
+
+    relevant_discs = [d for d, w in disc_weights.items() if w >= 0.2]
+    if relevant_discs:
+        placeholders = ",".join(["?" for _ in relevant_discs])
+        where_clauses.append(f"ks.discipline_primary IN ({placeholders})")
+        params.extend(relevant_discs)
+
+    where_sql = " AND ".join(where_clauses)
+
+    rows = conn.execute(f"""
+        SELECT ks.sense_id, ks.keyword_label, ks.discipline_primary,
+               ks.disciplines_secondary, ks.resolution_tier, ks.confidence,
+               ks.origin_source, ks.origin_path, ks.disambiguation,
+               ks.definition_in_context, ks.relevance_tags,
+               (SELECT COUNT(*) FROM sense_relationships sr
+                WHERE sr.source_sense_id = ks.sense_id
+                   OR sr.target_sense_id = ks.sense_id) as rel_count
+        FROM keyword_senses ks
+        WHERE {where_sql}
+        ORDER BY ks.confidence DESC NULLS LAST
+        LIMIT ?
+    """, params + [limit * 5]).fetchall()
+
+    results = []
+    for row in rows:
+        (sid, label, disc, disc_sec, tier, conf,
+         osrc, opath, disambig, defn, tags, rel_count) = row
+
+        weight = disc_weights.get(disc, 0.05)
+        for d in (disc_sec or []):
+            w = disc_weights.get(d, 0)
+            if w > 0:
+                weight = max(weight, w * 0.7)
+
+        boost = tier_boost.get(tier, 0.5)
+
+        enrichment_bonus = 0.0
+        if tags:
+            tag_str = " ".join(tags)
+            if "abstract_freq:" in tag_str:
+                enrichment_bonus += 0.1
+            if "title_freq:" in tag_str:
+                enrichment_bonus += 0.05
+            if "pub_freq:" in tag_str:
+                enrichment_bonus += 0.05
+
+        score = weight * (conf or 0.5) * boost + enrichment_bonus
+
+        is_bridge = False
+        bridge_to = []
+        if disc_sec:
+            for d in disc_sec:
+                if d in disc_weights and d != disc:
+                    is_bridge = True
+                    bridge_to.append(d)
+
+        if score < min_score:
+            continue
+
+        results.append({
+            "sense_id": sid,
+            "label": label,
+            "discipline": disc,
+            "score": round(score, 4),
+            "confidence": conf,
+            "tier": tier,
+            "source": osrc,
+            "path": opath,
+            "disambiguation": disambig,
+            "definition": defn,
+            "is_bridge": is_bridge,
+            "bridge_to": bridge_to,
+            "rel_count": rel_count,
+            "tags": tags,
+        })
+
+    results.sort(key=lambda x: -x["score"])
+    return results[:limit]
+
+
+def explore_from_keyword(conn, keyword: str, lens: dict,
+                         depth: int = 1, limit: int = 30) -> dict:
+    """Explore relationships from a keyword through a lens.
+
+    Returns the keyword's senses and their connected neighbors, scored through
+    the lens perspective. Like looking at one node in the graph through a lens.
+    """
+    disc_weights = lens.get("discipline_weights", {})
+
+    senses = conn.execute("""
+        SELECT sense_id, keyword_label, discipline_primary,
+               confidence, origin_source, disambiguation
+        FROM keyword_senses
+        WHERE LOWER(keyword_label) = LOWER(?)
+        ORDER BY confidence DESC
+    """, [keyword]).fetchall()
+
+    if not senses:
+        senses = conn.execute("""
+            SELECT sense_id, keyword_label, discipline_primary,
+                   confidence, origin_source, disambiguation
+            FROM keyword_senses
+            WHERE LOWER(keyword_label) LIKE LOWER(?)
+            ORDER BY confidence DESC
+            LIMIT 10
+        """, [f"%{keyword}%"]).fetchall()
+
+    center_senses = []
+    for s in senses:
+        weight = disc_weights.get(s[2], 0.1)
+        center_senses.append({
+            "sense_id": s[0], "label": s[1], "discipline": s[2],
+            "confidence": s[3], "source": s[4], "disambiguation": s[5],
+            "lens_weight": round(weight, 2),
+        })
+
+    all_sense_ids = [s["sense_id"] for s in center_senses]
+    if not all_sense_ids:
+        return {"keyword": keyword, "senses": [], "neighbors": [], "paths": []}
+
+    placeholders = ",".join(["?" for _ in all_sense_ids])
+    neighbors_raw = conn.execute(f"""
+        SELECT sr.source_sense_id, sr.target_sense_id,
+               sr.relationship_type, sr.confidence, sr.provenance,
+               ks.keyword_label, ks.discipline_primary, ks.origin_source
+        FROM sense_relationships sr
+        JOIN keyword_senses ks ON ks.sense_id = CASE
+            WHEN sr.source_sense_id IN ({placeholders}) THEN sr.target_sense_id
+            ELSE sr.source_sense_id
+        END
+        WHERE sr.source_sense_id IN ({placeholders})
+           OR sr.target_sense_id IN ({placeholders})
+        ORDER BY sr.confidence DESC
+        LIMIT ?
+    """, all_sense_ids + all_sense_ids + all_sense_ids + [limit * 3]).fetchall()
+
+    neighbors = []
+    seen_labels = set()
+    for row in neighbors_raw:
+        src, tgt, rtype, conf, prov, nlabel, ndisc, nsrc = row
+        if nlabel.lower() in seen_labels:
+            continue
+        seen_labels.add(nlabel.lower())
+
+        weight = disc_weights.get(ndisc, 0.05)
+        score = weight * (conf or 0.5)
+
+        neighbors.append({
+            "label": nlabel,
+            "discipline": ndisc,
+            "relationship": rtype,
+            "confidence": conf,
+            "provenance": prov,
+            "source": nsrc,
+            "lens_score": round(score, 4),
+        })
+
+    neighbors.sort(key=lambda x: -x["lens_score"])
+
+    return {
+        "keyword": keyword,
+        "senses": center_senses,
+        "neighbors": neighbors[:limit],
+        "total_neighbors": len(neighbors_raw),
+    }
+
+
+def compare_lenses(conn, keyword: str, lens_ids: list[str]) -> dict:
+    """Compare how a keyword looks through different lenses.
+
+    Shows which senses surface, which get suppressed, and what relationships
+    appear most relevant from each perspective.
+    """
+    results = {}
+    for lid in lens_ids:
+        lens_row = conn.execute(
+            "SELECT * FROM ontology_lenses WHERE lens_id = ?", [lid]
+        ).fetchone()
+        if not lens_row:
+            continue
+        cols = [desc[0] for desc in conn.description]
+        lens = dict(zip(cols, lens_row))
+        dw = lens.get("discipline_weights") or {}
+        if isinstance(dw, str):
+            dw = json.loads(dw)
+        lens["discipline_weights"] = dw
+
+        exploration = explore_from_keyword(conn, keyword, lens, limit=15)
+
+        top_disciplines = {}
+        for n in exploration["neighbors"]:
+            d = n["discipline"]
+            if d not in top_disciplines:
+                top_disciplines[d] = 0
+            top_disciplines[d] += 1
+
+        results[lid] = {
+            "lens_name": lens.get("name", lid),
+            "role": lens.get("role_type"),
+            "primary_discipline": lens.get("discipline_primary"),
+            "senses_found": len(exploration["senses"]),
+            "top_neighbors": exploration["neighbors"][:5],
+            "discipline_spread": dict(sorted(
+                top_disciplines.items(), key=lambda x: -x[1]
+            )[:5]),
+            "total_connections": exploration["total_neighbors"],
+        }
+
+    return {"keyword": keyword, "perspectives": results}
+
+
+def list_lenses(conn, role: str | None = None,
+                discipline: str | None = None) -> list[dict]:
+    """List available template lenses with optional filtering."""
+    where = ["is_template = true"]
+    params = []
+    if role:
+        where.append("role_type = ?")
+        params.append(role)
+    if discipline:
+        where.append("discipline_primary = ?")
+        params.append(discipline)
+
+    rows = conn.execute(f"""
+        SELECT lens_id, name, role_type, discipline_primary, altitude
+        FROM ontology_lenses
+        WHERE {' AND '.join(where)}
+        ORDER BY discipline_primary, altitude DESC
+    """, params).fetchall()
+
+    return [
+        {"lens_id": r[0], "name": r[1], "role": r[2],
+         "discipline": r[3], "altitude": r[4]}
+        for r in rows
+    ]
+
+
 def init_ontology(conn) -> dict:
     """Initialize the full ontology layer."""
     stats = {}
