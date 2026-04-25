@@ -1223,6 +1223,65 @@ python -m src.cli lens-list --discipline fossil_energy
 
 All in `src/ontology.py` (functions) + `src/cli.py` (CLI wiring). 178 tests still passing.
 
+### Step 3.27: OpenAlex Publication Ingestion (Session 6, partial)
+
+Ingested 7,983 OpenAlex publications from 4 query sources:
+- netl_ror: 2,000 (NETL-affiliated via ROR)
+- fossil_fuels_T10291: 2,000 (topic-based)
+- carbon_capture_T10383: 2,000 (topic-based)
+- coal_search: 2,000 (keyword search)
+
+**New tables created:**
+| Table | Rows | Notes |
+|---|---|---|
+| raw_openalex_publications | 7,983 | DOIs, titles, years, citations, funders, topics, keywords, concepts, MeSH |
+| openalex_pub_keywords | 68,855 | Keyword-to-paper mappings with relevance scores, 3 keyword sources |
+
+**Key data:**
+- 7,761 publications with DOIs (97%)
+- 68,855 keyword-paper mappings from 3 sources: keywords (scored), concepts (scored), MeSH (0.5 fixed)
+- Publications span multiple decades, heavily weighted toward recent years
+
+**INCOMPLETE:** Co-occurrence relationship building from OpenAlex keyword pairs did not finish (process was killed during label_to_senses dict construction — the 422K-row fetchall is slow). Resume next session with optimized approach (SQL-native co-occurrence instead of Python dict).
+
+**Also INCOMPLETE:** New sense creation for OpenAlex keywords not already in taxonomy. The script had this logic but didn't reach it before kill.
+
+### Session 6 Summary
+
+**Quality scorecard: 97.8/100 (A+)**
+
+| What | Before | After |
+|---|---|---|
+| Orphan rate | 1.6% (6,678) | 0.03% (142 true orphans) |
+| Polysemy coverage | 1.3% (5,205) | 3.5% (14,206) |
+| Lens query commands | 0 | 4 CLI commands |
+| OpenAlex pubs | 0 | 7,983 with DOIs |
+| Keyword-paper mappings | 0 | 68,855 |
+
+**Session 6 commits:**
+1. `09e9915` — AI-curated orphan resolution: 6,678 → 142 true orphans (0.03%)
+2. `ec19573` — Lens query engine: compose, explore, compare perspectives on keywords
+
+### Session 6 Errors & Fixes
+
+1. **NOT EXISTS anti-join on 2.4M rels = infinite CPU burn.** Six stale queries ate 100% CPU for 30-60min each. Fix: use `LEFT JOIN` with CTE on `SELECT DISTINCT` (completes in seconds). NEVER use `NOT EXISTS` on sense_relationships.
+
+2. **Python one-liners for DB queries = backgrounded/hung.** DuckDB Python connections hold locks, compete with CLI, and get backgrounded by the harness. Fix: installed `duckdb-cli` (v1.5.2) via `pip install duckdb-cli`. Use `duckdb data/lake/keywords.duckdb -readonly -c "SQL"` for all queries.
+
+3. **OpenAlex ingestion killed (label_to_senses dict too slow).** Building a Python dict from 422K rows via `fetchall()` + Python loop takes too long. Fix for next session: use SQL-native co-occurrence (JOIN instead of Python dict).
+
+4. **stdout buffering hides progress.** Background Python scripts produce zero output until completion because stdout is buffered. Monitor sees empty file. Fix: add `flush=True` to print() calls, or use `python3 -u` for unbuffered output.
+
+**Final database state:**
+- 421,848 senses
+- 2,444,185 relationships (5.79 rels/sense)
+- 142 true orphans (0.03%), all tagged with reason
+- 7,983 OpenAlex publications (7,761 with DOIs)
+- 68,855 keyword-paper mappings
+- 14 disciplines, 97 template lenses
+- 4 lens query CLI commands operational
+- 178 tests passing
+
 ### Step 3.25: Product Viability & Adoption Assessment
 
 **What makes this genuinely novel (publishable differentiators):**

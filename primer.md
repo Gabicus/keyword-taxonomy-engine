@@ -1,11 +1,11 @@
 # Keyword Taxonomy Engine · primer
 
-Updated: 2026-04-24 10:30pm EDT
+Updated: 2026-04-25 2:30am EDT
 Repo: https://github.com/Gabicus/keyword-taxonomy-engine
 
 ## Current status
 
-**Phase 3 ACTIVE — Deep enrichment complete.** 7 pillars + 224K natlab pubs. 421,819 senses, 2.44M relationships (5.78 rels/sense). Semantic embeddings (63K labels, 384-dim). T1 sub-ontology (18 subcats). 1.6% orphans. 178 tests passing.
+**Phase 3 ACTIVE — Lens query engine operational.** 7 pillars + 230K WoS pubs + 8K OpenAlex pubs. 421,848 senses, 2.44M relationships (5.79 rels/sense). 0.03% orphans. 4 lens query CLI commands. Quality scorecard 97.8/100 (A+). 178 tests passing.
 
 ## What this is
 
@@ -13,15 +13,25 @@ Universal scientific keyword taxonomy engine. Ingests authoritative keyword hier
 
 End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energy at center. Users stand around a sphere looking in through composed lenses (Role × Org × Discipline × Interest).
 
+## Key Commands
+```bash
+python -m src.cli lens fossil_energy --search "carbon capture"  # query through lens
+python -m src.cli lens-explore "combustion" --discipline materials  # explore relationships
+python -m src.cli lens-compare "methane" --lenses hat:fossil_energy:researcher hat:earth_environmental:director
+python -m src.cli lens-list --role researcher  # list 97 available lenses
+python -m src.cli search "climate"      # basic keyword search
+python -m pytest tests/ -v              # 178 tests passing
+```
+
 ## Data lake
 
 | Source | Unified | Raw | Notes |
 |---|---|---|---|
 | OpenAlex | 31,995 | 4,798 | 4 domains → 27K keywords. works_count ranking signal |
-| MeSH (NIH) | 31,110 | 31,110 | 16 categories, 97% definitions, avg 7.6 synonyms. Tree hierarchy |
+| MeSH (NIH) | 31,110 | 31,110 | 16 categories, 97% definitions, avg 7.6 synonyms |
 | Library of Congress | 29,731 | 29,731 | Science + Technology subtrees, bulk SKOS |
 | NASA GCMD | 4,849 | 4,849 | 6 keyword types, 80% enriched |
-| UNESCO Thesaurus | 4,408 | 4,408 | English filter, mirror strips match triples |
+| UNESCO Thesaurus | 4,408 | 4,408 | English filter |
 | NCBI Taxonomy | 3,044 | 3,044 | Capped at Order rank |
 | DOE OSTI | 59 | 59 | 45 categories + 9 groups |
 | **Total** | **105,196** | **77,999** | |
@@ -30,113 +40,104 @@ End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energ
 
 | Table | Count | Notes |
 |---|---|---|
-| keyword_senses | 421,819 | 105K base + 263K natlab WoS + 14K NETL WoS + 3.6K vocab + 1K meta |
-| sense_relationships | 2,444,185 | 5.79 rels/sense. 2.05M subtopic_of + 366K related_to + 13K bridges + 8K equivalent + 6.5K ai_reasoning |
-| disciplines | 14 | T1: fossil/coal/natgas, T2: materials/chem/earth/compute/EE, T3: bio/policy/space/renew/nuclear, T4: math/physics |
-| hierarchy_envelopes | 107 | NETL org: 8 programs → 26 sub → 63 tech → 10 turbine |
-| ontology_lenses | 97 | Template hats: 42 primary + 54 intersection + 1 baseline |
-| polysemous labels | 5,205 | Terms in 2+ sources — cross-domain bridges |
-| orphan senses | 142 (0.03%) | Down from 93% → 8.3% → 1.6% → 0.03% (AI reasoning) |
-| semantic embeddings | 63,434 labels × 384 dim | all-MiniLM-L6-v2, saved to data/lake/ |
+| keyword_senses | 421,848 | 105K base + 263K natlab WoS + 14K NETL WoS + 3.6K vocab + 1K meta |
+| sense_relationships | 2,444,185 | 5.79 rels/sense. subtopic_of + related_to + bridges + equivalent + ai_reasoning |
+| disciplines | 14 | 4 resolution tiers |
+| hierarchy_envelopes | 107 | NETL org structure |
+| ontology_lenses | 97 | 42 primary + 54 intersection + 1 baseline |
+| orphan senses | 142 (0.03%) | Down from 93% → 0.03% via ML + AI reasoning |
+| semantic embeddings | 63,434 × 384 dim | all-MiniLM-L6-v2 |
 | T1 sub-ontology | 18 subcategories | carbon_capture, combustion, gasification, fuel_cells, etc. |
+| polysemous labels | 14,206 (3.5%) | Terms in 2+ sources — cross-domain bridges |
 
-## Enrichment tags on senses
+## Publication data
 
-| Tag | Senses | Source |
-|---|---|---|
-| abstract_freq | 26,408 | N-gram extraction from 207K abstracts |
-| title_freq | 19,379 | N-gram extraction from 230K titles |
-| pub_freq | 6,748 | OpenAlex publication frequency |
-| Per-field provenance | all WoS senses | author_keyword, keywords_plus, subject_cat, etc. |
-
-## WoS publication data (4 staging tables)
-
-- raw_wos_publications: 6,019 DOE/NETL pubs with keywords, abstracts, categories
-- raw_wos_natlab_publications: 224,081 other national lab pubs (21 cols, 91% with abstracts)
-- raw_wos_keywords_plus_vocab: 7,488 unique Keywords Plus terms
-- raw_wos_netl_tech: 3,877 records mapping pubs to NETL org structure
-
-## External data pulled (data/raw/)
-
-| Source | Location | Size | Status |
+| Table | Rows | DOIs | Notes |
 |---|---|---|---|
-| MeSH | data/raw/mesh/ | 31K descriptors | ✅ Ingested as 7th pillar |
-| OpenAlex pubs | data/raw/openalex_pubs/ | 7,983 works, 190MB | ✅ Pulled, not yet ingested |
-| Semantic Scholar | data/raw/semantic_scholar/ | 500 papers, 16 fields | ✅ Pulled, coarse taxonomy |
-| CrossRef | data/raw/crossref/ | 1,600 works | ✅ Low priority (subject deprecated) |
+| raw_wos_publications | 6,019 | NO (backfill needed) | DOE/NETL pubs, keywords, abstracts |
+| raw_wos_natlab_publications | 224,081 | NO (backfill needed) | 21 cols, 91% abstracts, 10 national labs |
+| raw_openalex_publications | 7,983 | 7,761 (97%) | NEW: titles, years, citations, funders, topics |
+| openalex_pub_keywords | 68,855 | — | NEW: keyword-to-paper mappings with relevance scores |
+| raw_wos_keywords_plus_vocab | 7,488 | — | Unique Keywords Plus terms |
+| raw_wos_netl_tech | 3,877 | — | Pub-to-NETL org structure mapping |
+
+**WoS DOI backfill:** User needs to re-export WoS data with DOI column. Then: `ALTER TABLE ADD COLUMN doi VARCHAR` + `UPDATE` matching on `accession_number`. Easy.
 
 ## Architecture
 
 ```
-Sources (7 pillars + WoS publications)
+Sources (7 pillars + WoS + OpenAlex publications)
   ├── NASA GCMD ─────────┐
   ├── UNESCO Thesaurus ──┤
   ├── NCBI Taxonomy ─────┤
-  ├── LoC LCSH ──────────┤──→ Parsers ──→ DuckDB (18 tables)
+  ├── LoC LCSH ──────────┤──→ Parsers ──→ DuckDB (20 tables)
   ├── DOE OSTI ──────────┤           │
-  ├── OpenAlex Topics ───┤     ┌─────┴──────────┐
-  └── MeSH (NIH) ───────┘     │  Ontology Layer │
-                               │  14 disciplines │
-  WoS NETL (6K pubs) ───────→ │  422K senses    │
-  WoS NatLabs (224K pubs) ──→ │  2.36M relations│
-                               │  97 lens hats   │
-                               └─────┬──────────┘
+  ├── OpenAlex Topics ───┤     ┌─────┴──────────────┐
+  └── MeSH (NIH) ───────┘     │  Ontology Layer     │
+                               │  14 disciplines     │
+  WoS NETL (6K pubs) ───────→ │  422K senses        │
+  WoS NatLabs (224K pubs) ──→ │  2.44M relations    │
+  OpenAlex (8K pubs) ────────→│  97 lens hats       │
+                               │  69K pub-kw links   │
+                               └─────┬──────────────┘
                                      │
-                            Composed lens queries
+                            Composed lens queries ← NEW
                             (Role × Org × Disc × Interest)
+                            lens / lens-explore / lens-compare
 ```
 
-### File structure
-```
-src/
-  config.py, schema.py (18 tables), storage.py, http_client.py, graph.py, cli.py
-  raw_writers.py, ontology.py (disciplines, senses, envelopes, lenses, hats)
-  parsers/ — 8 parsers (nasa_gcmd, unesco, openalex, ncbi, loc, doe_osti, wos, mesh)
-  enrichment/, alignment/, grants/
-scripts/ — build_relationships.py, ingest_natlab_wos.py, enrich_wos_context.py, + data pulls
-tests/ — 178 tests across 11 files
-data/raw/, data/lake/ (gitignored)
-```
+## Quality scorecard: 97.8/100 (A+)
 
-## 14 Disciplines (Resolution Tiers)
+| Metric | Score | Value |
+|---|---|---|
+| Source Coverage | 10.0 | 7 authoritative pillars |
+| Relationship Density | 10.0 | 5.79 rels/sense |
+| Orphan Rate | 10.0 | 0.03% (142 true orphans, all tagged) |
+| Cross-Domain Bridges | 10.0 | 13K+ bridges |
+| Polysemy Coverage | 8.8 | 3.5% (14,206 labels in 2+ sources) |
+| Discipline Balance | 10.0 | 14 disciplines, 4 tiers |
+| Provenance Diversity | 10.0 | 25+ provenance types |
+| Enrichment Depth | 10.0 | abstract_freq + title_freq on 45K senses |
+| Hierarchy Depth | 10.0 | NETL envelopes + T1 sub-ontology |
+| Semantic Embeddings | 10.0 | 63K × 384-dim |
 
-- **T1 (DOE core):** Fossil Energy & Carbon (14,948), Coal Science (373), Natural Gas (305)
-- **T2 (DOE adjacent):** EE/ME Engineering (98,790), Chemical Sciences (79,740), Materials (33,113), Earth & Environmental (31,493), Computation & Data (22,240)
-- **T3 (Other national lab):** Biological & Medical (60,840), Policy & Economics (17,496), Nuclear & Particle (7,249), Renewable & Alternative (4,336), Space & Atmospheric (934)
-- **T4 (Broad):** Mathematics & Physics (49,962)
+## Performance pitfalls (AVOID)
 
-## Performance notes
-
-- **DuckDB executemany with VARCHAR[] columns is pathologically slow.** NEVER use VARCHAR[] in executemany. Use scalar temp tables + SQL expressions (`ARRAY[]::VARCHAR[]`, `string_split()`).
-- **N-gram set intersection for text extraction.** Don't scan N labels against each text (O(labels×texts)). Extract n-grams from text, check set membership (O(words×max_ngram)). 37× faster. 207K abstracts in 102s.
-- **Pure SQL INSERT...SELECT** for bulk relationship insertion — avoids executemany entirely.
-
-## Quality scorecard
-
-97.8/100 (A+). Polysemy 3.5% (14,206 labels). Orphan rate 0.03% (142 true orphans, all tagged). 25 provenance types (incl. ai_reasoning).
+- **NOT EXISTS on sense_relationships = infinite CPU.** Use LEFT JOIN with CTE: `WITH connected AS (SELECT DISTINCT source_sense_id as sid... UNION SELECT DISTINCT target_sense_id...) LEFT JOIN connected`.
+- **DuckDB executemany with VARCHAR[] = pathologically slow.** Use temp tables + SQL INSERT...SELECT.
+- **Python fetchall() for 422K rows → dict = slow.** Use SQL-native JOINs instead. The label_to_senses pattern killed the OpenAlex co-occurrence step.
+- **N-gram set intersection** for text extraction (not label×text scanning). 37× faster.
+- **`python3 -u`** for unbuffered output in background scripts. Otherwise stdout is invisible until process exits.
+- **Kill stale background processes** before launching new DB queries. Check `ps aux | grep duckdb`.
+- **Always use `duckdb` CLI** (installed v1.5.2) instead of Python wrappers for queries.
 
 ## Next up
 
-1. [x] Embedding-based fuzzy matching (50K semantic edges, all-MiniLM-L6-v2)
-2. [x] T1 Fossil Energy deep sub-ontology (18 subcategories, 4,212 senses tagged)
-3. [x] Orphan reduction (8.2% → 1.6%, 27K new connections)
-4. [x] Grant agency entity resolution (12 canonical groups, 46 edges)
-5. [x] **Agentic orphan resolution** — AI reasoning on 6,678 orphans → 6,535 connected, 143 true orphans tagged. Orphan rate 1.6% → 0.03%.
-6. [x] **Lens query capability** — 4 CLI commands: `lens`, `lens-explore`, `lens-compare`, `lens-list`. Vector bundle in action.
-7. [ ] **Ingest OpenAlex pub-level data** (7,983 works with keyword-to-paper mappings)
-8. [ ] **DOI/paper-level links** — connect keywords back to specific papers for lens-filtered paper discovery
-9. [ ] **Versioning + Zenodo DOI** — release tag, reproducibility, citable artifact
-10. [ ] **Methodology paper** — vector bundle semantics, 7-pillar cross-walk, lens composition, AI curation
-11. [ ] **Benchmark vs VOSviewer/CiteSpace/InCites** — comparative analysis showing differentiators
-12. [ ] **Interactive visualization prototype** — the sphere with composed lenses
-13. [ ] **API/query interface** — REST or GraphQL for external tool integration
+1. [x] Embedding-based fuzzy matching (50K semantic edges)
+2. [x] T1 Fossil Energy deep sub-ontology (18 subcategories)
+3. [x] Orphan reduction (93% → 0.03%)
+4. [x] Grant agency entity resolution (12 canonical groups)
+5. [x] Agentic orphan resolution (AI reasoning, 6,535 connected)
+6. [x] Lens query engine (4 CLI commands)
+7. [~] **OpenAlex pub ingestion** — pubs + keyword mappings IN (7,983 + 68,855). Co-occurrence edges NOT done (script killed). Resume with SQL-native approach.
+8. [ ] **OpenAlex co-occurrence + new senses** — finish co-occurrence edges + create senses for new keywords
+9. [ ] **DOI/paper-level links** — lens-filtered paper discovery ("papers about X through lens Y")
+10. [ ] **WoS DOI backfill** — user re-exports with DOI column
+11. [ ] **Interactive visualization prototype** — the sphere with composed lenses
+12. [ ] **Versioning + Zenodo DOI** — release tag, reproducibility
+13. [ ] **Methodology paper** — vector bundle semantics, 7-pillar cross-walk, lens composition, AI curation
+14. [ ] **Benchmark vs VOSviewer/CiteSpace** — comparative analysis
+15. [ ] **API/query interface** — REST or GraphQL
 
 ## Don't forget
 
 - ALWAYS be devil's advocate — challenge assumptions, no glass castles
 - Audit between large steps for errors and gaps
 - Push before destructive operations (always)
-- Cross-domain references are FIRST CLASS — not afterthoughts
+- Use SQL-first for all DuckDB queries (duckdb CLI, not Python wrappers)
+- Use LEFT JOIN for orphan detection (NOT EXISTS = CPU death)
+- Use `python3 -u` for background scripts (unbuffered stdout)
+- Kill stale background processes before new DB queries
+- Cross-domain references are FIRST CLASS
 - Keywords are vector bundles — same word, different meaning per context
-- Org structures are cluster envelopes with temporal versioning
 - Save WORKLOG.md proactively at natural breakpoints
