@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keyword Taxonomy — Chord Diagram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d1117;
+    color: #e0e0e0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  header {
+    text-align: center;
+    padding: 20px 20px 4px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f0f0f0;
+    letter-spacing: 0.02em;
+  }
+  header p {
+    font-size: 0.8rem;
+    color: #6e7681;
+    margin-top: 4px;
+  }
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 10px 20px 6px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #58a6ff;
+  }
+  .stat .lbl {
+    font-size: 0.65rem;
+    color: #6e7681;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  #chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 10px;
+    width: 100%;
+  }
+  #chart {
+    flex-shrink: 0;
+  }
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(13, 17, 23, 0.96);
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.78rem;
+    color: #e0e0e0;
+    line-height: 1.5;
+    max-width: 320px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    z-index: 100;
+    display: none;
+    backdrop-filter: blur(10px);
+  }
+  .tooltip .tt-title {
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3px;
+    font-size: 0.85rem;
+  }
+  .tooltip .tt-value {
+    color: #58a6ff;
+    font-weight: 600;
+  }
+  .tooltip .tt-type {
+    color: #6e7681;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tooltip .tt-detail {
+    margin-top: 4px;
+    font-size: 0.72rem;
+    color: #8b949e;
+  }
+  #sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 12px;
+    background: rgba(22, 27, 34, 0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  #sidebar h3 {
+    font-size: 0.75rem;
+    color: #58a6ff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .legend-group {
+    margin-bottom: 14px;
+  }
+  .legend-group h4 {
+    font-size: 0.68rem;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    cursor: pointer;
+    font-size: 0.72rem;
+    color: #c9d1d9;
+    transition: opacity 0.2s;
+  }
+  .legend-item:hover {
+    opacity: 0.8;
+  }
+  .legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-count {
+    margin-left: auto;
+    color: #6e7681;
+    font-size: 0.65rem;
+  }
+  #info-panel {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(13, 17, 23, 0.6);
+    border-radius: 6px;
+    border: 1px solid rgba(48, 54, 61, 0.4);
+    font-size: 0.7rem;
+    color: #8b949e;
+    line-height: 1.6;
+  }
+  #info-panel strong {
+    color: #c9d1d9;
+  }
+  footer {
+    text-align: center;
+    padding: 8px 20px 16px;
+    font-size: 0.65rem;
+    color: #30363d;
+  }
+  /* Scrollbar */
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-track { background: transparent; }
+  #sidebar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Keyword Taxonomy Engine — Chord Diagram</h1>
+  <p>Multi-level keyword flows: 7 source pillars, 14 disciplines, subcategories — cross-domain connections</p>
+</header>
+
+<div class="stats-bar" id="stats-bar"></div>
+
+<div id="chart-container">
+  <div id="chart"></div>
+  <div id="sidebar">
+    <h3>Legend</h3>
+    <div id="legend"></div>
+    <div id="info-panel"></div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<footer>
+  Keyword Taxonomy Engine &mdash; Chord Diagram Visualization
+</footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+(async function() {
+
+  // ── Load data ─────────────────────────────────────────────────────
+  const resp = await fetch("../data/viz/chord_data.json");
+  if (!resp.ok) {
+    document.getElementById("chart").innerHTML =
+      '<p style="color:#f85149;padding:40px;text-align:center">' +
+      'Failed to load chord_data.json. Run: python3 scripts/build_chord_data.py</p>';
+    return;
+  }
+  const data = await resp.json();
+  const { nodes, matrix, stats } = data;
+  const n = nodes.length;
+
+  // ── Stats bar ─────────────────────────────────────────────────────
+  const statsBar = document.getElementById("stats-bar");
+  const statItems = [
+    { num: (stats.total_keywords || 0).toLocaleString(), lbl: "Keywords" },
+    { num: (stats.total_senses || 0).toLocaleString(), lbl: "Senses" },
+    { num: (stats.num_sources || 0), lbl: "Sources" },
+    { num: (stats.num_disciplines || 0), lbl: "Disciplines" },
+    { num: (stats.num_subcategories || 0), lbl: "Subcategories" },
+    { num: (stats.polysemous_multi_discipline || 0).toLocaleString(), lbl: "Polysemous (multi-disc)" },
+    { num: (stats.polysemous_multi_source || 0).toLocaleString(), lbl: "Shared (multi-src)" },
+    { num: (stats.total_connections || 0), lbl: "Connections" },
+  ];
+  statsBar.innerHTML = statItems.map(s =>
+    `<div class="stat"><div class="num">${s.num}</div><div class="lbl">${s.lbl}</div></div>`
+  ).join("");
+
+  // ── Dimensions ────────────────────────────────────────────────────
+  const size = Math.min(window.innerWidth - 280, window.innerHeight - 180, 1000);
+  const width = Math.max(size, 700);
+  const height = width;
+  const outerRadius = width / 2 - 100;
+  const innerRadius = outerRadius - 24;
+
+  // ── Color scale ───────────────────────────────────────────────────
+  const nodeColor = i => nodes[i].color || "#78909c";
+
+  // ── Create chord layout ───────────────────────────────────────────
+  const chord = d3.chord()
+    .padAngle(0.012)
+    .sortSubgroups(d3.descending)
+    .sortChords(d3.descending);
+
+  const chords = chord(matrix);
+
+  const arc = d3.arc()
+    .innerRadius(innerRadius)
+    .outerRadius(outerRadius);
+
+  const ribbon = d3.ribbon()
+    .radius(innerRadius - 1);
+
+  // ── SVG ───────────────────────────────────────────────────────────
+  const svg = d3.select("#chart")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [-width/2, -height/2, width, height])
+    .attr("style", "max-width: 100%; height: auto;");
+
+  // Defs for gradients
+  const defs = svg.append("defs");
+
+  // Create gradient for each chord
+  chords.forEach((ch, i) => {
+    const grad = defs.append("linearGradient")
+      .attr("id", `grad-${i}`)
+      .attr("gradientUnits", "userSpaceOnUse")
+      .attr("x1", 0).attr("y1", 0)
+      .attr("x2", 0).attr("y2", 0);
+
+    const sAngle = (ch.source.startAngle + ch.source.endAngle) / 2;
+    const tAngle = (ch.target.startAngle + ch.target.endAngle) / 2;
+    grad.attr("x1", Math.cos(sAngle - Math.PI/2) * innerRadius)
+      .attr("y1", Math.sin(sAngle - Math.PI/2) * innerRadius)
+      .attr("x2", Math.cos(tAngle - Math.PI/2) * innerRadius)
+      .attr("y2", Math.sin(tAngle - Math.PI/2) * innerRadius);
+
+    grad.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", nodeColor(ch.source.index));
+    grad.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", nodeColor(ch.target.index));
+  });
+
+  // ── Glow filter ───────────────────────────────────────────────────
+  const glow = defs.append("filter").attr("id", "glow");
+  glow.append("feGaussianBlur").attr("stdDeviation", 2).attr("result", "blur");
+  const feMerge = glow.append("feMerge");
+  feMerge.append("feMergeNode").attr("in", "blur");
+  feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+  // ── Background circle ─────────────────────────────────────────────
+  svg.append("circle")
+    .attr("r", outerRadius + 40)
+    .attr("fill", "none")
+    .attr("stroke", "#161b22")
+    .attr("stroke-width", 1);
+
+  // ── Ribbons (chords) ──────────────────────────────────────────────
+  const ribbonGroup = svg.append("g")
+    .attr("class", "ribbons")
+    .selectAll("path")
+    .data(chords)
+    .join("path")
+    .attr("d", ribbon)
+    .attr("fill", (d, i) => `url(#grad-${i})`)
+    .attr("fill-opacity", 0.35)
+    .attr("stroke", "none")
+    .on("mouseover", function(event, d) {
+      if (locked !== null) return;
+      highlightChord(d.source.index, d.target.index);
+      showChordTooltip(event, d);
+    })
+    .on("mousemove", function(event) {
+      moveTooltip(event);
+    })
+    .on("mouseout", function() {
+      if (locked !== null) return;
+      resetHighlight();
+      hideTooltip();
+    });
+
+  // ── Arcs (groups) ─────────────────────────────────────────────────
+  const groupG = svg.append("g")
+    .attr("class", "groups")
+    .selectAll("g")
+    .data(chords.groups)
+    .join("g");
+
+  // Outer arc
+  groupG.append("path")
+    .attr("d", arc)
+    .attr("fill", d => nodeColor(d.index))
+    .attr("fill-opacity", 0.85)
+    .attr("stroke", d => d3.color(nodeColor(d.index)).brighter(0.5))
+    .attr("stroke-width", 0.5)
+    .style("cursor", "pointer")
+    .on("mouseover", function(event, d) {
+      if (locked !== null) return;
+      highlightGroup(d.index);
+      showGroupTooltip(event, d);
+    })
+    .on("mousemove", function(event) {
+      moveTooltip(event);
+    })
+    .on("mouseout", function() {
+      if (locked !== null) return;
+      resetHighlight();
+      hideTooltip();
+    })
+    .on("click", function(event, d) {
+      event.stopPropagation();
+      if (locked === d.index) {
+        locked = null;
+        resetHighlight();
+        hideTooltip();
+      } else {
+        locked = d.index;
+        highlightGroup(d.index);
+        showGroupTooltip(event, d);
+      }
+    });
+
+  // Type indicator ring (thin ring outside for source/discipline/subcategory)
+  const typeRingRadius = outerRadius + 4;
+  groupG.append("path")
+    .attr("d", d => {
+      const a = d3.arc()
+        .innerRadius(typeRingRadius)
+        .outerRadius(typeRingRadius + 3);
+      return a(d);
+    })
+    .attr("fill", d => {
+      const t = nodes[d.index].type;
+      if (t === "source") return "#58a6ff";
+      if (t === "discipline") return "#f0883e";
+      return "#3fb950";
+    })
+    .attr("fill-opacity", 0.7);
+
+  // ── Labels ────────────────────────────────────────────────────────
+  groupG.append("text")
+    .each(d => { d.angle = (d.startAngle + d.endAngle) / 2; })
+    .attr("dy", "0.35em")
+    .attr("transform", d =>
+      `rotate(${(d.angle * 180 / Math.PI - 90)})` +
+      `translate(${outerRadius + 14})` +
+      (d.angle > Math.PI ? "rotate(180)" : "")
+    )
+    .attr("text-anchor", d => d.angle > Math.PI ? "end" : "start")
+    .attr("fill", d => {
+      const c = d3.color(nodeColor(d.index));
+      return c ? c.brighter(1.2) : "#c9d1d9";
+    })
+    .attr("font-size", d => {
+      const t = nodes[d.index].type;
+      if (t === "source") return "10px";
+      if (t === "discipline") return "9px";
+      return "7.5px";
+    })
+    .attr("font-weight", d => nodes[d.index].type === "source" ? 600 : 400)
+    .attr("opacity", d => nodes[d.index].type === "subcategory" ? 0.7 : 0.9)
+    .text(d => nodes[d.index].name)
+    .style("cursor", "pointer")
+    .on("mouseover", function(event, d) {
+      if (locked !== null) return;
+      highlightGroup(d.index);
+      showGroupTooltip(event, d);
+    })
+    .on("mouseout", function() {
+      if (locked !== null) return;
+      resetHighlight();
+      hideTooltip();
+    })
+    .on("click", function(event, d) {
+      event.stopPropagation();
+      if (locked === d.index) {
+        locked = null;
+        resetHighlight();
+        hideTooltip();
+      } else {
+        locked = d.index;
+        highlightGroup(d.index);
+        showGroupTooltip(event, d);
+      }
+    });
+
+  // ── Interaction state ─────────────────────────────────────────────
+  let locked = null;
+
+  // Click background to unlock
+  svg.on("click", function() {
+    locked = null;
+    resetHighlight();
+    hideTooltip();
+  });
+
+  function highlightGroup(idx) {
+    ribbonGroup
+      .attr("fill-opacity", d =>
+        d.source.index === idx || d.target.index === idx ? 0.7 : 0.03
+      )
+      .attr("stroke", d =>
+        d.source.index === idx || d.target.index === idx ? "rgba(255,255,255,0.1)" : "none"
+      );
+
+    groupG.selectAll("path:first-child")
+      .attr("fill-opacity", d => {
+        if (d.index === idx) return 1;
+        // Check if connected
+        const connected = matrix[idx][d.index] > 0 || matrix[d.index][idx] > 0;
+        return connected ? 0.7 : 0.15;
+      });
+  }
+
+  function highlightChord(srcIdx, tgtIdx) {
+    ribbonGroup
+      .attr("fill-opacity", d =>
+        (d.source.index === srcIdx && d.target.index === tgtIdx) ||
+        (d.source.index === tgtIdx && d.target.index === srcIdx) ? 0.8 : 0.03
+      );
+
+    groupG.selectAll("path:first-child")
+      .attr("fill-opacity", d =>
+        d.index === srcIdx || d.index === tgtIdx ? 1 : 0.15
+      );
+  }
+
+  function resetHighlight() {
+    ribbonGroup
+      .attr("fill-opacity", 0.35)
+      .attr("stroke", "none");
+    groupG.selectAll("path:first-child")
+      .attr("fill-opacity", 0.85);
+  }
+
+  // ── Tooltip ───────────────────────────────────────────────────────
+  const tooltip = document.getElementById("tooltip");
+
+  function showGroupTooltip(event, d) {
+    const node = nodes[d.index];
+    const connections = [];
+    for (let j = 0; j < n; j++) {
+      if (matrix[d.index][j] > 0) {
+        connections.push({ name: nodes[j].name, count: matrix[d.index][j], type: nodes[j].type });
+      }
+    }
+    connections.sort((a, b) => b.count - a.count);
+
+    const topConns = connections.slice(0, 8);
+    const totalFlow = connections.reduce((s, c) => s + c.count, 0);
+
+    let html = `<div class="tt-type">${node.type}</div>`;
+    html += `<div class="tt-title">${node.name}</div>`;
+    html += `<div class="tt-value">${node.size.toLocaleString()} keywords</div>`;
+    html += `<div class="tt-detail">${connections.length} connections &mdash; ${totalFlow.toLocaleString()} total flow</div>`;
+    if (topConns.length > 0) {
+      html += '<div class="tt-detail" style="margin-top:6px">';
+      topConns.forEach(c => {
+        const badge = c.type === "source" ? "SRC" : c.type === "discipline" ? "DISC" : "SUB";
+        html += `<div style="display:flex;justify-content:space-between;gap:8px">` +
+          `<span style="color:#6e7681">[${badge}]</span> ${c.name}` +
+          `<span style="color:#58a6ff;font-weight:600">${c.count.toLocaleString()}</span></div>`;
+      });
+      if (connections.length > 8) {
+        html += `<div style="color:#6e7681;margin-top:2px">+ ${connections.length - 8} more</div>`;
+      }
+      html += '</div>';
+    }
+    tooltip.innerHTML = html;
+    tooltip.style.display = "block";
+    moveTooltip(event);
+  }
+
+  function showChordTooltip(event, d) {
+    const src = nodes[d.source.index];
+    const tgt = nodes[d.target.index];
+    const val = d.source.value;
+
+    let html = `<div class="tt-type">${src.type} ↔ ${tgt.type}</div>`;
+    html += `<div class="tt-title">${src.name} — ${tgt.name}</div>`;
+    html += `<div class="tt-value">${val.toLocaleString()} shared keywords</div>`;
+    tooltip.innerHTML = html;
+    tooltip.style.display = "block";
+    moveTooltip(event);
+  }
+
+  function moveTooltip(event) {
+    const x = event.pageX + 14;
+    const y = event.pageY - 10;
+    const maxX = window.innerWidth - 340;
+    tooltip.style.left = Math.min(x, maxX) + "px";
+    tooltip.style.top = y + "px";
+  }
+
+  function hideTooltip() {
+    tooltip.style.display = "none";
+  }
+
+  // ── Legend ─────────────────────────────────────────────────────────
+  const legend = document.getElementById("legend");
+
+  function buildLegend() {
+    let html = "";
+
+    // Type indicators
+    html += '<div class="legend-group"><h4>Node Types</h4>';
+    [
+      { color: "#58a6ff", label: "Source Pillars", count: stats.num_sources },
+      { color: "#f0883e", label: "Disciplines", count: stats.num_disciplines },
+      { color: "#3fb950", label: "Subcategories", count: stats.num_subcategories },
+    ].forEach(item => {
+      html += `<div class="legend-item">
+        <span class="legend-swatch" style="background:${item.color}"></span>
+        ${item.label}
+        <span class="legend-count">${item.count}</span>
+      </div>`;
+    });
+    html += '</div>';
+
+    // Sources
+    const sources = nodes.filter(n => n.type === "source").sort((a, b) => b.size - a.size);
+    html += '<div class="legend-group"><h4>Sources</h4>';
+    sources.forEach(s => {
+      html += `<div class="legend-item" data-idx="${nodes.indexOf(s)}">
+        <span class="legend-swatch" style="background:${s.color}"></span>
+        ${s.name}
+        <span class="legend-count">${s.size.toLocaleString()}</span>
+      </div>`;
+    });
+    html += '</div>';
+
+    // Disciplines
+    const discs = nodes.filter(n => n.type === "discipline").sort((a, b) => b.size - a.size);
+    html += '<div class="legend-group"><h4>Disciplines</h4>';
+    discs.forEach(d => {
+      html += `<div class="legend-item" data-idx="${nodes.indexOf(d)}">
+        <span class="legend-swatch" style="background:${d.color}"></span>
+        ${d.name}
+        <span class="legend-count">${d.size.toLocaleString()}</span>
+      </div>`;
+    });
+    html += '</div>';
+
+    legend.innerHTML = html;
+
+    // Legend hover interactions
+    legend.querySelectorAll(".legend-item[data-idx]").forEach(el => {
+      const idx = parseInt(el.dataset.idx);
+      el.addEventListener("mouseenter", () => {
+        if (locked !== null) return;
+        highlightGroup(idx);
+      });
+      el.addEventListener("mouseleave", () => {
+        if (locked !== null) return;
+        resetHighlight();
+      });
+      el.addEventListener("click", () => {
+        if (locked === idx) {
+          locked = null;
+          resetHighlight();
+        } else {
+          locked = idx;
+          highlightGroup(idx);
+        }
+      });
+    });
+  }
+  buildLegend();
+
+  // ── Info panel ────────────────────────────────────────────────────
+  const infoPanel = document.getElementById("info-panel");
+  const srcSrcConns = nodes.filter(n => n.type === "source").length;
+  const discDiscConns = chords.filter(ch =>
+    nodes[ch.source.index].type === "discipline" && nodes[ch.target.index].type === "discipline"
+  ).length;
+  const srcDiscConns = chords.filter(ch =>
+    (nodes[ch.source.index].type === "source" && nodes[ch.target.index].type === "discipline") ||
+    (nodes[ch.source.index].type === "discipline" && nodes[ch.target.index].type === "source")
+  ).length;
+
+  infoPanel.innerHTML = `
+    <strong>Connection layers:</strong><br>
+    Source ↔ Discipline: ${srcDiscConns} ribbons<br>
+    Discipline ↔ Discipline: ${discDiscConns} ribbons<br>
+    Total ribbons: ${chords.length}<br><br>
+    <strong>Interaction:</strong><br>
+    Hover arc → highlight connections<br>
+    Click arc → lock highlight<br>
+    Click background → unlock<br>
+    Hover ribbon → see flow detail
+  `;
+
+  // ── Resize ────────────────────────────────────────────────────────
+  window.addEventListener("resize", () => {
+    // Simple responsive: just update viewBox, SVG scales
+    const newSize = Math.min(window.innerWidth - 280, window.innerHeight - 180, 1000);
+    const s = Math.max(newSize, 700);
+    d3.select("#chart svg")
+      .attr("width", s)
+      .attr("height", s);
+  });
+
+})();
+</script>
+</body>
+</html>

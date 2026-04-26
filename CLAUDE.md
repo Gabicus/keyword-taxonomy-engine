@@ -1,22 +1,21 @@
 # Keyword Taxonomy Engine — Project Instructions
 
 ## Project Overview
-Universal scientific keyword taxonomy engine. 6 data pillars ingested into DuckDB (74K unified + 47K raw records). Building cross-taxonomy alignment via multi-expert Bayesian consensus.
+Universal scientific keyword taxonomy engine. 7 data pillars + 230K WoS pubs + 8K OpenAlex pubs ingested into DuckDB. 424K senses, 2.58M relationships, 14 disciplines, 97 lenses. Vector bundle semantics — same keyword carries different meaning per context. Citation network + validation suite.
 
 ## Key Commands
 ```bash
-python -m src.cli ingest --sources nasa_gcmd unesco openalex ncbi loc doe_osti
-python -m src.cli ingest --raw          # also populate raw source tables
-python -m src.cli populate-raw          # populate raw tables only (from cached data)
-python -m src.cli stats                 # show counts by source
-python -m src.cli search "climate"      # search keywords
-python -m src.cli enrich --source nasa_gcmd  # enrich GCMD with API definitions
-python -m src.cli export                # export to parquet
-python -m src.cli lens fossil_energy --search "carbon"  # query through lens
+python -m src.cli lens fossil_energy --search "carbon"    # query through lens
 python -m src.cli lens-explore "combustion" --discipline materials  # explore relationships
 python -m src.cli lens-compare "methane" --lenses hat:fossil_energy:researcher hat:earth_environmental:director
-python -m src.cli lens-list --role researcher  # list available lenses
+python -m src.cli lens-papers fossil_energy --search "carbon"  # find papers through lens
+python -m src.cli lens-list --role researcher  # list 97 available lenses
+python -m src.cli search "climate"      # basic keyword search
+python -m src.cli ingest --sources nasa_gcmd unesco openalex ncbi loc doe_osti
+python -m src.cli stats                 # show counts by source
 python -m pytest tests/ -v              # run tests (178 passing)
+python3 -u scripts/validation_suite.py  # run validation suite (4 figures)
+python3 -u scripts/citation_coherence.py  # citation coherence analysis
 ```
 
 ## Architecture Rules

@@ -1,0 +1,181 @@
+{
+  "have": [
+    {"name": "NASA GCMD", "domain": "earth/space science", "approx_terms": 3200, "url": "https://gcmd.earthdata.nasa.gov/"},
+    {"name": "UNESCO Thesaurus", "domain": "multidisciplinary (education, social science, culture)", "approx_terms": 4400, "url": "https://vocabularies.unesco.org/thesaurus"},
+    {"name": "OpenAlex", "domain": "multidisciplinary (all academic fields)", "approx_terms": 65000, "url": "https://openalex.org/"},
+    {"name": "NCBI Taxonomy", "domain": "biology (organisms, species)", "approx_terms": 2400000, "url": "https://www.ncbi.nlm.nih.gov/taxonomy"},
+    {"name": "LoC LCSH", "domain": "multidisciplinary (all knowledge)", "approx_terms": 340000, "url": "https://id.loc.gov/authorities/subjects.html"},
+    {"name": "DOE OSTI", "domain": "energy science & technology", "approx_terms": 1600, "url": "https://www.osti.gov/"},
+    {"name": "MeSH", "domain": "biomedicine & health", "approx_terms": 30000, "url": "https://www.nlm.nih.gov/mesh/meshhome.html"}
+  ],
+  "missing": [
+    {
+      "name": "ERIC Thesaurus",
+      "domain": "education",
+      "approx_terms": 12000,
+      "approx_descriptors": 4578,
+      "url": "https://eric.ed.gov/",
+      "maintainer": "Institute of Education Sciences (IES), US Dept of Education",
+      "format": "SKOS/XML",
+      "priority": "medium",
+      "notes": "Covers education research. 4,578 descriptors + 7,219 synonyms. Updated annually."
+    },
+    {
+      "name": "AGROVOC",
+      "domain": "agriculture, food, fisheries, forestry, environment",
+      "approx_terms": 41400,
+      "url": "https://www.fao.org/agrovoc/",
+      "maintainer": "FAO (UN Food and Agriculture Organization)",
+      "format": "SKOS-XL, Linked Open Data",
+      "priority": "high",
+      "notes": "41,409 concepts in 42 languages. Actively maintained, monthly releases. GACS Core maps to CAB Thesaurus and NAL."
+    },
+    {
+      "name": "GeoRef Thesaurus",
+      "domain": "geosciences (geology, geophysics, paleontology, mining)",
+      "approx_terms": 34000,
+      "url": "https://www.americangeosciences.org/information/georef/thesaurus",
+      "maintainer": "American Geosciences Institute (AGI)",
+      "format": "proprietary, 11th edition",
+      "priority": "high",
+      "notes": "Primary geosciences vocabulary. 33,700+ terms. Updated annually. Strong overlap with our earth science categories."
+    },
+    {
+      "name": "INSPEC Thesaurus",
+      "domain": "physics, electrical engineering, electronics, computing, IT",
+      "approx_terms": 10000,
+      "url": "https://www.theiet.org/publishing/inspec/",
+      "maintainer": "Institution of Engineering and Technology (IET)",
+      "format": "proprietary",
+      "priority": "high",
+      "notes": "10,000+ controlled terms. Hand-indexed by scientists for 50+ years. Covers physics and engineering deeply."
+    },
+    {
+      "name": "IEEE Thesaurus",
+      "domain": "electrical engineering, computer science, standards",
+      "approx_terms": 12045,
+      "url": "https://www.ieee.org/publications/services/thesaurus",
+      "maintainer": "IEEE",
+      "format": "XML, downloadable",
+      "priority": "medium",
+      "notes": "12,045 terms. Updated regularly (116 new terms Jan 2025). Covers IEEE-specific technical and scientific terminology."
+    },
+    {
+      "name": "INIS Thesaurus",
+      "domain": "nuclear science & technology",
+      "approx_terms": 31000,
+      "url": "https://www.iaea.org/resources/databases/inis/thesaurus",
+      "maintainer": "IAEA (International Atomic Energy Agency)",
+      "format": "multilingual (8 languages)",
+      "priority": "high",
+      "notes": "31,000+ terms in English. Covers all aspects of peaceful nuclear energy use. Strong overlap with DOE OSTI."
+    },
+    {
+      "name": "CAB Thesaurus (CABI)",
+      "domain": "agriculture, life sciences, veterinary, human health",
+      "approx_terms": 182000,
+      "url": "https://www.cabi.org/publishing-products/cab-thesaurus/",
+      "maintainer": "CABI (Centre for Agriculture and Bioscience International)",
+      "format": "SKOS, online browser",
+      "priority": "medium",
+      "notes": "Largest life sciences thesaurus: 182,060 concepts + 3M total terms/labels in 12 languages. Maps to AGROVOC via GACS."
+    },
+    {
+      "name": "NAL Thesaurus (NALT)",
+      "domain": "agriculture, food, nutrition",
+      "approx_terms": 135000,
+      "url": "https://agclass.nal.usda.gov/",
+      "maintainer": "USDA National Agricultural Library",
+      "format": "RDF-SKOS, XML, MARC",
+      "priority": "medium",
+      "notes": "135,000+ terms in 17 categories. NALT Core (14,196 concepts) + NALT Taxon (52,978 organisms). Updated annually."
+    },
+    {
+      "name": "Emtree (Embase)",
+      "domain": "biomedicine, pharmacology, drug science",
+      "approx_terms": 89000,
+      "url": "https://www.elsevier.com/products/embase/emtree",
+      "maintainer": "Elsevier",
+      "format": "proprietary (Embase platform)",
+      "priority": "medium",
+      "notes": "~89,000 preferred terms + 430,000 synonyms. 2x larger than MeSH. Strong drug/chemical coverage. Updated 3x/year."
+    },
+    {
+      "name": "EuroVoc",
+      "domain": "EU policy, law, economics, international relations",
+      "approx_terms": 7000,
+      "url": "https://op.europa.eu/en/web/eu-vocabularies/eurovoc",
+      "maintainer": "Publications Office of the European Union",
+      "format": "SKOS, Linked Open Data, 24 EU languages",
+      "priority": "low",
+      "notes": "7,000+ concepts in 21 domains. Policy-focused rather than scientific but covers environment, energy, technology."
+    },
+    {
+      "name": "Unified Astronomy Thesaurus (UAT)",
+      "domain": "astronomy & astrophysics",
+      "approx_terms": 2100,
+      "url": "https://astrothesaurus.org/",
+      "maintainer": "American Astronomical Society (AAS)",
+      "format": "SKOS, open source (GitHub)",
+      "priority": "medium",
+      "notes": "2,100+ concepts in 11 categories. Open source. Used by AAS journals, NASA ADS. Replaced older isolated thesauri."
+    },
+    {
+      "name": "USGS Thesaurus",
+      "domain": "geology, hydrology, biology, geography (US focused)",
+      "approx_terms": 2000,
+      "url": "https://apps.usgs.gov/thesaurus/",
+      "maintainer": "U.S. Geological Survey",
+      "format": "RDF, ANSI/NISO Z39.19 compliant",
+      "priority": "medium",
+      "notes": "Strict hierarchy conforming to NISO standards. Covers USGS research themes. Complements GeoRef for US geology."
+    },
+    {
+      "name": "Getty Art & Architecture Thesaurus (AAT)",
+      "domain": "art, architecture, conservation, cultural heritage",
+      "approx_terms": 56000,
+      "url": "https://www.getty.edu/research/tools/vocabularies/aat/",
+      "maintainer": "Getty Research Institute",
+      "format": "Linked Open Data, 4 languages",
+      "priority": "low",
+      "notes": "55,661 concepts + 131,000 terms. 7 facets. Used globally for art/architecture. Updated bi-weekly."
+    },
+    {
+      "name": "STW Thesaurus for Economics",
+      "domain": "economics, business, finance",
+      "approx_terms": 6000,
+      "url": "https://zbw.eu/stw/version/latest/about.en.html",
+      "maintainer": "ZBW (German National Library of Economics)",
+      "format": "SKOS, Linked Open Data",
+      "priority": "low",
+      "notes": "6,000+ headings in English/German + 22,000 synonyms. ISO-25964 compliant. Free reuse under CC license."
+    },
+    {
+      "name": "Wikidata",
+      "domain": "multidisciplinary (all knowledge, structured)",
+      "approx_terms": 110000000,
+      "url": "https://www.wikidata.org/",
+      "maintainer": "Wikimedia Foundation",
+      "format": "Linked Open Data, SPARQL endpoint",
+      "priority": "low",
+      "notes": "110M+ items. Not a traditional thesaurus but a structured knowledge base. Properties map to many standard vocabularies."
+    },
+    {
+      "name": "SNOMED CT",
+      "domain": "clinical medicine, health informatics",
+      "approx_terms": 360000,
+      "url": "https://www.snomed.org/",
+      "maintainer": "SNOMED International",
+      "format": "RF2, FHIR",
+      "priority": "low",
+      "notes": "360,000+ concepts. Clinical terminology standard used in electronic health records. More clinical than research-focused."
+    }
+  ],
+  "summary": {
+    "total_known": 23,
+    "we_have": 7,
+    "we_are_missing": 16,
+    "high_priority_missing": ["AGROVOC", "GeoRef Thesaurus", "INSPEC Thesaurus", "INIS Thesaurus"],
+    "recommendation": "AGROVOC, GeoRef, INSPEC, and INIS would add the most complementary coverage to our existing sources. AGROVOC fills agriculture gaps beyond DOE. GeoRef deeply covers geosciences. INSPEC covers physics/engineering with expert-curated indexing. INIS bridges nuclear science between DOE OSTI and IAEA."
+  }
+}

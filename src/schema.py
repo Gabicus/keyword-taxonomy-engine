@@ -1069,6 +1069,106 @@ CREATE INDEX IF NOT EXISTS idx_lens_role ON ontology_lenses(role_type);
 """
 
 # =============================================================================
+# PUBLICATION LAYER — OpenAlex Publications + Citation Network
+# =============================================================================
+
+RAW_OPENALEX_PUBLICATIONS = """
+-- ============================================================
+-- raw_openalex_publications: OpenAlex publication metadata
+-- ============================================================
+-- Source: OpenAlex API (works endpoint)
+-- Coverage: ~8K DOE national lab publications
+--
+-- FIELD DICTIONARY:
+--   openalex_id        — OpenAlex work ID (URL format)
+--   doi                — Digital Object Identifier
+--   title              — Publication title
+--   publication_year   — Year of publication
+--   cited_by_count     — Number of citations (from OpenAlex)
+--   type               — Work type (journal-article, etc.)
+--   primary_location   — JSON: journal/source info
+--   authorships        — JSON array: author + institution data
+--   topics             — JSON array: OpenAlex topic assignments
+--   keywords           — JSON array: OpenAlex keyword assignments
+--   grants             — JSON array: funding info
+--   abstract           — Inverted index or plain text abstract
+--   ingested_at        — When our system fetched this record
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS raw_openalex_publications (
+    openalex_id VARCHAR PRIMARY KEY,
+    doi VARCHAR,
+    title VARCHAR,
+    publication_year INTEGER,
+    cited_by_count INTEGER,
+    type VARCHAR,
+    primary_location JSON,
+    authorships JSON,
+    topics JSON,
+    keywords JSON,
+    grants JSON,
+    abstract TEXT,
+    ingested_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_oapub_doi ON raw_openalex_publications(doi);
+CREATE INDEX IF NOT EXISTS idx_oapub_year ON raw_openalex_publications(publication_year);
+"""
+
+OPENALEX_PUB_KEYWORDS = """
+-- ============================================================
+-- openalex_pub_keywords: Keyword-to-publication mappings
+-- ============================================================
+-- Source: Extracted from OpenAlex work topics/keywords/concepts
+-- Coverage: ~69K mappings across ~8K publications
+--
+-- FIELD DICTIONARY:
+--   openalex_id         — FK to raw_openalex_publications
+--   keyword_label       — Keyword text (display form)
+--   keyword_openalex_id — OpenAlex keyword/topic ID
+--   relevance_score     — 0-1, how relevant this keyword is to the paper
+--   keyword_source      — Which OpenAlex field: keyword, topic, concept
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS openalex_pub_keywords (
+    openalex_id VARCHAR NOT NULL,
+    keyword_label VARCHAR NOT NULL,
+    keyword_openalex_id VARCHAR,
+    relevance_score DOUBLE,
+    keyword_source VARCHAR NOT NULL,
+    PRIMARY KEY (openalex_id, keyword_label, keyword_source)
+);
+
+CREATE INDEX IF NOT EXISTS idx_opk_label ON openalex_pub_keywords(keyword_label);
+CREATE INDEX IF NOT EXISTS idx_opk_source ON openalex_pub_keywords(keyword_source);
+"""
+
+OPENALEX_CITATIONS = """
+-- ============================================================
+-- openalex_citations: Citation network between publications
+-- ============================================================
+-- Source: OpenAlex API referenced_works field
+-- Each row = one citation edge (citing → cited)
+--
+-- FIELD DICTIONARY:
+--   citing_id    — OpenAlex ID of the citing work
+--   cited_id     — OpenAlex ID of the cited work
+--   in_corpus    — Whether the cited work is in raw_openalex_publications
+-- ============================================================
+
+CREATE TABLE IF NOT EXISTS openalex_citations (
+    citing_id VARCHAR NOT NULL,
+    cited_id VARCHAR NOT NULL,
+    in_corpus BOOLEAN DEFAULT false,
+    PRIMARY KEY (citing_id, cited_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_cite_citing ON openalex_citations(citing_id);
+CREATE INDEX IF NOT EXISTS idx_cite_cited ON openalex_citations(cited_id);
+CREATE INDEX IF NOT EXISTS idx_cite_corpus ON openalex_citations(in_corpus);
+"""
+
+# =============================================================================
 # ALL SCHEMAS — for init_all_tables()
 # =============================================================================
 
@@ -1091,6 +1191,9 @@ ALL_SCHEMAS = [
     SENSE_RELATIONSHIPS,
     HIERARCHY_ENVELOPES,
     ONTOLOGY_LENSES,
+    RAW_OPENALEX_PUBLICATIONS,
+    OPENALEX_PUB_KEYWORDS,
+    OPENALEX_CITATIONS,
 ]
 
 

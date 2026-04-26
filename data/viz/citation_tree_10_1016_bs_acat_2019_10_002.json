@@ -1,0 +1,2647 @@
+{
+  "center": {
+    "openalex_id": "https://openalex.org/W2986010845",
+    "doi": "10.1016/bs.acat.2019.10.002",
+    "title": "Recent advances in catalytic CO2 hydrogenation to alcohols and hydrocarbons",
+    "year": 2019,
+    "keywords": [
+      "FISCHER-TROPSCH SYNTHESIS",
+      "HIGHLY SELECTIVE CONVERSION",
+      "CARBON-DIOXIDE METHANATION",
+      "SYNTHESIS GAS CONVERSION",
+      "CU BIMETALLIC CATALYSTS",
+      "DENSITY-FUNCTIONAL THEORY",
+      "SUPPORTED PALLADIUM CATALYST",
+      "POWER-TO-METHANE",
+      "ETHANOL SYNTHESIS",
+      "LOW-TEMPERATURE"
+    ]
+  },
+  "roots": [
+    {
+      "openalex_id": "https://openalex.org/W2600566292",
+      "title": "CATALYSIS Active sites for CO2 hydrogenation to methanol on Cu/ZnO catalysts",
+      "year": 2017,
+      "doi": "10.1126/science.aal3573",
+      "in_corpus": true
+    },
+    {
+      "openalex_id": "https://openalex.org/W2287520545",
+      "title": "CO2 hydrogenation on Pt, PtiSiO2 and Pt/TiO2: Importance of synergy between Pt and oxide support",
+      "year": 2016,
+      "doi": "10.1016/j.jcat.2015.12.019",
+      "in_corpus": true
+    },
+    {
+      "openalex_id": "https://openalex.org/W2511433364",
+      "title": "Optimizing Binding Energies of Key Intermediates for CO2 Hydrogenation to Methanol over Oxide-Supported Copper",
+      "year": 2016,
+      "doi": "10.1021/jacs.6b05791",
+      "in_corpus": true
+    },
+    {
+      "openalex_id": "https://openalex.org/W1949080039",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1969509712",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1973365498",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1991377026",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2011865052",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2041382310",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2061342865",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2077335360",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2126766116",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2169957023",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2325892136",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2494585039",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2527762680",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2568995216",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2624906538",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2647468055",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2744259153",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2753455679",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2753776644",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2791646776",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2793553064",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2804428693",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2883490296",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2886469795",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2938013832",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W104426977",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1480171480",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1966989703",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1971876886",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1994333636",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2025822302",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2046085359",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2062459062",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2072918691",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2074349617",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2221703951",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2296880544",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2326772021",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2471126886",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2527929805",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2612133627",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2616954672",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2795037618",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2886621833",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2930198374",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2937436417",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2947162213",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W4255644523",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1969099710",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2003310725",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2004598837",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2032364562",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2033160645",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2067008859",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2079451200",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2092362068",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2212857507",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2396232752",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2487512096",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2521973612",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2557053031",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2741479931",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2769688193",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2771390498",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2792475814",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2800573980",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2848908709",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2888756095",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2891296309",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2904421460",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2910079674",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2918330709",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W3105518454",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1965641360",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1991316483",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1991692033",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2002225294",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2013474329",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2059558590",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2064364958",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2328500204",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2346041864",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2512001963",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2622815680",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2722013064",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2769492918",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2770591304",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2786051018",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2792399670",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2902514032",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1976262914",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2027806455",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2034229688",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2053086807",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2055909272",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2067278754",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2080730530",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2088717848",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2088755577",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2108842383",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2109267276",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2110856693",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2170946136",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2323239271",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2767656603",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2884999058",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2913804493",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2948994799",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2952269967",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2966615249",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W295055319",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1885984895",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1989389325",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2003525397",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2008359230",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2026852653",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2040968757",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2059611601",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2073632700",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2084873384",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2186567173",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2186796002",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2239854870",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2285964901",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2321911283",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2335046664",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2642691642",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2795012007",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2799639136",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2924240117",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2943897925",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W4251607387",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1995030777",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2001366090",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2005417060",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2017943582",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2146992088",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2154943025",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2280487064",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2315086621",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2471391451",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2730506228",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2753005056",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2791496885",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2804213512",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2892331459",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2898733174",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2937819866",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1965663951",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1985041539",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2028690756",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2044663355",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2053428471",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2066558407",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2067892543",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2082840049",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2083632910",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2089793799",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2102572148",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2127068499",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2158991367",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2293193226",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2324048221",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2335649524",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2403077773",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2518889596",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2588404160",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2621214070",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2771529756",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2784237589",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2795455187",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2802178028",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2902299993",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2904840795",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2906634589",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W267956803",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W571553637",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1993992090",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2009603345",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2011377242",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2012225586",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2012647111",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2021840372",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2051039255",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2103054408",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2152193384",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2271079307",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2296600430",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2303269755",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2346591116",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2599977561",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2610553909",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2615949427",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2741781390",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2783694712",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2809286430",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2890950831",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2899638129",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W307992885",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W333587520",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1965643846",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1967720656",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1981503403",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1991826588",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1993704292",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2012922112",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2013826816",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2019497094",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2040649578",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2051302811",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2057353338",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2062087710",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2076522263",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2082316465",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2088561214",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2098480075",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2270836175",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2300652854",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2334166060",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2342427117",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2725648806",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2736177983",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2753936730",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2761760067",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2767911120",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2794377462",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2802610148",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2900259630",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2940698736",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2945088009",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2947797624",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W276058673",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1965878501",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1971076099",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1972198249",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1996641902",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2016252618",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2016549755",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2092038043",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2099847137",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2153166184",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2208550318",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2344251303",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2513990413",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2607552296",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2758315793",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2760633774",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2805435924",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2884283492",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2891598251",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2909842608",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2944068042",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1981305447",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1991928607",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2005209875",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2007117531",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2022190942",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2040365636",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2060710374",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2068751482",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2080133004",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2091365474",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2139598701",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2168673301",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2239922368",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2474598392",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2770562898",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2802783352",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W306712533",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1856827022",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1994113463",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2022216649",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2070566286",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2075975251",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2083423145",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2085736523",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2093909189",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2110154495",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2116258091",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2142148918",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2238359662",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2253478024",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2258208671",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2266904741",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2332610353",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2522385214",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2587190691",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2613395675",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2619237192",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2644727223",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2736729186",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2750197693",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2805237801",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2886754828",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2898084211",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2904982608",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2969051621",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1977149641",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1984881435",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2002056049",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2025276052",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2042555761",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2059630988",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2062832911",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2065957136",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2080886019",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2084609852",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2088276534",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2099220835",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2103622382",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2105045978",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2275374729",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2335268212",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2439358996",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2567145470",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2616945857",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2620689702",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2738472760",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2745087329",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2766242490",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2781670914",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2782578257",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2789500473",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2798246523",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2806686680",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2899665278",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2911304958",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2966965333",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W48428200",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W567580503",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1251715709",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2001170108",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2008648123",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2026082383",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2027209712",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2051939850",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2057160206",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2068714183",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2070661226",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2091775405",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2113826077",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2331642273",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2374241595",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2418452057",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2579891120",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2752661218",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2763618894",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2883521468",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2885557751",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2906482408",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2913596656",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2915489514",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2921724393",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2928081315",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W4248080670",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W33757514",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1965824479",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W1969280171",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2078385084",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2332094867",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2340308432",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2340769656",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2504373118",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2516653220",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2775247499",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2778844521",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2799961670",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2803039962",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2903865737",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2912629029",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    },
+    {
+      "openalex_id": "https://openalex.org/W2946996494",
+      "title": null,
+      "year": null,
+      "doi": null,
+      "in_corpus": false
+    }
+  ],
+  "branches": [],
+  "stats": {
+    "n_roots": 374,
+    "n_branches": 0,
+    "n_roots_in_corpus": 3,
+    "n_branches_in_corpus": 0
+  }
+}

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keyword Nebula — Taxonomy Visualization</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a1a; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; color: #ccc; }
+canvas { display: block; }
+
+#loading {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: #0a0a1a; z-index: 1000; flex-direction: column; gap: 16px;
+}
+#loading .spinner {
+  width: 48px; height: 48px; border: 3px solid #333; border-top-color: #6af;
+  border-radius: 50%; animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#loading .msg { font-size: 14px; color: #888; }
+
+#error-panel {
+  position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+  background: #0a0a1a; z-index: 1001; flex-direction: column; gap: 16px; padding: 40px;
+}
+#error-panel h2 { color: #f66; font-size: 20px; }
+#error-panel p { color: #aaa; font-size: 14px; max-width: 500px; text-align: center; line-height: 1.6; }
+#error-panel code { background: #1a1a2e; padding: 8px 16px; border-radius: 6px; color: #6af; font-size: 13px; }
+
+#legend {
+  position: fixed; top: 16px; right: 16px; background: rgba(10,10,26,0.85);
+  border: 1px solid #222; border-radius: 8px; padding: 12px 16px; z-index: 100;
+  max-height: 70vh; overflow-y: auto; backdrop-filter: blur(8px);
+  font-size: 12px; min-width: 180px;
+}
+#legend h3 { font-size: 13px; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.legend-item {
+  display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer;
+  opacity: 0.8; transition: opacity 0.2s;
+}
+.legend-item:hover { opacity: 1; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.legend-label { white-space: nowrap; }
+
+#info-panel {
+  position: fixed; bottom: 16px; left: 16px; background: rgba(10,10,26,0.85);
+  border: 1px solid #222; border-radius: 8px; padding: 12px 16px; z-index: 100;
+  backdrop-filter: blur(8px); font-size: 13px; min-width: 220px;
+  transition: opacity 0.3s;
+}
+#info-panel.hidden { opacity: 0.4; }
+#info-panel h4 { color: #6af; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+#info-lens { font-size: 16px; color: #fff; font-weight: 600; }
+#info-discipline { color: #888; font-size: 12px; margin-top: 2px; }
+#info-count { color: #aaa; font-size: 12px; margin-top: 4px; }
+
+#help-btn {
+  position: fixed; bottom: 16px; right: 16px; width: 32px; height: 32px;
+  background: rgba(10,10,26,0.85); border: 1px solid #333; border-radius: 50%;
+  color: #888; font-size: 16px; cursor: pointer; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+#help-btn:hover { color: #fff; border-color: #6af; }
+
+#help-panel {
+  position: fixed; bottom: 56px; right: 16px; background: rgba(10,10,26,0.95);
+  border: 1px solid #333; border-radius: 8px; padding: 16px 20px; z-index: 100;
+  display: none; font-size: 12px; line-height: 1.8; backdrop-filter: blur(8px);
+}
+#help-panel kbd {
+  background: #1a1a2e; padding: 2px 6px; border-radius: 3px; border: 1px solid #333;
+  font-family: monospace; font-size: 11px;
+}
+
+#tooltip {
+  position: fixed; pointer-events: none; background: rgba(10,10,26,0.95);
+  border: 1px solid #444; border-radius: 6px; padding: 6px 10px; z-index: 200;
+  font-size: 12px; color: #fff; display: none; white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <div class="msg">Loading keyword nebula...</div>
+</div>
+
+<div id="error-panel">
+  <h2>Could not load nebula data</h2>
+  <p id="error-msg"></p>
+  <p>Expected JSON file at:</p>
+  <code>data/viz/nebula_data.json</code>
+  <p style="margin-top:12px">Generate it with:<br><code>python scripts/build_nebula_data.py</code></p>
+</div>
+
+<div id="legend"><h3>Disciplines</h3></div>
+
+<div id="info-panel" class="hidden">
+  <h4>Selected Lens</h4>
+  <div id="info-lens">None</div>
+  <div id="info-discipline"></div>
+  <div id="info-count"></div>
+</div>
+
+<div id="tooltip"></div>
+
+<button id="help-btn" title="Controls">?</button>
+<div id="help-panel">
+  <div><kbd>Left drag</kbd> Orbit</div>
+  <div><kbd>Right drag</kbd> Pan</div>
+  <div><kbd>Scroll</kbd> Zoom</div>
+  <div><kbd>Click</kbd> lens dot to highlight discipline</div>
+  <div><kbd>Shift+Click</kbd> additive selection</div>
+  <div><kbd>Click</kbd> empty space to reset</div>
+  <div><kbd>Esc</kbd> reset selection</div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+
+// --- 14 discipline colors ---
+const DISCIPLINE_COLORS = {
+  'fossil_energy':        '#ff6b35',
+  'renewable_energy':     '#00e676',
+  'earth_environmental':  '#2196f3',
+  'materials':            '#ff9800',
+  'chemistry':            '#e040fb',
+  'physics':              '#00bcd4',
+  'biology':              '#8bc34a',
+  'medical':              '#f44336',
+  'engineering':          '#ffeb3b',
+  'computer_science':     '#7c4dff',
+  'mathematics':          '#78909c',
+  'social_science':       '#ff7043',
+  'agriculture':          '#4caf50',
+  'general':              '#9e9e9e'
+};
+
+// Fallback palette for unknown disciplines
+const FALLBACK_COLORS = [
+  '#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#feca57',
+  '#ff9ff3','#54a0ff','#5f27cd','#01a3a4','#f368e0',
+  '#ee5a24','#009432','#0652dd','#9980fa'
+];
+
+let scene, camera, renderer, composer, controls;
+let particleSystem, particleGeo, particleMat;
+let lensGroup, lensMeshes = [];
+let data = null;
+let disciplineMap = {};  // discipline -> color
+let selectedDisciplines = new Set();
+let raycaster = new THREE.Raycaster();
+let mouse = new THREE.Vector2();
+let hoveredLens = null;
+
+// LOD state
+let disciplineLabels = [];  // sprites at cluster centroids
+let keywordLabels = [];     // sprites for nearby keywords
+
+// --- Load data ---
+async function loadData() {
+  // Try relative path (works when served), then try from repo root
+  const paths = [
+    'data/viz/nebula_data.json',
+    '../data/viz/nebula_data.json',
+    './data/viz/nebula_data.json'
+  ];
+
+  let lastError = null;
+  for (const p of paths) {
+    try {
+      const resp = await fetch(p);
+      if (resp.ok) {
+        data = await resp.json();
+        return;
+      }
+    } catch (e) {
+      lastError = e;
+    }
+  }
+
+  throw new Error(
+    lastError ? lastError.message :
+    'nebula_data.json not found. Run the data build script first.'
+  );
+}
+
+function showError(msg) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('error-panel').style.display = 'flex';
+  document.getElementById('error-msg').textContent = msg;
+}
+
+// --- Build discipline color map ---
+function buildDisciplineMap() {
+  const seen = new Set();
+  if (data.keywords) data.keywords.forEach(k => seen.add(k.discipline));
+  if (data.lenses) data.lenses.forEach(l => seen.add(l.discipline));
+
+  let fallbackIdx = 0;
+  seen.forEach(d => {
+    if (DISCIPLINE_COLORS[d]) {
+      disciplineMap[d] = DISCIPLINE_COLORS[d];
+    } else {
+      disciplineMap[d] = FALLBACK_COLORS[fallbackIdx % FALLBACK_COLORS.length];
+      fallbackIdx++;
+    }
+  });
+}
+
+// --- Build legend ---
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  const disciplines = Object.keys(disciplineMap).sort();
+  disciplines.forEach(d => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${disciplineMap[d]}"></div>
+      <span class="legend-label">${d.replace(/_/g, ' ')}</span>`;
+    item.addEventListener('click', () => {
+      selectedDisciplines.clear();
+      selectedDisciplines.add(d);
+      applySelection();
+    });
+    legend.appendChild(item);
+  });
+}
+
+// --- Init Three.js ---
+function initScene() {
+  scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0a0a1a, 0.0008);
+
+  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 5000);
+  camera.position.set(0, 0, 400);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x0a0a1a);
+  document.body.appendChild(renderer.domElement);
+
+  // Post-processing bloom
+  composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    0.8,   // strength
+    0.4,   // radius
+    0.85   // threshold
+  );
+  composer.addPass(bloom);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.minDistance = 50;
+  controls.maxDistance = 1500;
+  controls.rotateSpeed = 0.5;
+
+  // Ambient light
+  scene.add(new THREE.AmbientLight(0x333355, 0.5));
+}
+
+// --- Create particle cloud ---
+function createParticles() {
+  const kws = data.keywords;
+  const count = kws.length;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const sizes = new Float32Array(count);
+  const alphas = new Float32Array(count);
+
+  for (let i = 0; i < count; i++) {
+    const k = kws[i];
+    positions[i*3]     = k.x;
+    positions[i*3 + 1] = k.y;
+    positions[i*3 + 2] = k.z;
+
+    const c = new THREE.Color(disciplineMap[k.discipline] || '#666');
+    colors[i*3]     = c.r;
+    colors[i*3 + 1] = c.g;
+    colors[i*3 + 2] = c.b;
+
+    sizes[i] = k.size || 2.0;
+    alphas[i] = 1.0;
+  }
+
+  particleGeo = new THREE.BufferGeometry();
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  particleGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+  particleGeo.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1));
+
+  particleMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uPixelRatio: { value: renderer.getPixelRatio() },
+    },
+    vertexShader: `
+      attribute float size;
+      attribute float alpha;
+      varying vec3 vColor;
+      varying float vAlpha;
+      uniform float uPixelRatio;
+      void main() {
+        vColor = color;
+        vAlpha = alpha;
+        vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = size * uPixelRatio * (300.0 / -mvPos.z);
+        gl_PointSize = clamp(gl_PointSize, 1.0, 40.0);
+        gl_Position = projectionMatrix * mvPos;
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vColor;
+      varying float vAlpha;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        if (d > 0.5) discard;
+        float glow = 1.0 - smoothstep(0.0, 0.5, d);
+        gl_FragColor = vec4(vColor, vAlpha * glow);
+      }
+    `,
+    vertexColors: true,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+
+  particleSystem = new THREE.Points(particleGeo, particleMat);
+  scene.add(particleSystem);
+}
+
+// --- Compute bounding sphere radius ---
+function computeCloudRadius() {
+  let maxR = 0;
+  const kws = data.keywords;
+  for (let i = 0; i < kws.length; i++) {
+    const r = Math.sqrt(kws[i].x**2 + kws[i].y**2 + kws[i].z**2);
+    if (r > maxR) maxR = r;
+  }
+  return maxR;
+}
+
+// --- Create surrounding sphere + lens dots ---
+function createLensSphere() {
+  const cloudR = computeCloudRadius();
+  const sphereR = cloudR * 1.4;
+
+  // Wireframe sphere
+  const sphereGeo = new THREE.SphereGeometry(sphereR, 48, 48);
+  const sphereMat = new THREE.MeshBasicMaterial({
+    color: 0x1a1a3e, wireframe: true, transparent: true, opacity: 0.08
+  });
+  scene.add(new THREE.Mesh(sphereGeo, sphereMat));
+
+  // Group lenses by discipline for clustering on sphere
+  lensGroup = new THREE.Group();
+  const lenses = data.lenses || [];
+  const discLenses = {};
+  lenses.forEach(l => {
+    if (!discLenses[l.discipline]) discLenses[l.discipline] = [];
+    discLenses[l.discipline].push(l);
+  });
+
+  const discKeys = Object.keys(discLenses).sort();
+  const numDisc = discKeys.length;
+
+  discKeys.forEach((disc, di) => {
+    const group = discLenses[disc];
+    // Base direction on sphere for this discipline
+    const phi = Math.acos(1 - 2 * (di + 0.5) / numDisc);  // latitude spread
+    const theta = (di / numDisc) * Math.PI * 2 * 2.39996;   // golden angle spread
+
+    group.forEach((lens, li) => {
+      // Jitter within discipline cluster
+      const jPhi = phi + (li * 0.15 - group.length * 0.075);
+      const jTheta = theta + (li * 0.12 - group.length * 0.06);
+
+      const x = sphereR * Math.sin(jPhi) * Math.cos(jTheta);
+      const y = sphereR * Math.sin(jPhi) * Math.sin(jTheta);
+      const z = sphereR * Math.cos(jPhi);
+
+      const dotGeo = new THREE.SphereGeometry(sphereR * 0.012, 12, 12);
+      const color = new THREE.Color(disciplineMap[disc] || '#666');
+      const dotMat = new THREE.MeshBasicMaterial({
+        color, transparent: true, opacity: 0.9
+      });
+      const dot = new THREE.Mesh(dotGeo, dotMat);
+      dot.position.set(x, y, z);
+      dot.userData = { type: 'lens', ...lens };
+
+      // Glow ring
+      const ringGeo = new THREE.RingGeometry(sphereR * 0.015, sphereR * 0.022, 16);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color, transparent: true, opacity: 0.3, side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(dot.position);
+      ring.lookAt(0, 0, 0);
+      lensGroup.add(ring);
+
+      lensGroup.add(dot);
+      lensMeshes.push(dot);
+    });
+  });
+
+  scene.add(lensGroup);
+}
+
+// --- Discipline label sprites at cluster centroids ---
+function createDisciplineLabels() {
+  const centroids = {};
+  const counts = {};
+  data.keywords.forEach(k => {
+    const d = k.discipline;
+    if (!centroids[d]) { centroids[d] = [0,0,0]; counts[d] = 0; }
+    centroids[d][0] += k.x;
+    centroids[d][1] += k.y;
+    centroids[d][2] += k.z;
+    counts[d]++;
+  });
+
+  Object.keys(centroids).forEach(d => {
+    const n = counts[d];
+    const cx = centroids[d][0] / n;
+    const cy = centroids[d][1] / n;
+    const cz = centroids[d][2] / n;
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 256; canvas.height = 64;
+    ctx.font = 'bold 24px sans-serif';
+    ctx.fillStyle = disciplineMap[d] || '#888';
+    ctx.textAlign = 'center';
+    ctx.fillText(d.replace(/_/g, ' '), 128, 40);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0, depthWrite: false });
+    const sprite = new THREE.Sprite(mat);
+    sprite.position.set(cx, cy, cz);
+    sprite.scale.set(60, 15, 1);
+    sprite.userData = { type: 'discLabel' };
+    scene.add(sprite);
+    disciplineLabels.push(sprite);
+  });
+}
+
+// --- Selection logic ---
+function applySelection() {
+  const kws = data.keywords;
+  const alphas = particleGeo.attributes.alpha;
+  const sizes = particleGeo.attributes.size;
+  let highlightCount = 0;
+
+  if (selectedDisciplines.size === 0) {
+    // Reset all
+    for (let i = 0; i < kws.length; i++) {
+      alphas.array[i] = 1.0;
+      sizes.array[i] = kws[i].size || 2.0;
+    }
+    document.getElementById('info-panel').classList.add('hidden');
+    document.getElementById('info-lens').textContent = 'None';
+    document.getElementById('info-discipline').textContent = '';
+    document.getElementById('info-count').textContent = '';
+  } else {
+    for (let i = 0; i < kws.length; i++) {
+      if (selectedDisciplines.has(kws[i].discipline)) {
+        alphas.array[i] = 1.0;
+        sizes.array[i] = (kws[i].size || 2.0) * 1.8;
+        highlightCount++;
+      } else {
+        alphas.array[i] = 0.08;
+        sizes.array[i] = (kws[i].size || 2.0) * 0.5;
+      }
+    }
+    document.getElementById('info-panel').classList.remove('hidden');
+    document.getElementById('info-count').textContent = `${highlightCount.toLocaleString()} keywords highlighted`;
+  }
+
+  alphas.needsUpdate = true;
+  sizes.needsUpdate = true;
+
+  // Update lens dot opacity
+  lensMeshes.forEach(m => {
+    if (selectedDisciplines.size === 0) {
+      m.material.opacity = 0.9;
+    } else if (selectedDisciplines.has(m.userData.discipline)) {
+      m.material.opacity = 1.0;
+    } else {
+      m.material.opacity = 0.15;
+    }
+  });
+}
+
+function resetSelection() {
+  selectedDisciplines.clear();
+  applySelection();
+}
+
+// --- Raycasting ---
+function onMouseMove(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(lensMeshes);
+
+  const tooltip = document.getElementById('tooltip');
+  if (hits.length > 0) {
+    const ud = hits[0].object.userData;
+    hoveredLens = hits[0].object;
+    tooltip.style.display = 'block';
+    tooltip.style.left = (e.clientX + 12) + 'px';
+    tooltip.style.top = (e.clientY - 8) + 'px';
+    const role = ud.role ? ` (${ud.role})` : '';
+    tooltip.textContent = `${ud.name || ud.lens_id}${role} — ${(ud.discipline || '').replace(/_/g, ' ')}`;
+    document.body.style.cursor = 'pointer';
+  } else {
+    hoveredLens = null;
+    tooltip.style.display = 'none';
+    document.body.style.cursor = 'default';
+  }
+}
+
+function onClick(e) {
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(lensMeshes);
+
+  if (hits.length > 0) {
+    const ud = hits[0].object.userData;
+    const disc = ud.discipline;
+    const lensName = ud.name || ud.lens_id || 'Unknown';
+
+    if (e.shiftKey) {
+      // Additive
+      if (selectedDisciplines.has(disc)) {
+        selectedDisciplines.delete(disc);
+      } else {
+        selectedDisciplines.add(disc);
+      }
+    } else {
+      selectedDisciplines.clear();
+      selectedDisciplines.add(disc);
+    }
+
+    document.getElementById('info-lens').textContent = lensName;
+    document.getElementById('info-discipline').textContent = (disc || '').replace(/_/g, ' ');
+    applySelection();
+  } else {
+    resetSelection();
+  }
+}
+
+// --- LOD: show/hide labels based on zoom ---
+function updateLOD() {
+  const dist = camera.position.length();
+  const cloudR = computeCloudRadius();
+
+  // Discipline labels: show at medium zoom
+  const discOpacity = THREE.MathUtils.smoothstep(1 - dist / (cloudR * 2), 0, 0.4);
+  disciplineLabels.forEach(s => {
+    s.material.opacity = discOpacity;
+  });
+}
+
+// --- Animate ---
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  updateLOD();
+
+  // Slow rotation when idle
+  if (!controls.isDragging) {
+    lensGroup.rotation.y += 0.0003;
+  }
+
+  composer.render();
+}
+
+// --- Resize ---
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// --- Keyboard ---
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') resetSelection();
+});
+
+// --- Help toggle ---
+document.getElementById('help-btn').addEventListener('click', () => {
+  const p = document.getElementById('help-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+});
+
+// --- Mouse events ---
+window.addEventListener('mousemove', onMouseMove);
+window.addEventListener('click', onClick);
+
+// --- Main ---
+async function main() {
+  try {
+    await loadData();
+  } catch (e) {
+    showError(e.message);
+    return;
+  }
+
+  if (!data.keywords || data.keywords.length === 0) {
+    showError('nebula_data.json loaded but contains no keywords array.');
+    return;
+  }
+
+  buildDisciplineMap();
+  buildLegend();
+  initScene();
+  createParticles();
+  createLensSphere();
+  createDisciplineLabels();
+
+  document.getElementById('loading').style.display = 'none';
+
+  // Set initial camera to see the whole cloud
+  const cloudR = computeCloudRadius();
+  camera.position.set(cloudR * 0.8, cloudR * 0.4, cloudR * 1.2);
+  controls.target.set(0, 0, 0);
+  controls.update();
+
+  animate();
+}
+
+main();
+</script>
+</body>
+</html>

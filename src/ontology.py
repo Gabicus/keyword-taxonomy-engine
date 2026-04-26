@@ -1745,6 +1745,107 @@ def list_lenses(conn, role: str | None = None,
     ]
 
 
+def papers_through_lens(conn, lens: dict, search: str | None = None,
+                        limit: int = 20, min_keywords: int = 2) -> list[dict]:
+    """Find papers relevant to a lens, ranked by aggregate keyword-lens score.
+
+    Joins openalex_pub_keywords → keyword_senses → lens scoring to rank
+    publications by how well their keyword profile matches the lens.
+    """
+    disc_weights = lens.get("discipline_weights", {})
+    tier_boost = {1: 2.0, 2: 1.5, 3: 1.0, 4: 0.5}
+
+    relevant_discs = [d for d, w in disc_weights.items() if w >= 0.2]
+    if not relevant_discs:
+        return []
+
+    disc_placeholders = ",".join(["?" for _ in relevant_discs])
+
+    search_pubs_cte = ""
+    search_join = ""
+    params = []
+    if search:
+        search_pubs_cte = """
+        search_pubs AS (
+            SELECT DISTINCT openalex_id FROM openalex_pub_keywords
+            WHERE LOWER(keyword_label) LIKE ?
+        ),"""
+        search_join = "AND pk.openalex_id IN (SELECT openalex_id FROM search_pubs)"
+        params.append(f"%{search.lower()}%")
+
+    params.extend(relevant_discs)
+    params.extend([min_keywords, limit * 3])
+
+    rows = conn.execute(f"""
+        WITH {search_pubs_cte}
+        scored_pub_keywords AS (
+            SELECT
+                pk.openalex_id,
+                pk.keyword_label,
+                ks.sense_id,
+                ks.discipline_primary,
+                ks.resolution_tier,
+                ks.confidence,
+                pk.relevance_score as pub_relevance
+            FROM openalex_pub_keywords pk
+            JOIN keyword_senses ks ON LOWER(pk.keyword_label) = LOWER(ks.keyword_label)
+            WHERE ks.discipline_primary IN ({disc_placeholders})
+              AND pk.relevance_score >= 0.3
+              {search_join}
+        ),
+        pub_scores AS (
+            SELECT
+                openalex_id,
+                COUNT(DISTINCT sense_id) as matched_keywords,
+                SUM(pub_relevance * confidence) as raw_score,
+                ARRAY_AGG(DISTINCT keyword_label ORDER BY keyword_label) as keywords,
+                ARRAY_AGG(DISTINCT discipline_primary ORDER BY discipline_primary) as disciplines
+            FROM scored_pub_keywords
+            GROUP BY openalex_id
+            HAVING COUNT(DISTINCT sense_id) >= ?
+        )
+        SELECT
+            ps.openalex_id,
+            p.title,
+            p.publication_year,
+            p.cited_by_count,
+            p.doi,
+            ps.matched_keywords,
+            ps.raw_score,
+            ps.keywords,
+            ps.disciplines
+        FROM pub_scores ps
+        JOIN raw_openalex_publications p ON ps.openalex_id = p.openalex_id
+        ORDER BY ps.raw_score DESC
+        LIMIT ?
+    """, params).fetchall()
+
+    results = []
+    for row in rows:
+        (oa_id, title, year, cites, doi,
+         matched_kw, raw_score, keywords, disciplines) = row
+
+        lens_score = 0.0
+        for d in (disciplines or []):
+            w = disc_weights.get(d, 0.05)
+            lens_score += w * raw_score / max(len(disciplines), 1)
+
+        results.append({
+            "openalex_id": oa_id,
+            "title": title,
+            "year": year,
+            "cited_by_count": cites,
+            "doi": doi,
+            "matched_keywords": matched_kw,
+            "lens_score": round(lens_score, 4),
+            "keywords": keywords[:10],
+            "disciplines": disciplines,
+        })
+
+    results.sort(key=lambda x: -x["lens_score"])
+    return results[:limit]
+
+
 def init_ontology(conn) -> dict:
     """Initialize the full ontology layer."""
     stats = {}

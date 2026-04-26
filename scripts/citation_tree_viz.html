@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citation Tree — Deep Cross-Section</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a1a;
+    color: #c0c0d0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+  }
+  #controls {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .tree-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #c0c0d0;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+  }
+  .tree-btn:hover { background: rgba(255,255,255,0.12); }
+  .tree-btn.active {
+    background: rgba(255,200,50,0.15);
+    border-color: rgba(255,200,50,0.5);
+    color: #ffd866;
+  }
+  #tooltip {
+    position: fixed;
+    pointer-events: auto;
+    background: rgba(10,10,30,0.95);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    max-width: 420px;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 200;
+    backdrop-filter: blur(8px);
+  }
+  #tooltip .tt-title { color: #fff; font-weight: 600; margin-bottom: 4px; }
+  #tooltip .tt-year { color: #ffd866; }
+  #tooltip .tt-cited { color: #aaa; font-size: 11px; }
+  #tooltip .tt-doi { color: #88aacc; font-size: 11px; cursor: pointer; pointer-events: auto; }
+  #tooltip .tt-doi:hover { color: #aaccee; text-decoration: underline; }
+  #tooltip .tt-status { font-size: 11px; margin-top: 2px; }
+  #legend {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 1.8;
+    z-index: 100;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  #stats-panel {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    font-size: 12px;
+    opacity: 0.6;
+    text-align: right;
+    line-height: 1.8;
+    z-index: 100;
+  }
+  #depth-toggle {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .depth-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #888;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.3s;
+  }
+  .depth-btn:hover { background: rgba(255,255,255,0.08); }
+  .depth-btn.active { background: rgba(255,200,50,0.1); border-color: rgba(255,200,50,0.3); color: #ffd866; }
+  svg { display: block; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <button class="tree-btn active" data-file="citation_tree_alloy_hea_deep.json" data-shallow="citation_tree_alloy_hea.json">
+    High-Entropy Alloys (NETL 2013) ★
+  </button>
+  <button class="tree-btn" data-file="" data-shallow="citation_tree_10_1016_bs_acat_2019_10_002.json">
+    CO₂ Hydrogenation (ORNL 2019)
+  </button>
+  <button class="tree-btn" data-file="" data-shallow="citation_tree_10_1016_j_biotechadv_2014_03_011.json">
+    Bioconversion Gas→Fuel (NREL 2014)
+  </button>
+</div>
+
+<div id="depth-toggle">
+  <button class="depth-btn active" data-depth="2">2 levels</button>
+  <button class="depth-btn" data-depth="4">4 levels (deep)</button>
+</div>
+
+<div id="tooltip"></div>
+
+<div id="legend">
+  <div><span class="legend-dot" style="background:#ffd866"></span> Central paper</div>
+  <div><span class="legend-dot" style="background:#e8863a"></span> Roots (cited by center)</div>
+  <div><span class="legend-dot" style="background:#a0522d"></span> Deep roots (cited by roots)</div>
+  <div><span class="legend-dot" style="background:#6eb5ff"></span> Branches (cite center)</div>
+  <div><span class="legend-dot" style="background:#9b7dd4"></span> Deep branches (cite branches)</div>
+  <div style="margin-top:6px; opacity:0.5; font-size:11px">Scroll to zoom · Drag to pan</div>
+</div>
+
+<div id="stats-panel"></div>
+
+<script>
+const W = window.innerWidth;
+const H = window.innerHeight;
+
+const svg = d3.select("body").append("svg")
+  .attr("width", W).attr("height", H);
+
+const defs = svg.append("defs");
+
+const glow = defs.append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
+glow.append("feGaussianBlur").attr("stdDeviation", "2.5").attr("result", "blur");
+const m1 = glow.append("feMerge");
+m1.append("feMergeNode").attr("in", "blur");
+m1.append("feMergeNode").attr("in", "SourceGraphic");
+
+const bigGlow = defs.append("filter").attr("id", "bigGlow").attr("x", "-100%").attr("y", "-100%").attr("width", "300%").attr("height", "300%");
+bigGlow.append("feGaussianBlur").attr("stdDeviation", "12").attr("result", "blur");
+const m2 = bigGlow.append("feMerge");
+m2.append("feMergeNode").attr("in", "blur");
+m2.append("feMergeNode").attr("in", "SourceGraphic");
+
+const tooltip = d3.select("#tooltip");
+const statsPanel = d3.select("#stats-panel");
+
+const mainG = svg.append("g");
+const edgeGroup = mainG.append("g").attr("class", "edges");
+const trunkGroup = mainG.append("g").attr("class", "trunk");
+const nodeGroup = mainG.append("g").attr("class", "nodes");
+const labelGroup = mainG.append("g").attr("class", "labels");
+
+const zoom = d3.zoom()
+  .scaleExtent([0.05, 12])
+  .on("zoom", (e) => mainG.attr("transform", e.transform));
+svg.call(zoom);
+
+let currentData = null;
+let currentDepth = 2;
+
+async function loadTree(filename, fallback) {
+  try {
+    let data;
+    if (filename) {
+      data = await d3.json(`../data/viz/${filename}`);
+    } else if (fallback) {
+      data = await d3.json(`../data/viz/${fallback}`);
+    } else return;
+    currentData = data;
+    render(data, currentDepth);
+  } catch(e) {
+    console.error("Failed to load", filename, e);
+    if (fallback && filename !== fallback) {
+      try {
+        currentData = await d3.json(`../data/viz/${fallback}`);
+        render(currentData, 2);
+      } catch(e2) { console.error("Fallback also failed", e2); }
+    }
+  }
+}
+
+function render(data, depth) {
+  edgeGroup.selectAll("*").remove();
+  trunkGroup.selectAll("*").remove();
+  nodeGroup.selectAll("*").remove();
+  labelGroup.selectAll("*").remove();
+
+  svg.call(zoom.transform, d3.zoomIdentity);
+
+  const { center, roots, branches } = data;
+  const level_minus2 = data.level_minus2 || {};
+  const level_plus2 = data.level_plus2 || {};
+  const showDeep = depth >= 4;
+
+  const centerYear = center.year || 2013;
+
+  let seed = 42;
+  function srand() {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  }
+
+  // Build node arrays with year-based Y grouping
+  function makeNode(d, type, idx) {
+    const yr = d.year || (type.includes("root")
+      ? centerYear - 5 - Math.floor(srand() * 25)
+      : centerYear + 1 + Math.floor(srand() * 10));
+    return {
+      ...d, _y: yr, _type: type, _idx: idx,
+      _size: d.cited_by_count ? Math.log2(d.cited_by_count + 1) : 1
+    };
+  }
+
+  const rootNodes = roots.map((r, i) => makeNode(r, "root", i));
+  rootNodes.sort((a, b) => a._y - b._y || a._idx - b._idx);
+
+  const branchNodes = branches.map((b, i) => makeNode(b, "branch", i));
+  branchNodes.sort((a, b) => a._y - b._y || a._idx - b._idx);
+
+  // Deep nodes: map parent→children
+  let deepRootNodes = [];
+  let deepBranchNodes = [];
+  let deepRootEdges = [];   // {parent, child}
+  let deepBranchEdges = [];
+
+  if (showDeep) {
+    let dri = 0;
+    for (const [parentId, children] of Object.entries(level_minus2)) {
+      const parentNode = rootNodes.find(r => r.openalex_id === parentId);
+      if (!parentNode) continue;
+      for (const c of children) {
+        const node = makeNode(c, "deep_root", dri++);
+        // Deep roots are further back in time
+        if (!c.year) node._y = parentNode._y - 2 - Math.floor(srand() * 15);
+        deepRootNodes.push(node);
+        deepRootEdges.push({ parent: parentNode, child: node });
+      }
+    }
+    deepRootNodes.sort((a, b) => a._y - b._y || a._idx - b._idx);
+
+    let dbi = 0;
+    for (const [parentId, children] of Object.entries(level_plus2)) {
+      const parentNode = branchNodes.find(b => b.openalex_id === parentId);
+      if (!parentNode) continue;
+      for (const c of children) {
+        const node = makeNode(c, "deep_branch", dbi++);
+        if (!c.year) node._y = parentNode._y + 1 + Math.floor(srand() * 8);
+        deepBranchNodes.push(node);
+        deepBranchEdges.push({ parent: parentNode, child: node });
+      }
+    }
+    deepBranchNodes.sort((a, b) => a._y - b._y || a._idx - b._idx);
+  }
+
+  // Year range
+  const allYears = [
+    centerYear,
+    ...rootNodes.map(r => r._y),
+    ...branchNodes.map(b => b._y),
+    ...deepRootNodes.map(r => r._y),
+    ...deepBranchNodes.map(b => b._y),
+  ];
+  const yearMin = Math.min(...allYears) - 2;
+  const yearMax = Math.max(...allYears) + 2;
+
+  // Layout: group by year bands, spread within bands
+  const nTotal = rootNodes.length + branchNodes.length + deepRootNodes.length + deepBranchNodes.length;
+  const treeW = Math.max(W * 2, nTotal * 3.5);
+  const treeH = H * (showDeep ? 2 : 1.3);
+  const centerX = treeW / 2;
+
+  const yScale = d3.scaleLinear()
+    .domain([yearMin, yearMax])
+    .range([treeH - 40, 60]);
+  const centerPxY = yScale(centerYear);
+
+  // X placement with year-band grouping and condensation toward trunk
+  function spreadWithCondensation(nodes, maxWidth, condenseFactor) {
+    if (!nodes.length) return;
+
+    // Group by year
+    const byYear = new Map();
+    nodes.forEach(n => {
+      const yr = n._y;
+      if (!byYear.has(yr)) byYear.set(yr, []);
+      byYear.get(yr).push(n);
+    });
+
+    // For each year band, spread evenly but condense closer years toward trunk
+    const yearEntries = [...byYear.entries()].sort((a, b) => a[0] - b[0]);
+    let globalIdx = 0;
+
+    yearEntries.forEach(([yr, band]) => {
+      // Distance from center year → narrower band = more condensed
+      const yearDist = Math.abs(yr - centerYear);
+      const distFactor = 1 / (1 + yearDist * condenseFactor);
+      const bandWidth = maxWidth * distFactor;
+
+      // Spread within band
+      const n = band.length;
+      const spacing = Math.max(bandWidth / (n + 1), 3);
+      const startX = centerX - (n * spacing) / 2;
+
+      band.forEach((node, i) => {
+        node._x = startX + (i + 0.5) * spacing;
+        node._x += (srand() - 0.5) * spacing * 0.25;
+        node._globalIdx = globalIdx++;
+      });
+    });
+  }
+
+  const rootWidth = Math.min(treeW * 0.7, rootNodes.length * 12);
+  const branchWidth = Math.min(treeW * 0.6, branchNodes.length * 10);
+  const deepRootWidth = Math.min(treeW * 0.85, deepRootNodes.length * 5);
+  const deepBranchWidth = Math.min(treeW * 0.75, deepBranchNodes.length * 4);
+
+  spreadWithCondensation(rootNodes, rootWidth, 0.03);
+  spreadWithCondensation(branchNodes, branchWidth, 0.03);
+  spreadWithCondensation(deepRootNodes, deepRootWidth, 0.02);
+  spreadWithCondensation(deepBranchNodes, deepBranchWidth, 0.02);
+
+  // ---- TRUNK ----
+  const trunkTop = yScale(yearMax - 1);
+  const trunkBot = yScale(yearMin + 1);
+
+  // Bark texture: multiple lines with slight wobble
+  for (let i = 0; i < 5; i++) {
+    const wobbleX = (srand() - 0.5) * 6;
+    const alpha = 0.015 + srand() * 0.01;
+    const w = 8 + srand() * 12;
+    trunkGroup.append("line")
+      .attr("x1", centerX + wobbleX).attr("y1", trunkTop)
+      .attr("x2", centerX + wobbleX + (srand()-0.5)*3).attr("y2", trunkBot)
+      .attr("stroke", `rgba(255,216,102,${alpha})`)
+      .attr("stroke-width", w)
+      .attr("stroke-linecap", "round");
+  }
+
+  // Core trunk line
+  trunkGroup.append("line")
+    .attr("x1", centerX).attr("y1", trunkTop)
+    .attr("x2", centerX).attr("y2", trunkBot)
+    .attr("stroke", "rgba(255,216,102,0.1)")
+    .attr("stroke-width", 3)
+    .attr("stroke-linecap", "round");
+
+  // ---- COLOR PALETTE ----
+  const colorMap = {
+    root: { base: "#e8863a", hover: "#ffbb66", rgb: "232,134,58" },
+    branch: { base: "#6eb5ff", hover: "#a0d4ff", rgb: "110,181,255" },
+    deep_root: { base: "#a0522d", hover: "#cc7744", rgb: "160,82,45" },
+    deep_branch: { base: "#9b7dd4", hover: "#c4a8f0", rgb: "155,125,212" },
+  };
+
+  // ---- EDGE DRAWING ----
+  // Organic root/branch curves that run along trunk, then wind outward
+  function drawOrganicEdge(x0, y0, x1, y1, color, alpha, width, nodeData) {
+    const dx = x1 - x0;
+    const dy = y1 - y0;
+    const absDx = Math.abs(dx);
+    const totalWidth = Math.max(rootWidth, branchWidth, deepRootWidth, deepBranchWidth) / 2;
+    const horizRatio = Math.min(absDx / (totalWidth + 1), 1);
+
+    // Root-like: stay near trunk longer, then curve out organically
+    const trunkRun = 0.12 + 0.35 * (1 - horizRatio);
+    const branchOff = 0.45 + 0.25 * horizRatio;
+
+    // Add organic wobble
+    const wobX = (srand() - 0.5) * 8;
+    const wobY = (srand() - 0.5) * Math.abs(dy) * 0.05;
+
+    const cp1x = x0 + dx * 0.02 + wobX;
+    const cp1y = y0 + dy * trunkRun + wobY;
+    const cp2x = x1 + (srand() - 0.5) * 10;
+    const cp2y = y0 + dy * branchOff;
+
+    const path = `M${x0},${y0} C${cp1x},${cp1y} ${cp2x},${cp2y} ${x1},${y1}`;
+
+    edgeGroup.append("path")
+      .attr("d", path)
+      .attr("fill", "none")
+      .attr("stroke", `rgba(${color},${alpha})`)
+      .attr("stroke-width", width)
+      .attr("stroke-linecap", "round")
+      .datum(nodeData);
+  }
+
+  // Level 1 root edges: center → root (warm orange)
+  rootNodes.forEach(node => {
+    const alpha = 0.08 + 0.35 * (node._size / 12);
+    const w = 0.4 + Math.min(node._size * 0.15, 2.2);
+    drawOrganicEdge(centerX, centerPxY, node._x, yScale(node._y),
+      colorMap.root.rgb, alpha, w, node);
+  });
+
+  // Level 1 branch edges: center → branch (cool blue)
+  branchNodes.forEach(node => {
+    const alpha = 0.06 + 0.3 * (node._size / 14);
+    const w = 0.3 + Math.min(node._size * 0.12, 1.8);
+    drawOrganicEdge(centerX, centerPxY, node._x, yScale(node._y),
+      colorMap.branch.rgb, alpha, w, node);
+  });
+
+  // Level 2 deep root edges: root → deep_root (warm sienna)
+  if (showDeep) {
+    deepRootEdges.forEach(({ parent, child }) => {
+      const alpha = 0.04 + 0.2 * (child._size / 12);
+      const w = 0.2 + Math.min(child._size * 0.08, 1);
+      drawOrganicEdge(parent._x, yScale(parent._y), child._x, yScale(child._y),
+        colorMap.deep_root.rgb, alpha, w, child);
+    });
+
+    // Level 2 deep branch edges: branch → deep_branch (cool purple)
+    deepBranchEdges.forEach(({ parent, child }) => {
+      const alpha = 0.03 + 0.15 * (child._size / 14);
+      const w = 0.2 + Math.min(child._size * 0.07, 0.8);
+      drawOrganicEdge(parent._x, yScale(parent._y), child._x, yScale(child._y),
+        colorMap.deep_branch.rgb, alpha, w, child);
+    });
+  }
+
+  // ---- NODES ----
+  const typeLabels = {
+    root: "↓ Cited by the central paper",
+    branch: "↑ Cites the central paper",
+    deep_root: "↓↓ Cited by a root paper",
+    deep_branch: "↑↑ Cites a branch paper",
+    center: "★ Central paper",
+  };
+
+  function drawNodes(nodes) {
+    if (!nodes.length) return;
+    const type = nodes[0]._type;
+    const { base, hover } = colorMap[type];
+    const isDeep = type.startsWith("deep");
+
+    const g = nodeGroup.selectAll(null)
+      .data(nodes)
+      .enter().append("g")
+      .attr("transform", d => `translate(${d._x},${yScale(d._y)})`);
+
+    g.each(function(d) {
+      const el = d3.select(this);
+      const r = isDeep
+        ? 0.8 + Math.min(d._size * 0.2, 2)
+        : 1.5 + Math.min(d._size * 0.4, 4);
+
+      el.append("circle")
+        .attr("r", r)
+        .attr("fill", base)
+        .attr("opacity", d.title ? (isDeep ? 0.4 : 0.7) : 0.15)
+        .attr("class", "node-dot");
+
+      if (!isDeep && d.cited_by_count && d.cited_by_count > 100) {
+        el.append("circle")
+          .attr("r", r + 3)
+          .attr("fill", base)
+          .attr("opacity", 0.1)
+          .attr("filter", "url(#glow)");
+      }
+
+      el.append("circle")
+        .attr("r", Math.max(r + 3, 5))
+        .attr("fill", "transparent")
+        .attr("cursor", "pointer")
+        .on("mouseover", function(event) {
+          d3.select(this.parentNode).select(".node-dot")
+            .transition().duration(150)
+            .attr("r", r * 2.5).attr("opacity", 1);
+
+          edgeGroup.selectAll("path")
+            .filter(pd => pd === d)
+            .transition().duration(150)
+            .attr("stroke", hover)
+            .attr("stroke-width", isDeep ? 1.5 : 2.5)
+            .attr("stroke-opacity", 1);
+
+          showTooltip(event, d);
+        })
+        .on("mouseout", function() {
+          d3.select(this.parentNode).select(".node-dot")
+            .transition().duration(300)
+            .attr("r", r).attr("opacity", d.title ? (isDeep ? 0.4 : 0.7) : 0.15);
+
+          edgeGroup.selectAll("path")
+            .filter(pd => pd === d)
+            .transition().duration(300)
+            .attr("stroke-width", 0.3 + Math.min(d._size * 0.12, 2))
+            .attr("stroke-opacity", null);
+
+          hideTooltip();
+        });
+    });
+  }
+
+  drawNodes(rootNodes);
+  drawNodes(branchNodes);
+  if (showDeep) {
+    drawNodes(deepRootNodes);
+    drawNodes(deepBranchNodes);
+  }
+
+  // ---- CENTER NODE ----
+  const centerG = nodeGroup.append("g")
+    .attr("transform", `translate(${centerX},${centerPxY})`);
+
+  centerG.append("circle").attr("r", 35)
+    .attr("fill", "rgba(255,216,102,0.03)")
+    .attr("filter", "url(#bigGlow)");
+
+  centerG.append("circle").attr("r", 16)
+    .attr("fill", "rgba(255,216,102,0.1)")
+    .attr("stroke", "#ffd866").attr("stroke-width", 2.5);
+
+  centerG.append("circle").attr("r", 5)
+    .attr("fill", "#ffd866");
+
+  const shortTitle = center.title.length > 55
+    ? center.title.slice(0, 52) + "..."
+    : center.title;
+
+  centerG.append("text")
+    .attr("x", 24).attr("y", -6)
+    .attr("fill", "#ffd866").attr("font-size", 13).attr("font-weight", 700)
+    .text(shortTitle);
+
+  centerG.append("text")
+    .attr("x", 24).attr("y", 12)
+    .attr("fill", "rgba(255,216,102,0.5)").attr("font-size", 11)
+    .text(`${center.year} · ${center.lab || ''} · ${(center.cited_by_count || 0).toLocaleString()} citations`);
+
+  centerG.append("circle").attr("r", 28)
+    .attr("fill", "transparent").attr("cursor", "pointer")
+    .on("mouseover", (event) => showTooltip(event, { ...center, _type: "center" }))
+    .on("mouseout", hideTooltip);
+
+  // ---- YEAR TICKS ----
+  const yearRange = yearMax - yearMin;
+  const tickStep = yearRange > 60 ? 10 : yearRange > 30 ? 5 : 2;
+  const ticks = d3.range(Math.ceil(yearMin / tickStep) * tickStep, yearMax, tickStep);
+
+  const leftEdge = centerX - Math.max(rootWidth, deepRootWidth) / 2 - 40;
+  ticks.forEach(yr => {
+    labelGroup.append("text")
+      .attr("x", leftEdge)
+      .attr("y", yScale(yr))
+      .attr("text-anchor", "end")
+      .attr("dominant-baseline", "middle")
+      .attr("fill", yr === centerYear ? "#ffd866" : "rgba(255,255,255,0.12)")
+      .attr("font-size", yr === centerYear ? 13 : 10)
+      .attr("font-weight", yr === centerYear ? 700 : 400)
+      .text(yr);
+
+    // Faint horizontal line
+    if (yr !== centerYear) {
+      labelGroup.append("line")
+        .attr("x1", leftEdge + 5).attr("x2", centerX + Math.max(rootWidth, deepRootWidth) / 2 + 40)
+        .attr("y1", yScale(yr)).attr("y2", yScale(yr))
+        .attr("stroke", "rgba(255,255,255,0.015)")
+        .attr("stroke-width", 1);
+    }
+  });
+
+  // ---- SECTION LABELS ----
+  const rEdge = centerX + rootWidth / 2 + 30;
+  labelGroup.append("text").attr("x", rEdge).attr("y", centerPxY + 40)
+    .attr("fill", "rgba(232,134,58,0.25)").attr("font-size", 12)
+    .attr("font-weight", 600).attr("letter-spacing", "3px")
+    .text("▼ ROOTS");
+
+  labelGroup.append("text").attr("x", rEdge).attr("y", centerPxY - 35)
+    .attr("fill", "rgba(110,181,255,0.25)").attr("font-size", 12)
+    .attr("font-weight", 600).attr("letter-spacing", "3px")
+    .text("▲ BRANCHES");
+
+  if (showDeep && deepRootNodes.length) {
+    const deepY = yScale(Math.min(...deepRootNodes.map(d => d._y)) + 2);
+    labelGroup.append("text").attr("x", rEdge).attr("y", deepY)
+      .attr("fill", "rgba(160,82,45,0.2)").attr("font-size", 11)
+      .attr("font-weight", 600).attr("letter-spacing", "2px")
+      .text("▼▼ DEEP ROOTS");
+  }
+
+  if (showDeep && deepBranchNodes.length) {
+    const deepY = yScale(Math.max(...deepBranchNodes.map(d => d._y)) - 2);
+    labelGroup.append("text").attr("x", rEdge).attr("y", deepY)
+      .attr("fill", "rgba(155,125,212,0.2)").attr("font-size", 11)
+      .attr("font-weight", 600).attr("letter-spacing", "2px")
+      .text("▲▲ DEEP BRANCHES");
+  }
+
+  // Stats
+  const nRoots = roots.length;
+  const nBranches = branches.length;
+  const nDeepR = deepRootNodes.length;
+  const nDeepB = deepBranchNodes.length;
+  const total = 1 + nRoots + nBranches + nDeepR + nDeepB;
+
+  statsPanel.html(
+    `<b style="color:#e8863a">▼ ${nRoots}</b> roots` +
+    (showDeep && nDeepR ? ` → <b style="color:#a0522d">${nDeepR}</b> deep roots` : '') + `<br>` +
+    `<b style="color:#6eb5ff">▲ ${nBranches}</b> branches` +
+    (showDeep && nDeepB ? ` → <b style="color:#9b7dd4">${nDeepB}</b> deep branches` : '') + `<br>` +
+    `<span style="color:#ffd866">★ ${(center.cited_by_count || 0).toLocaleString()}</span> total citations` +
+    `<br><span style="opacity:0.4">${total.toLocaleString()} nodes visible</span>`
+  );
+
+  // Anomaly count
+  const anomalies = data.anomalies || [];
+  if (anomalies.length > 0) {
+    statsPanel.append("div")
+      .style("margin-top", "4px")
+      .style("color", "rgba(255,150,50,0.5)")
+      .style("font-size", "10px")
+      .html(`⚠ ${anomalies.length} year anomalies (book re-editions)`);
+  }
+
+  // Center view
+  const effWidth = showDeep ? Math.max(deepRootWidth, deepBranchWidth, rootWidth) : Math.max(rootWidth, branchWidth);
+  const initialScale = Math.min(W / (effWidth + 100), H / treeH) * 0.85;
+  const tx = W / 2 - centerX * initialScale;
+  const ty = H / 2 - centerPxY * initialScale;
+  svg.call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(initialScale));
+}
+
+function showTooltip(event, d) {
+  if (tooltipTimeout) clearTimeout(tooltipTimeout);
+  const typeLabels = {
+    root: "↓ Cited by the central paper",
+    branch: "↑ Cites the central paper",
+    deep_root: "↓↓ Cited by a root paper",
+    deep_branch: "↑↑ Cites a branch paper",
+    center: "★ Central paper",
+  };
+  const typeColors = {
+    root: "#e8863a", branch: "#6eb5ff",
+    deep_root: "#a0522d", deep_branch: "#9b7dd4",
+    center: "#ffd866",
+  };
+
+  let html = "";
+  html += d.title
+    ? `<div class="tt-title">${d.title}</div>`
+    : `<div class="tt-title" style="opacity:0.4">[Title not in corpus]</div>`;
+  if (d.year) html += `<div class="tt-year">${d.year}</div>`;
+  if (d.cited_by_count) html += `<div class="tt-cited">Cited by ${d.cited_by_count.toLocaleString()} papers</div>`;
+  if (d.doi) html += `<div class="tt-doi"><a href="https://doi.org/${d.doi}" target="_blank" rel="noopener" style="color:#88aacc;text-decoration:none">DOI: ${d.doi} ↗</a></div>`;
+  if (d.openalex_id) {
+    const oaUrl = d.openalex_id.startsWith("http") ? d.openalex_id : `https://openalex.org/${d.openalex_id}`;
+    html += `<div class="tt-doi"><a href="${oaUrl}" target="_blank" rel="noopener" style="color:#88aacc;text-decoration:none;opacity:0.6">OpenAlex ↗</a></div>`;
+  }
+  if (d._type) html += `<div class="tt-status" style="color:${typeColors[d._type] || '#888'}">${typeLabels[d._type] || ''}</div>`;
+
+  tooltip.html(html)
+    .style("opacity", 1)
+    .style("left", Math.min(event.pageX + 15, W - 440) + "px")
+    .style("top", (event.pageY - 12) + "px");
+}
+
+let tooltipTimeout = null;
+function hideTooltip() {
+  tooltipTimeout = setTimeout(() => tooltip.style("opacity", 0), 200);
+}
+
+// Keep tooltip visible when hovering over it (for clickable links)
+tooltip.on("mouseenter", () => { if (tooltipTimeout) clearTimeout(tooltipTimeout); })
+       .on("mouseleave", () => { tooltip.style("opacity", 0); });
+
+// Button handlers
+document.querySelectorAll(".tree-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    loadTree(btn.dataset.file, btn.dataset.shallow);
+  });
+});
+
+document.querySelectorAll(".depth-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".depth-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentDepth = parseInt(btn.dataset.depth);
+    if (currentData) render(currentData, currentDepth);
+  });
+});
+
+loadTree("citation_tree_alloy_hea_deep.json", "citation_tree_alloy_hea.json");
+</script>
+</body>
+</html>

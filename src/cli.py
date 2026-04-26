@@ -246,6 +246,33 @@ def cmd_lens_compare(args):
     conn.close()
 
 
+def cmd_lens_papers(args):
+    """Find papers through a composed lens."""
+    import duckdb
+    from .ontology import compose_lens, papers_through_lens
+
+    conn = duckdb.connect("data/lake/keywords.duckdb", read_only=True)
+    lens = compose_lens(conn, args.discipline, args.role)
+    papers = papers_through_lens(conn, lens, search=args.search,
+                                 limit=args.limit, min_keywords=args.min_keywords)
+
+    print(f"\n  Papers through {args.discipline}/{args.role} lens"
+          + (f" matching \"{args.search}\"" if args.search else ""))
+    print(f"  {'─' * 70}")
+
+    for i, p in enumerate(papers, 1):
+        title = (p['title'][:65] + '...') if p['title'] and len(p['title']) > 68 else (p['title'] or 'No title')
+        kw_str = ", ".join(p['keywords'][:5])
+        doi_str = f"  doi:{p['doi']}" if p['doi'] else ""
+        print(f"  {i:>3}. [{p['lens_score']:.3f}] {title}")
+        print(f"       {p['year'] or '?'}  |  cited: {p['cited_by_count'] or 0}  |  "
+              f"kw match: {p['matched_keywords']}{doi_str}")
+        print(f"       keywords: {kw_str}")
+
+    print(f"\n  {len(papers)} papers found.")
+    conn.close()
+
+
 def cmd_lens_list(args):
     """List available template lenses."""
     import duckdb
@@ -323,6 +350,14 @@ def main():
     p_compare.add_argument("--lenses", nargs="+", required=True,
                            help="Lens IDs to compare (e.g., hat:fossil_energy:researcher hat:materials:director)")
     p_compare.set_defaults(func=cmd_lens_compare)
+
+    p_papers = sub.add_parser("lens-papers", help="Find papers through a composed lens")
+    p_papers.add_argument("discipline", help="Primary discipline (e.g., fossil_energy)")
+    p_papers.add_argument("--role", default="researcher", help="Role perspective")
+    p_papers.add_argument("--search", default=None, help="Filter by keyword pattern")
+    p_papers.add_argument("--limit", type=int, default=20, help="Max papers")
+    p_papers.add_argument("--min-keywords", type=int, default=2, help="Min matching keywords per paper")
+    p_papers.set_defaults(func=cmd_lens_papers)
 
     p_lenslist = sub.add_parser("lens-list", help="List available template lenses")
     p_lenslist.add_argument("--role", default=None, help="Filter by role")

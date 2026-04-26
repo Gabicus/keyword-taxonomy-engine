@@ -1,0 +1,26 @@
+{
+  "citation_pairs": 32301,
+  "random_pairs": 5000,
+  "keyword_overlap": {
+    "citing_mean": 0.22822611203953355,
+    "citing_median": 0.2,
+    "random_mean": 0.013348835695874863,
+    "random_median": 0.0,
+    "mann_whitney_U": 15168093.5,
+    "p_value": 0.0,
+    "effect_significant": true,
+    "n_citing": 3154,
+    "n_random": 5000
+  },
+  "discipline_overlap": {
+    "citing_mean": 0.7331269660375558,
+    "citing_median": 0.75,
+    "random_mean": 0.550868669108669,
+    "random_median": 0.5555555555555556,
+    "mann_whitney_U": 12261744.0,
+    "p_value": 0.0,
+    "effect_significant": true,
+    "n_citing": 3154,
+    "n_random": 5000
+  }
+}

@@ -1304,3 +1304,170 @@ Ingested 7,983 OpenAlex publications from 4 query sources:
 - Paradigm shift in keyword semantics: 15-20%
 
 **Realistic path:** Publish methodology paper → release tool with API → NETL/DOE adoption → other labs → standard for cross-domain keyword analysis
+
+### Step 3.26: OpenAlex Co-Occurrence Edges (Session 7)
+
+**Date:** 2026-04-26
+
+SQL-native self-join on `openalex_pub_keywords` (relevance ≥ 0.3, cooccur ≥ 2).
+- 140,955 co-occurrence pairs found
+- 137,117 edges inserted into `sense_relationships` as `co_occurrence` type
+- 100,954 cross-discipline edges (73%)
+- Confidence = min(cooccur_count / 20, 1.0)
+- Mapped keyword labels to best sense_id (highest confidence) via ROW_NUMBER window
+
+Also created 1,934 new senses for OpenAlex keywords not in ontology.
+- Initially all `general_science` — fixed via neighbor majority vote discipline assignment
+- 1,933/1,934 connected to graph (1 true orphan)
+
+**Updated stats:** 423,782 senses, 2,581,302 relationships (6.09 rels/sense)
+
+### Step 3.27: Paper Discovery Through Lens
+
+New function `papers_through_lens()` in `src/ontology.py` + `lens-papers` CLI command.
+- Joins `openalex_pub_keywords` → `keyword_senses` → lens scoring
+- Papers ranked by aggregate keyword-lens score
+- Search filter: finds papers with matching keywords, scores ALL keywords through lens
+- Tested: fossil_energy/carbon, earth_environmental/methane, biological_medical/gene — different papers surface through different lenses
+
+**Bug fixed:** Parameter binding order mismatch. DuckDB binds `?` in SQL text order, not definition order. Search CTE came before discipline filter in SQL but params had disciplines first. Fixed by reordering params.
+
+### Step 3.28: Validation Suite Framework
+
+Built `scripts/validation_suite.py` — peer-review-grade validation artifacts:
+
+1. **Gold-standard sample:** 343 items from 6,535 AI-curated relationships, stratified across 6 AI strategies (discipline_anchor, contains_term, substring_of, abbreviation, abbreviation_partial). Ready for human annotation with fields for human_label, human_discipline, annotator.
+
+2. **Sensitivity analysis:** 10% random removal of AI-curated relationships. Jaccard similarity of lens query results: 0.863 average. Computation_data:simulation = 1.000 (robust), earth_environmental:climate = 0.724 (most sensitive).
+
+3. **Neighborhood coherence (NPMI):** 0.762 mean across 18 scored neighborhoods. Chemical sciences, materials, computation_data scored highest. Published baselines typically 0.3-0.8, so 0.76 is strong.
+
+4. **Lens divergence heatmap:** Mean pairwise Spearman ρ = 0.454. Range -0.307 to 1.000. Fossil energy sub-lenses cluster together. Space/atmospheric anti-correlated with fossil energy. Validates vector bundle model — lenses genuinely diverge.
+
+**Figures generated:**
+- `figures/validation/fig2_sensitivity.png`
+- `figures/validation/fig3_coherence.png`
+- `figures/validation/fig4_lens_divergence.png`
+
+### Step 3.29: Citation Network + Schema Gaps Fixed
+
+Added missing schemas to `src/schema.py`:
+- `RAW_OPENALEX_PUBLICATIONS` — 7,983 pubs
+- `OPENALEX_PUB_KEYWORDS` — 68,855 keyword-paper mappings
+- `OPENALEX_CITATIONS` — new table for citation network (citing_id, cited_id, in_corpus)
+
+Created `scripts/fetch_openalex_citations.py`:
+- Fetches `referenced_works` from OpenAlex API in batches of 50
+- Marks edges where cited paper is also in our corpus (in_corpus=true)
+- These in-corpus pairs enable citation-coherence validation
+
+Created `scripts/citation_coherence.py`:
+- Tests whether citing papers share keyword neighborhoods more than random pairs
+- Mann-Whitney U test on Jaccard similarity distributions
+- Produces Fig 5: citation coherence histogram
+
+### Step 3.30: Citation Network Fetch Complete
+
+`scripts/fetch_openalex_citations.py` finished:
+- **444,259 citation edges** fetched from OpenAlex
+- **32,301 in-corpus edges** (both citing and cited paper in our DB)
+- 160 batches, 7,983 works processed
+
+### Step 3.31: DOI Backfill from WoS Hyper/Excel
+
+`scripts/backfill_dois.py` completed:
+- Added 7 columns to raw_wos_natlab_publications and raw_wos_publications: doi, doi_xref, pubmed_id, published_year, times_cited, primary_language, num_cited_refs
+- Source: Other Labs Part 2.hyper (255K rows) + NETL_Aug2025_with_DOI.xlsx (5.9K rows)
+- Bulk loading via temp parquet for speed
+
+### Step 3.32: Expanded Natlab Ingestion
+
+`scripts/ingest_expanded_natlab.py` completed:
+- **227,433 rows** loaded into raw_wos_natlab_expanded (61 columns)
+- Source: Tableau Hyper file (255,849 rows → 227,433 after dedup on accession_number)
+- 11 national labs, 88% DOI coverage, comma-delimited keywords parsed to arrays
+- Parquet intermediate for efficient DuckDB loading
+
+### Step 3.33: WoS Category Mappings
+
+`scripts/ingest_wos_categories.py` completed:
+- **201 subject→discipline mappings** in wos_category_mapping table
+- Merged from 3 xlsx files on external drive
+- Maps WoS subject categories to our 14 disciplines
+
+### Step 3.34: Citation Coherence Analysis
+
+`scripts/citation_coherence.py` completed:
+- **Keyword overlap**: citing pairs 0.228 vs random 0.013 (17× higher, p≈0) — SIGNIFICANT
+- **Discipline overlap**: citing pairs 0.733 vs random 0.551 (p≈0) — SIGNIFICANT
+- Both Mann-Whitney U tests highly significant
+- Validates ontology: papers that cite each other genuinely share keyword neighborhoods
+- Figure: `figures/validation/fig5_citation_coherence.png`
+- Fixed numpy bool → Python bool JSON serialization bug
+
+### Step 3.35: WoS DOI→OpenAlex Lookup (IN PROGRESS)
+
+`scripts/lookup_wos_dois_in_openalex.py` running:
+- Looking up ~198K WoS DOIs in OpenAlex API (50/batch = ~3,959 batches)
+- Creates openalex_wos_bridge table (accession_number ↔ openalex_id)
+- Fetches referenced_works for each matched work → openalex_citations
+- Enables full bidirectional citation traversal for WoS publications
+- Progress at batch 200/3959: ~10K bridges, ~487K citations
+
+### Step 3.36: Visualization Suite (IN PROGRESS)
+
+Four visualization prototypes built:
+
+1. **3D Nebula** (`scripts/nebula_viz.html` + `scripts/compute_umap_nebula.py`):
+   - Three.js point cloud of 63K keyword senses, UMAP-projected to 3D
+   - 97 lens dots on surrounding sphere, click to highlight discipline nebula
+   - Bloom/glow effects, LOD zoom, orbit controls
+   - Waiting on UMAP data computation (DB locked)
+
+2. **Poincaré Disk v2** (`scripts/poincare_viz.html` + `scripts/build_poincare_data.py`):
+   - Hyperbolic geometry for hierarchical taxonomy, ~1,400 keyword nodes
+   - Cross-discipline gold arcs showing polysemy overlap (the key missing piece from v1)
+   - Search box, Möbius zoom, breadcrumb navigation
+   - Needs data regeneration (DB locked)
+
+3. **Chord Diagram** (`scripts/chord_viz.html` + `scripts/build_chord_data.py`):
+   - D3 circular layout replacing simple Sankey
+   - Source↔discipline, discipline↔discipline, source↔source cross-links
+   - Hover/click highlighting, dark theme
+   - Needs data extraction (DB locked)
+
+4. **Coverage/completeness estimation** (`scripts/estimate_coverage.py`):
+   - Maps our data vs OpenAlex universe per discipline
+   - Needs DB access to run
+
+5. **Citation Tree — Deep Cross-Section** (`scripts/citation_tree_viz.html` + `scripts/crawl_alloy_deep.py`):
+   - 4-level deep organic tree: deep roots → roots → center → branches → deep branches
+   - Crawled 2,656 nodes for HEA review paper (293 roots, 600 branches, 762 deep roots, 1000 deep branches)
+   - Year-band grouping with condensation toward trunk (closer years = tighter cluster)
+   - Organic Bézier curves with wobble, bark-textured trunk
+   - Warm palette (orange/sienna) for roots, cool palette (blue/purple) for branches
+   - Clickable DOI + OpenAlex links in hover tooltips
+   - Depth toggle (2-level clean view vs 4-level full tree)
+   - 15 year anomalies identified: book re-editions get modern dates in OpenAlex metadata
+   - D3 zoom/pan, auto-centering, responsive
+
+**Planned but not yet built:**
+- **Hierarchical Edge Bundling (HEB)** — concentric rings (source → discipline → subcategory → keywords) with bundled non-crossing edges. Ghost arcs for missing coverage. THE primary "see everything" diagram.
+
+### Step 3.37: New Taxonomy Pillar Downloads (IN PROGRESS)
+
+Expanding from 7 to potentially 15+ pillars. Downloading raw source data:
+
+| Taxonomy | Domain | ~Terms | Format | Status |
+|---|---|---|---|---|
+| AGROvoc | Agriculture/FAO | 40,000 | SKOS N-Triples | Downloading |
+| ERIC | Education | 12,000 | XML | URL found, downloading |
+| GeoRef | Geosciences | 30,000 | Unknown | Checking access (may be paywalled) |
+| IEEE | Electrical eng. | Unknown | Unknown | Checking access |
+| Inspec | Physics/eng. | 20,000 | Unknown | Checking access |
+| EuroVoc | EU policy | 7,000 | SKOS/RDF | Downloading |
+| STW | Economics | 6,000 | N-Triples | Downloading |
+| FAST | Faceted subjects | 1,800,000 | N-Triples | Downloading |
+
+Parsers will reuse SKOS/N-Triples patterns from LoC LCSH parser.
+Raw data cached in `data/raw/{name}/`, DB ingestion after DOI lookup completes.

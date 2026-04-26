@@ -1,0 +1,32 @@
+{
+  "fossil_energy:carbon": {
+    "original_count": 50,
+    "corrupted_count": 50,
+    "overlap": 47,
+    "jaccard_similarity": 0.8868
+  },
+  "earth_environmental:climate": {
+    "original_count": 50,
+    "corrupted_count": 50,
+    "overlap": 42,
+    "jaccard_similarity": 0.7241
+  },
+  "materials:polymer": {
+    "original_count": 50,
+    "corrupted_count": 50,
+    "overlap": 45,
+    "jaccard_similarity": 0.8182
+  },
+  "chemical_sciences:catalyst": {
+    "original_count": 50,
+    "corrupted_count": 50,
+    "overlap": 47,
+    "jaccard_similarity": 0.8868
+  },
+  "computation_data:simulation": {
+    "original_count": 50,
+    "corrupted_count": 50,
+    "overlap": 50,
+    "jaccard_similarity": 1.0
+  }
+}

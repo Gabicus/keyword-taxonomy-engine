@@ -1,0 +1,394 @@
+[
+  {
+    "sense_id": "wosnl:impact_toughness@WoS_natlab_pub#0",
+    "keyword": "impact toughness",
+    "discipline": "materials",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "sh85124485@Library_of_Congress#0",
+    "keyword": "Solar air conditioning",
+    "discipline": "math_physics",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "D012242@MeSH#0",
+    "keyword": "Rhodobacter sphaeroides",
+    "discipline": "biological_medical",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:germanium_nanocrystals@WoS_natlab_pub#0",
+    "keyword": "germanium nanocrystals",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "D020712@MeSH#0",
+    "keyword": "Fornix, Brain",
+    "discipline": "biological_medical",
+    "n_neighbors": 3,
+    "n_pairs_scored": 3,
+    "coherence_npmi": 0.7484
+  },
+  {
+    "sense_id": "wosnl:in_vitro_biocompatibility@WoS_natlab_pub#0",
+    "keyword": "in-vitro biocompatibility",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 4,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:isle_river@WoS_natlab_pub#0",
+    "keyword": "isle river",
+    "discipline": "earth_environmental",
+    "n_neighbors": 3,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "sh2018002930@Library_of_Congress#0",
+    "keyword": "Missing children in motion pictures",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 6,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:detonation_reaction_rate@WoS_natlab_pub#0",
+    "keyword": "detonation reaction rate",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:paddle_wheel_mechanism@WoS_natlab_pub#0",
+    "keyword": "paddle-wheel mechanism",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wos:high_entropy_materials@WoS_publication#0",
+    "keyword": "high entropy materials",
+    "discipline": "materials",
+    "n_neighbors": 6,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:overheating_risk@WoS_natlab_pub#0",
+    "keyword": "overheating risk",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 4,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:electric_vehicle_grid_integration@WoS_natlab_pub#0",
+    "keyword": "electric vehicle grid integration",
+    "discipline": "computation_data",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:fiber_view_camera@WoS_natlab_pub#0",
+    "keyword": "fiber view camera",
+    "discipline": "math_physics",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "http://skos.um.es/unescothes/C00657@UNESCO_Thesaurus#0",
+    "keyword": "Collectivism",
+    "discipline": "policy_economics",
+    "n_neighbors": 12,
+    "n_pairs_scored": 34,
+    "coherence_npmi": 0.4349
+  },
+  {
+    "sense_id": "sh2014001184@Library_of_Congress#0",
+    "keyword": "Fire loads",
+    "discipline": "math_physics",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:group_viii_metals@WoS_natlab_pub#0",
+    "keyword": "group-viii metals",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 4,
+    "n_pairs_scored": 3,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:tunable_photoluminescence@WoS_natlab_pub#0",
+    "keyword": "tunable photoluminescence",
+    "discipline": "materials",
+    "n_neighbors": 3,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:fourier_decomposition@WoS_natlab_pub#0",
+    "keyword": "fourier decomposition",
+    "discipline": "computation_data",
+    "n_neighbors": 5,
+    "n_pairs_scored": 3,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:salt_convection@WoS_natlab_pub#0",
+    "keyword": "salt convection",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 5,
+    "n_pairs_scored": 3,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:gaussian_surface@WoS_natlab_pub#0",
+    "keyword": "gaussian surface",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 3,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "D005865@MeSH#0",
+    "keyword": "Gestational Age",
+    "discipline": "math_physics",
+    "n_neighbors": 20,
+    "n_pairs_scored": 45,
+    "coherence_npmi": 0.5398
+  },
+  {
+    "sense_id": "wos:creep-resistant@WoS_publication#0",
+    "keyword": "creep-resistant",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 6,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:watershed_characteristics@WoS_natlab_pub#0",
+    "keyword": "watershed characteristics",
+    "discipline": "earth_environmental",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:small_area_estimation@WoS_natlab_pub#0",
+    "keyword": "small area estimation",
+    "discipline": "computation_data",
+    "n_neighbors": 6,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:origin_of_hysteresis@WoS_natlab_pub#0",
+    "keyword": "origin of hysteresis",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 3,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:immiscible_two_phase_flow@WoS_natlab_pub#0",
+    "keyword": "immiscible two-phase flow",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:synchrotron_applications@WoS_natlab_pub#0",
+    "keyword": "synchrotron applications",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:canada@WoS_natlab_pub#0",
+    "keyword": "canada",
+    "discipline": "nuclear_particle",
+    "n_neighbors": 13,
+    "n_pairs_scored": 5,
+    "coherence_npmi": 0.2046
+  },
+  {
+    "sense_id": "wosnl:alpha_mno2_nanorods@WoS_natlab_pub#0",
+    "keyword": "alpha-mno2 nanorods",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:alkaline_battery_membrane@WoS_natlab_pub#0",
+    "keyword": "alkaline battery membrane",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 3,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:connectivity@WoS_natlab_pub#0",
+    "keyword": "connectivity",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 20,
+    "n_pairs_scored": 5,
+    "coherence_npmi": -0.0063
+  },
+  {
+    "sense_id": "wosnl:model_higgs_boson@WoS_natlab_pub#0",
+    "keyword": "model higgs-boson",
+    "discipline": "math_physics",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:arbuscular_mycorrhizal_fungus@WoS_natlab_pub#0",
+    "keyword": "arbuscular mycorrhizal fungus",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 7,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:communication_topology@WoS_natlab_pub#0",
+    "keyword": "communication topology",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 4,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wos2:nonlinear_adsorption@WoS_KP_vocab#0",
+    "keyword": "nonlinear adsorption",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 3,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:primary_production@WoS_natlab_pub#0",
+    "keyword": "primary production",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 10,
+    "n_pairs_scored": 6,
+    "coherence_npmi": 0.3548
+  },
+  {
+    "sense_id": "wosnl:graphite_electrolyte_interface@WoS_natlab_pub#0",
+    "keyword": "graphite/electrolyte interface",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 4,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:brain_phantom@WoS_natlab_pub#0",
+    "keyword": "brain phantom",
+    "discipline": "chemical_sciences",
+    "n_neighbors": 3,
+    "n_pairs_scored": 1,
+    "coherence_npmi": 1.0
+  },
+  {
+    "sense_id": "wosnl:direct_bond_interconnect@WoS_natlab_pub#0",
+    "keyword": "direct bond interconnect",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:pseudorandom_number_generators@WoS_natlab_pub#0",
+    "keyword": "pseudorandom number generators",
+    "discipline": "biological_medical",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:equation_of_equilibrium@WoS_natlab_pub#0",
+    "keyword": "equation of equilibrium",
+    "discipline": "ee_me_engineering",
+    "n_neighbors": 3,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "sh85084132@Library_of_Congress#0",
+    "keyword": "Metallography",
+    "discipline": "math_physics",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:neutron_spectrum_effect@WoS_natlab_pub#0",
+    "keyword": "neutron spectrum effect",
+    "discipline": "materials",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:economic_trends@WoS_natlab_pub#0",
+    "keyword": "economic trends",
+    "discipline": "policy_economics",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:coastal_environment@WoS_natlab_pub#0",
+    "keyword": "coastal environment",
+    "discipline": "earth_environmental",
+    "n_neighbors": 7,
+    "n_pairs_scored": 4,
+    "coherence_npmi": 0.4313
+  },
+  {
+    "sense_id": "wosnl:photometrically_classified_quasars@WoS_natlab_pub#0",
+    "keyword": "photometrically classified quasars",
+    "discipline": "math_physics",
+    "n_neighbors": 3,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "D000039@MeSH#0",
+    "keyword": "Peritonsillar Abscess",
+    "discipline": "biological_medical",
+    "n_neighbors": 4,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  },
+  {
+    "sense_id": "wosnl:solar_cell_morphology@WoS_natlab_pub#0",
+    "keyword": "solar cell morphology",
+    "discipline": "renewable_alternative",
+    "n_neighbors": 5,
+    "n_pairs_scored": 0,
+    "coherence_npmi": 0.0
+  }
+]

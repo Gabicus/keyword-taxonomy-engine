@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Poincar&eacute; Disk &mdash; Keyword Taxonomy</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+  #container { position: relative; width: 100%; height: 100%; }
+  svg { display: block; }
+
+  /* Controls panel */
+  #controls {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 10;
+    background: rgba(22, 27, 34, 0.92);
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 14px 18px;
+    min-width: 260px;
+    backdrop-filter: blur(8px);
+  }
+  #controls h2 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #e6edf3;
+  }
+  #controls label {
+    font-size: 12px;
+    color: #8b949e;
+    display: block;
+    margin-bottom: 4px;
+  }
+  #controls select, #controls input[type="text"] {
+    width: 100%;
+    background: #0d1117;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 13px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  #controls input[type="text"] { cursor: text; }
+  #controls input[type="text"]::placeholder { color: #484f58; }
+  #controls select:focus, #controls input[type="text"]:focus { outline: none; border-color: #58a6ff; }
+  #controls .hint {
+    font-size: 11px;
+    color: #484f58;
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+  #controls .stat {
+    font-size: 12px;
+    color: #58a6ff;
+    margin-bottom: 2px;
+  }
+  #controls button {
+    background: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  #controls button:hover { background: #30363d; border-color: #58a6ff; }
+
+  /* Search results dropdown */
+  #search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(22, 27, 34, 0.98);
+    border: 1px solid #30363d;
+    border-radius: 0 0 6px 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 30;
+  }
+  #search-results .sr-item {
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #21262d;
+  }
+  #search-results .sr-item:hover { background: #21262d; }
+  #search-results .sr-item .sr-label { color: #e6edf3; font-weight: 600; }
+  #search-results .sr-item .sr-disc { color: #8b949e; font-size: 11px; margin-left: 6px; }
+  #search-wrap { position: relative; }
+
+  /* Breadcrumb */
+  #breadcrumb {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background: rgba(22, 27, 34, 0.85);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #8b949e;
+    backdrop-filter: blur(8px);
+    display: none;
+  }
+  #breadcrumb span { color: #58a6ff; cursor: pointer; }
+  #breadcrumb span:hover { text-decoration: underline; }
+  #breadcrumb .bc-sep { color: #484f58; margin: 0 6px; cursor: default; }
+  #breadcrumb .bc-current { color: #e6edf3; cursor: default; }
+  #breadcrumb .bc-current:hover { text-decoration: none; }
+
+  /* Legend */
+  #legend {
+    position: absolute;
+    bottom: 70px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(22, 27, 34, 0.88);
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    backdrop-filter: blur(8px);
+  }
+  #legend h3 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 8px;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    color: #8b949e;
+  }
+  .legend-line {
+    width: 28px;
+    height: 0;
+    border-top: 2px solid;
+    flex-shrink: 0;
+  }
+  .legend-line.hierarchy { border-color: rgba(139, 148, 158, 0.5); }
+  .legend-line.cross { border-color: #e3a21a; border-top-style: dashed; }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dot.poly { background: #e3a21a; box-shadow: 0 0 4px #e3a21a; }
+
+  /* Tooltip */
+  #tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(22, 27, 34, 0.95);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    display: none;
+    z-index: 20;
+    max-width: 320px;
+    backdrop-filter: blur(8px);
+  }
+  #tooltip .tt-label { font-weight: 600; color: #e6edf3; font-size: 14px; }
+  #tooltip .tt-disc { color: #8b949e; font-size: 12px; }
+  #tooltip .tt-count { color: #58a6ff; font-size: 12px; }
+  #tooltip .tt-cross { color: #e3a21a; font-size: 12px; margin-top: 4px; }
+  #tooltip .tt-cross-list { color: #c9d1d9; font-size: 11px; padding-left: 8px; }
+
+  /* Title */
+  #title {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+  }
+  #title h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e6edf3;
+    letter-spacing: 0.5px;
+  }
+  #title p {
+    font-size: 12px;
+    color: #484f58;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div id="container">
+  <svg id="viz"></svg>
+
+  <div id="controls">
+    <h2>Poincar&eacute; Disk</h2>
+    <div class="stat" id="stat-nodes"></div>
+    <div class="stat" id="stat-edges"></div>
+    <div class="stat" id="stat-disciplines"></div>
+
+    <label for="search-box">Search keywords</label>
+    <div id="search-wrap">
+      <input type="text" id="search-box" placeholder="Type to search...">
+      <div id="search-results"></div>
+    </div>
+
+    <label for="disc-select">Discipline focus</label>
+    <select id="disc-select"><option value="">All</option></select>
+
+    <div style="display:flex;gap:6px;margin-top:4px;">
+      <button id="btn-reset">Reset view</button>
+      <button id="btn-toggle-cross" title="Toggle cross-discipline edges">Cross links: ON</button>
+    </div>
+
+    <div class="hint">
+      Double-click discipline to zoom in.<br>
+      Right-click or Esc to zoom out.<br>
+      Scroll to zoom. Drag to pan.
+    </div>
+  </div>
+
+  <div id="breadcrumb"></div>
+
+  <div id="legend">
+    <h3>Edge types</h3>
+    <div class="legend-row"><div class="legend-line hierarchy"></div> Hierarchy (parent&rarr;child)</div>
+    <div class="legend-row"><div class="legend-line cross"></div> Cross-discipline (polysemy)</div>
+    <div class="legend-row"><div class="legend-dot poly"></div> Polysemous keyword</div>
+  </div>
+
+  <div id="tooltip"></div>
+
+  <div id="title">
+    <h1>Keyword Taxonomy in Hyperbolic Space</h1>
+    <p id="title-sub">Poincar&eacute; disk model &mdash; 14 disciplines</p>
+  </div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+(async function() {
+
+// ---------- Load data ----------
+const resp = await fetch('../data/viz/poincare_data.json');
+const DATA = await resp.json();
+
+const nodes = DATA.nodes;
+const edges = DATA.edges;
+const lenses = DATA.lenses || [];
+
+// Index
+const nodeMap = new Map(nodes.map(n => [n.id, n]));
+const disciplines = nodes.filter(n => n.type === 'discipline');
+const keywords = nodes.filter(n => n.type === 'keyword');
+const hierarchyEdges = edges.filter(e => e.type !== 'cross_discipline');
+const crossEdges = edges.filter(e => e.type === 'cross_discipline');
+
+// Build cross-link index: node_id -> [cross edge indices]
+const crossByNode = new Map();
+crossEdges.forEach((e, i) => {
+  [e.source, e.target].forEach(nid => {
+    if (!crossByNode.has(nid)) crossByNode.set(nid, []);
+    crossByNode.get(nid).push(i);
+  });
+});
+
+// ---------- Color palette ----------
+const DISC_COLORS = {};
+const palette = [
+  '#f97583','#79c0ff','#56d364','#d2a8ff','#ffa657',
+  '#ff7b72','#7ee787','#a5d6ff','#e3b341','#f0883e',
+  '#bc8cff','#39d353','#da3633','#3fb950','#58a6ff'
+];
+disciplines.forEach((d, i) => {
+  DISC_COLORS[d.discipline] = palette[i % palette.length];
+});
+
+const DISC_LABELS_MAP = {};
+disciplines.forEach(d => { DISC_LABELS_MAP[d.discipline] = d.label; });
+
+const CROSS_COLOR = '#e3a21a';
+
+// ---------- SVG setup ----------
+const W = window.innerWidth;
+const H = window.innerHeight;
+const R = Math.min(W, H) * 0.46; // disk radius — bigger
+const CX = W / 2;
+const CY = H / 2;
+
+const svg = d3.select('#viz')
+  .attr('width', W)
+  .attr('height', H);
+
+// Defs for glow effect
+const defs = svg.append('defs');
+const glow = defs.append('filter').attr('id', 'glow');
+glow.append('feGaussianBlur').attr('stdDeviation', 3).attr('result', 'blur');
+const merge = glow.append('feMerge');
+merge.append('feMergeNode').attr('in', 'blur');
+merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+// Gold glow for cross edges
+const goldGlow = defs.append('filter').attr('id', 'goldGlow');
+goldGlow.append('feGaussianBlur').attr('stdDeviation', 2).attr('result', 'blur');
+const gm = goldGlow.append('feMerge');
+gm.append('feMergeNode').attr('in', 'blur');
+gm.append('feMergeNode').attr('in', 'SourceGraphic');
+
+// Radial gradient for disk background
+const radGrad = defs.append('radialGradient').attr('id', 'diskGrad');
+radGrad.append('stop').attr('offset', '0%').attr('stop-color', '#161b22');
+radGrad.append('stop').attr('offset', '85%').attr('stop-color', '#0d1117');
+radGrad.append('stop').attr('offset', '100%').attr('stop-color', '#0a0e13');
+
+const mainG = svg.append('g').attr('transform', `translate(${CX},${CY})`);
+
+// ---------- Draw boundary circle ----------
+mainG.append('circle')
+  .attr('r', R)
+  .attr('fill', 'url(#diskGrad)')
+  .attr('stroke', '#21262d')
+  .attr('stroke-width', 1.5);
+
+// Subtle concentric guides
+[0.33, 0.66].forEach(frac => {
+  mainG.append('circle')
+    .attr('r', R * frac)
+    .attr('fill', 'none')
+    .attr('stroke', '#161b22')
+    .attr('stroke-width', 0.5)
+    .attr('stroke-dasharray', '4 6');
+});
+
+// ---------- Geodesic arc computation ----------
+function geodesicPath(x1, y1, x2, y2) {
+  const eps = 1e-6;
+  const cross = x1 * y2 - x2 * y1;
+  if (Math.abs(cross) < eps) {
+    return `M${x1 * R},${y1 * R} L${x2 * R},${y2 * R}`;
+  }
+  const r1sq = x1 * x1 + y1 * y1;
+  if (r1sq < eps) {
+    return `M${x1 * R},${y1 * R} L${x2 * R},${y2 * R}`;
+  }
+  const ix = x1 / r1sq;
+  const iy = y1 / r1sq;
+  const ax = x1, ay = y1;
+  const bx = x2, by = y2;
+  const cx_ = ix, cy_ = iy;
+  const D = 2 * (ax * (by - cy_) + bx * (cy_ - ay) + cx_ * (ay - by));
+  if (Math.abs(D) < eps) {
+    return `M${x1 * R},${y1 * R} L${x2 * R},${y2 * R}`;
+  }
+  const ux = ((ax*ax+ay*ay)*(by-cy_)+(bx*bx+by*by)*(cy_-ay)+(cx_*cx_+cy_*cy_)*(ay-by))/D;
+  const uy = ((ax*ax+ay*ay)*(cx_-bx)+(bx*bx+by*by)*(ax-cx_)+(cx_*cx_+cy_*cy_)*(bx-ax))/D;
+  const radius = Math.sqrt((ax-ux)*(ax-ux)+(ay-uy)*(ay-uy));
+  const rP = radius * R;
+  const px1 = x1*R, py1 = y1*R;
+  const px2 = x2*R, py2 = y2*R;
+  const distCenter = Math.sqrt(ux*ux + uy*uy);
+  const sweepFlag = distCenter > 1 ? 1 : 0;
+  return `M${px1},${py1} A${rP},${rP} 0 0,${sweepFlag} ${px2},${py2}`;
+}
+
+// Helper: get display coords (current Mobius or original)
+function getCoords(n) {
+  if (n._mx !== undefined) return { x: n._mx, y: n._my };
+  return { x: n.x, y: n.y };
+}
+
+// ---------- Render hierarchy edges ----------
+const edgeG = mainG.append('g').attr('class', 'edges');
+
+const hierPaths = edgeG.selectAll('.hier-edge')
+  .data(hierarchyEdges)
+  .join('path')
+  .attr('class', 'hier-edge')
+  .attr('d', e => {
+    const s = nodeMap.get(e.source);
+    const t = nodeMap.get(e.target);
+    return geodesicPath(s.x, s.y, t.x, t.y);
+  })
+  .attr('fill', 'none')
+  .attr('stroke', e => {
+    const t = nodeMap.get(e.target);
+    const disc = t.discipline || null;
+    return disc ? DISC_COLORS[disc] : '#30363d';
+  })
+  .attr('stroke-width', e => {
+    const t = nodeMap.get(e.target);
+    return t.type === 'discipline' ? 1.2 : 0.4;
+  })
+  .attr('stroke-opacity', e => {
+    const t = nodeMap.get(e.target);
+    return t.type === 'discipline' ? 0.6 : 0.15;
+  });
+
+// ---------- Render cross-discipline edges ----------
+const crossG = mainG.append('g').attr('class', 'cross-edges');
+let showCross = true;
+
+const crossPaths = crossG.selectAll('.cross-edge')
+  .data(crossEdges)
+  .join('path')
+  .attr('class', 'cross-edge')
+  .attr('d', e => {
+    const s = nodeMap.get(e.source);
+    const t = nodeMap.get(e.target);
+    return geodesicPath(s.x, s.y, t.x, t.y);
+  })
+  .attr('fill', 'none')
+  .attr('stroke', CROSS_COLOR)
+  .attr('stroke-width', 0.7)
+  .attr('stroke-opacity', 0.25)
+  .attr('stroke-dasharray', '4 3');
+
+// ---------- Render nodes ----------
+const nodeG = mainG.append('g').attr('class', 'nodes');
+
+// Keywords
+const kwCircles = nodeG.selectAll('.kw')
+  .data(keywords)
+  .join('circle')
+  .attr('class', 'kw')
+  .attr('cx', d => d.x * R)
+  .attr('cy', d => d.y * R)
+  .attr('r', d => {
+    const base = Math.max(2, Math.log(d.rel_count + 1) * 0.8);
+    return (d.other_disciplines && d.other_disciplines.length > 0) ? base * 1.3 : base;
+  })
+  .attr('fill', d => {
+    if (d.other_disciplines && d.other_disciplines.length > 0) return CROSS_COLOR;
+    return DISC_COLORS[d.discipline];
+  })
+  .attr('fill-opacity', d => (d.other_disciplines && d.other_disciplines.length > 0) ? 0.85 : 0.6)
+  .attr('stroke', d => (d.other_disciplines && d.other_disciplines.length > 0) ? CROSS_COLOR : 'none')
+  .attr('stroke-width', d => (d.other_disciplines && d.other_disciplines.length > 0) ? 0.5 : 0)
+  .attr('stroke-opacity', 0.4);
+
+// Disciplines
+const discCircles = nodeG.selectAll('.disc')
+  .data(disciplines)
+  .join('circle')
+  .attr('class', 'disc')
+  .attr('cx', d => d.x * R)
+  .attr('cy', d => d.y * R)
+  .attr('r', d => Math.max(6, Math.log(d.keyword_count + 1) * 2))
+  .attr('fill', d => DISC_COLORS[d.discipline])
+  .attr('fill-opacity', 0.85)
+  .attr('stroke', d => DISC_COLORS[d.discipline])
+  .attr('stroke-width', 2)
+  .attr('stroke-opacity', 0.4)
+  .attr('filter', 'url(#glow)')
+  .style('cursor', 'pointer');
+
+// Root node
+const rootNode = nodes.find(n => n.type === 'root');
+const rootCircle = nodeG.append('circle')
+  .datum(rootNode)
+  .attr('cx', 0)
+  .attr('cy', 0)
+  .attr('r', 8)
+  .attr('fill', '#e6edf3')
+  .attr('fill-opacity', 0.9)
+  .attr('filter', 'url(#glow)');
+
+// ---------- Labels ----------
+const labelG = mainG.append('g').attr('class', 'labels');
+
+// Discipline labels
+const discLabels = labelG.selectAll('.disc-label')
+  .data(disciplines)
+  .join('text')
+  .attr('class', 'disc-label')
+  .attr('x', d => d.x * R)
+  .attr('y', d => d.y * R - Math.max(6, Math.log(d.keyword_count + 1) * 2) - 5)
+  .attr('text-anchor', 'middle')
+  .attr('fill', d => DISC_COLORS[d.discipline])
+  .attr('font-size', 10)
+  .attr('font-weight', 600)
+  .attr('paint-order', 'stroke')
+  .attr('stroke', '#0d1117')
+  .attr('stroke-width', 3)
+  .text(d => d.label);
+
+// Root label
+const rootLabel = labelG.append('text')
+  .attr('x', 0)
+  .attr('y', -14)
+  .attr('text-anchor', 'middle')
+  .attr('fill', '#e6edf3')
+  .attr('font-size', 11)
+  .attr('font-weight', 700)
+  .text('Ontology');
+
+// ---------- Tooltip ----------
+const tooltip = d3.select('#tooltip');
+
+function showTooltip(event, d) {
+  let html = `<div class="tt-label">${d.label}</div>`;
+  if (d.type === 'discipline') {
+    html += `<div class="tt-count">${d.keyword_count.toLocaleString()} unique keywords</div>`;
+  } else if (d.type === 'keyword') {
+    html += `<div class="tt-disc">${(DISC_LABELS_MAP[d.discipline] || d.discipline).replace(/_/g, ' ')}</div>`;
+    html += `<div class="tt-count">${d.rel_count.toLocaleString()} relationships</div>`;
+    const others = d.other_disciplines || [];
+    if (others.length > 0) {
+      html += `<div class="tt-cross">Polysemous &mdash; also in:</div>`;
+      html += `<div class="tt-cross-list">${others.map(od => DISC_LABELS_MAP[od] || od.replace(/_/g, ' ')).join(', ')}</div>`;
+    }
+  }
+  tooltip.html(html)
+    .style('display', 'block')
+    .style('left', (event.pageX + 14) + 'px')
+    .style('top', (event.pageY - 10) + 'px');
+}
+
+function hideTooltip() {
+  tooltip.style('display', 'none');
+}
+
+// ---------- Highlight helpers ----------
+function highlightDiscipline(disc) {
+  kwCircles.transition().duration(200)
+    .attr('fill-opacity', d => d.discipline === disc ? 0.9 : 0.08)
+    .attr('r', d => {
+      const isPoly = d.other_disciplines && d.other_disciplines.length > 0;
+      if (d.discipline === disc) return Math.max(3, Math.log(d.rel_count + 1) * 1.2) * (isPoly ? 1.3 : 1);
+      return Math.max(1.5, Math.log(d.rel_count + 1) * 0.5);
+    });
+  discCircles.transition().duration(200)
+    .attr('fill-opacity', d => d.discipline === disc ? 1 : 0.15)
+    .attr('stroke-opacity', d => d.discipline === disc ? 0.8 : 0.1);
+  hierPaths.transition().duration(200)
+    .attr('stroke-opacity', e => {
+      const t = nodeMap.get(e.target);
+      if (t.discipline === disc) return t.type === 'discipline' ? 0.8 : 0.4;
+      return 0.03;
+    });
+  crossPaths.transition().duration(200)
+    .attr('stroke-opacity', e => {
+      const s = nodeMap.get(e.source);
+      const t = nodeMap.get(e.target);
+      if (s.discipline === disc || t.discipline === disc) return 0.6;
+      return 0.04;
+    })
+    .attr('stroke-width', e => {
+      const s = nodeMap.get(e.source);
+      const t = nodeMap.get(e.target);
+      return (s.discipline === disc || t.discipline === disc) ? 1.2 : 0.5;
+    });
+  discLabels.transition().duration(200)
+    .attr('fill-opacity', d => d.discipline === disc ? 1 : 0.2);
+}
+
+function highlightKeyword(kwLabel) {
+  // Find all nodes with this keyword label
+  const matchNodes = new Set();
+  const matchDiscs = new Set();
+  keywords.forEach(k => {
+    if (k.label.toLowerCase() === kwLabel.toLowerCase()) {
+      matchNodes.add(k.id);
+      matchDiscs.add(k.discipline);
+    }
+  });
+
+  kwCircles.transition().duration(200)
+    .attr('fill-opacity', d => matchNodes.has(d.id) ? 1 : 0.06)
+    .attr('r', d => {
+      if (matchNodes.has(d.id)) return Math.max(5, Math.log(d.rel_count + 1) * 2);
+      return Math.max(1.5, Math.log(d.rel_count + 1) * 0.4);
+    })
+    .attr('fill', d => matchNodes.has(d.id) ? CROSS_COLOR : DISC_COLORS[d.discipline]);
+
+  discCircles.transition().duration(200)
+    .attr('fill-opacity', d => matchDiscs.has(d.discipline) ? 1 : 0.15);
+
+  hierPaths.transition().duration(200)
+    .attr('stroke-opacity', e => {
+      const t = nodeMap.get(e.target);
+      return matchNodes.has(t.id) ? 0.6 : 0.03;
+    });
+
+  crossPaths.transition().duration(200)
+    .attr('stroke-opacity', e => {
+      if (matchNodes.has(e.source) || matchNodes.has(e.target)) return 0.8;
+      return 0.03;
+    })
+    .attr('stroke-width', e => {
+      if (matchNodes.has(e.source) || matchNodes.has(e.target)) return 1.8;
+      return 0.5;
+    });
+
+  discLabels.transition().duration(200)
+    .attr('fill-opacity', d => matchDiscs.has(d.discipline) ? 1 : 0.15);
+
+  // Show labels for matched nodes
+  labelG.selectAll('.search-label').remove();
+  const matchedKws = keywords.filter(k => matchNodes.has(k.id));
+  labelG.selectAll('.search-label')
+    .data(matchedKws)
+    .join('text')
+    .attr('class', 'search-label')
+    .attr('x', d => {
+      const c = getCoords(d);
+      return c.x * R + 6;
+    })
+    .attr('y', d => {
+      const c = getCoords(d);
+      return c.y * R + 3;
+    })
+    .attr('fill', CROSS_COLOR)
+    .attr('font-size', 11)
+    .attr('font-weight', 600)
+    .attr('paint-order', 'stroke')
+    .attr('stroke', '#0d1117')
+    .attr('stroke-width', 3)
+    .text(d => `${d.label} (${DISC_LABELS_MAP[d.discipline] || d.discipline})`);
+}
+
+function clearHighlight() {
+  kwCircles.transition().duration(300)
+    .attr('fill-opacity', d => (d.other_disciplines && d.other_disciplines.length > 0) ? 0.85 : 0.6)
+    .attr('r', d => {
+      const base = Math.max(2, Math.log(d.rel_count + 1) * 0.8);
+      return (d.other_disciplines && d.other_disciplines.length > 0) ? base * 1.3 : base;
+    })
+    .attr('fill', d => (d.other_disciplines && d.other_disciplines.length > 0) ? CROSS_COLOR : DISC_COLORS[d.discipline]);
+  discCircles.transition().duration(300)
+    .attr('fill-opacity', 0.85)
+    .attr('stroke-opacity', 0.4);
+  hierPaths.transition().duration(300)
+    .attr('stroke-opacity', e => {
+      const t = nodeMap.get(e.target);
+      return t.type === 'discipline' ? 0.6 : 0.15;
+    });
+  crossPaths.transition().duration(300)
+    .attr('stroke-opacity', showCross ? 0.25 : 0)
+    .attr('stroke-width', 0.7);
+  discLabels.transition().duration(300)
+    .attr('fill-opacity', 1);
+  labelG.selectAll('.search-label').transition().duration(200).attr('fill-opacity', 0).remove();
+}
+
+// ---------- Hover interactions ----------
+discCircles
+  .on('mouseover', function(event, d) {
+    showTooltip(event, d);
+    highlightDiscipline(d.discipline);
+  })
+  .on('mousemove', function(event) {
+    tooltip.style('left', (event.pageX + 14) + 'px').style('top', (event.pageY - 10) + 'px');
+  })
+  .on('mouseout', function() {
+    hideTooltip();
+    if (!currentZoom) clearHighlight();
+  })
+  .on('dblclick', function(event, d) {
+    event.preventDefault();
+    mobiusZoom(d.discipline);
+  })
+  .on('click', function(event, d) {
+    highlightDiscipline(d.discipline);
+  });
+
+kwCircles
+  .on('mouseover', function(event, d) {
+    showTooltip(event, d);
+    // Enlarge and highlight cross-edges for this keyword
+    d3.select(this)
+      .attr('r', Math.max(5, Math.log(d.rel_count + 1) * 1.8))
+      .attr('fill-opacity', 1);
+    // Highlight cross edges involving this node
+    const crossIdx = crossByNode.get(d.id) || [];
+    crossIdx.forEach(i => {
+      d3.select(crossPaths.nodes()[i])
+        .attr('stroke-opacity', 0.8)
+        .attr('stroke-width', 1.5);
+    });
+  })
+  .on('mousemove', function(event) {
+    tooltip.style('left', (event.pageX + 14) + 'px').style('top', (event.pageY - 10) + 'px');
+  })
+  .on('mouseout', function(event, d) {
+    hideTooltip();
+    const isPoly = d.other_disciplines && d.other_disciplines.length > 0;
+    const base = Math.max(2, Math.log(d.rel_count + 1) * 0.8);
+    d3.select(this)
+      .attr('r', isPoly ? base * 1.3 : base)
+      .attr('fill-opacity', isPoly ? 0.85 : 0.6);
+    const crossIdx = crossByNode.get(d.id) || [];
+    crossIdx.forEach(i => {
+      d3.select(crossPaths.nodes()[i])
+        .attr('stroke-opacity', showCross ? 0.25 : 0)
+        .attr('stroke-width', 0.7);
+    });
+  })
+  .on('click', function(event, d) {
+    // Highlight all instances of this keyword across disciplines
+    highlightKeyword(d.label);
+  });
+
+// ---------- Mobius transformation zoom ----------
+let currentZoom = null;
+
+function mobiusTransform(nodes, ax, ay) {
+  return nodes.map(n => {
+    const zx = n.x, zy = n.y;
+    const numX = zx - ax;
+    const numY = zy - ay;
+    const denX = 1 - (ax * zx + ay * zy);
+    const denY = -(ax * zy - ay * zx);
+    const denMag2 = denX * denX + denY * denY;
+    if (denMag2 < 1e-10) return { ...n, _mx: zx, _my: zy };
+    const mx = (numX * denX + numY * denY) / denMag2;
+    const my = (numY * denX - numX * denY) / denMag2;
+    return { ...n, _mx: mx, _my: my };
+  });
+}
+
+function mobiusZoom(disc) {
+  const discNode = disciplines.find(d => d.discipline === disc);
+  if (!discNode) return;
+
+  const ax = discNode.x * 0.7;
+  const ay = discNode.y * 0.7;
+
+  const transformed = mobiusTransform(nodes, ax, ay);
+  const tMap = new Map(transformed.map(t => [t.id, t]));
+
+  // Store transformed coords on original nodes for getCoords()
+  transformed.forEach(t => {
+    const orig = nodeMap.get(t.id);
+    if (orig) { orig._mx = t._mx; orig._my = t._my; }
+  });
+
+  currentZoom = { disc, label: DISC_LABELS_MAP[disc] || disc };
+  updateBreadcrumb();
+
+  // Animate nodes
+  kwCircles.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('cx', d => tMap.get(d.id)._mx * R)
+    .attr('cy', d => tMap.get(d.id)._my * R)
+    .attr('fill-opacity', d => d.discipline === disc ? 0.85 : 0.12)
+    .attr('r', d => {
+      const isPoly = d.other_disciplines && d.other_disciplines.length > 0;
+      if (d.discipline === disc) return Math.max(3, Math.log(d.rel_count + 1) * 1.3) * (isPoly ? 1.3 : 1);
+      return Math.max(1, Math.log(d.rel_count + 1) * 0.4);
+    });
+
+  discCircles.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('cx', d => tMap.get(d.id)._mx * R)
+    .attr('cy', d => tMap.get(d.id)._my * R)
+    .attr('fill-opacity', d => d.discipline === disc ? 1 : 0.2);
+
+  const rootT = tMap.get('root');
+  rootCircle.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('cx', rootT._mx * R)
+    .attr('cy', rootT._my * R);
+
+  hierPaths.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('d', e => {
+      const s = tMap.get(e.source);
+      const t = tMap.get(e.target);
+      return geodesicPath(s._mx, s._my, t._mx, t._my);
+    })
+    .attr('stroke-opacity', e => {
+      const t = nodeMap.get(e.target);
+      if (t.discipline === disc) return t.type === 'discipline' ? 0.7 : 0.35;
+      return 0.03;
+    });
+
+  crossPaths.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('d', e => {
+      const s = tMap.get(e.source);
+      const t = tMap.get(e.target);
+      return geodesicPath(s._mx, s._my, t._mx, t._my);
+    })
+    .attr('stroke-opacity', e => {
+      if (!showCross) return 0;
+      const s = nodeMap.get(e.source);
+      const t = nodeMap.get(e.target);
+      if (s.discipline === disc || t.discipline === disc) return 0.55;
+      return 0.04;
+    })
+    .attr('stroke-width', e => {
+      const s = nodeMap.get(e.source);
+      const t = nodeMap.get(e.target);
+      return (s.discipline === disc || t.discipline === disc) ? 1 : 0.5;
+    });
+
+  discLabels.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('x', d => tMap.get(d.id)._mx * R)
+    .attr('y', d => tMap.get(d.id)._my * R - Math.max(6, Math.log(d.keyword_count + 1) * 2) - 5)
+    .attr('fill-opacity', d => d.discipline === disc ? 1 : 0.15);
+
+  rootLabel.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('x', rootT._mx * R)
+    .attr('y', rootT._my * R - 14);
+
+  // Show keyword labels for focused discipline
+  labelG.selectAll('.kw-label').remove();
+  const focusedKws = keywords.filter(k => k.discipline === disc).slice(0, 30);
+  labelG.selectAll('.kw-label')
+    .data(focusedKws)
+    .join('text')
+    .attr('class', 'kw-label')
+    .attr('x', d => tMap.get(d.id)._mx * R + 5)
+    .attr('y', d => tMap.get(d.id)._my * R + 3)
+    .attr('fill', d => {
+      const isPoly = d.other_disciplines && d.other_disciplines.length > 0;
+      return isPoly ? CROSS_COLOR : DISC_COLORS[d.discipline];
+    })
+    .attr('fill-opacity', 0)
+    .attr('font-size', 9)
+    .attr('paint-order', 'stroke')
+    .attr('stroke', '#0d1117')
+    .attr('stroke-width', 2.5)
+    .text(d => {
+      const isPoly = d.other_disciplines && d.other_disciplines.length > 0;
+      return isPoly ? `${d.label} *` : d.label;
+    })
+    .transition().delay(250).duration(300)
+    .attr('fill-opacity', 0.85);
+}
+
+function resetView() {
+  currentZoom = null;
+  updateBreadcrumb();
+
+  // Clear transformed coords
+  nodes.forEach(n => { delete n._mx; delete n._my; });
+
+  kwCircles.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('cx', d => d.x * R)
+    .attr('cy', d => d.y * R)
+    .attr('fill-opacity', d => (d.other_disciplines && d.other_disciplines.length > 0) ? 0.85 : 0.6)
+    .attr('fill', d => (d.other_disciplines && d.other_disciplines.length > 0) ? CROSS_COLOR : DISC_COLORS[d.discipline])
+    .attr('r', d => {
+      const base = Math.max(2, Math.log(d.rel_count + 1) * 0.8);
+      return (d.other_disciplines && d.other_disciplines.length > 0) ? base * 1.3 : base;
+    });
+
+  discCircles.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('cx', d => d.x * R)
+    .attr('cy', d => d.y * R)
+    .attr('fill-opacity', 0.85);
+
+  rootCircle.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('cx', 0).attr('cy', 0);
+
+  hierPaths.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('d', e => {
+      const s = nodeMap.get(e.source);
+      const t = nodeMap.get(e.target);
+      return geodesicPath(s.x, s.y, t.x, t.y);
+    })
+    .attr('stroke-opacity', e => {
+      const t = nodeMap.get(e.target);
+      return t.type === 'discipline' ? 0.6 : 0.15;
+    });
+
+  crossPaths.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('d', e => {
+      const s = nodeMap.get(e.source);
+      const t = nodeMap.get(e.target);
+      return geodesicPath(s.x, s.y, t.x, t.y);
+    })
+    .attr('stroke-opacity', showCross ? 0.25 : 0)
+    .attr('stroke-width', 0.7);
+
+  discLabels.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('x', d => d.x * R)
+    .attr('y', d => d.y * R - Math.max(6, Math.log(d.keyword_count + 1) * 2) - 5)
+    .attr('fill-opacity', 1);
+
+  rootLabel.transition().duration(500).ease(d3.easeCubicInOut)
+    .attr('x', 0).attr('y', -14);
+
+  labelG.selectAll('.kw-label').transition().duration(200).attr('fill-opacity', 0).remove();
+  labelG.selectAll('.search-label').transition().duration(200).attr('fill-opacity', 0).remove();
+}
+
+// ---------- Breadcrumb ----------
+const breadcrumb = d3.select('#breadcrumb');
+
+function updateBreadcrumb() {
+  if (!currentZoom) {
+    breadcrumb.style('display', 'none');
+    return;
+  }
+  breadcrumb.style('display', 'block')
+    .html(`<span id="bc-root">Ontology</span><span class="bc-sep">&rsaquo;</span><span class="bc-current">${currentZoom.label}</span>`);
+  d3.select('#bc-root').on('click', () => {
+    resetView();
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+  });
+}
+
+// ---------- Zoom & pan ----------
+const zoom = d3.zoom()
+  .scaleExtent([0.5, 5])
+  .on('zoom', (event) => {
+    mainG.attr('transform', `translate(${CX + event.transform.x},${CY + event.transform.y}) scale(${event.transform.k})`);
+  });
+
+svg.call(zoom);
+
+// Right-click to zoom out
+svg.on('contextmenu', function(event) {
+  event.preventDefault();
+  if (currentZoom) {
+    resetView();
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+  }
+});
+
+// Escape to zoom out
+d3.select('body').on('keydown', function(event) {
+  if (event.key === 'Escape' && currentZoom) {
+    resetView();
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+  }
+});
+
+// ---------- Search ----------
+const searchBox = d3.select('#search-box');
+const searchResults = d3.select('#search-results');
+
+// Build search index
+const searchIndex = [];
+const kwLabelsMap = new Map(); // lowercase label -> [{node, disc}]
+keywords.forEach(k => {
+  const key = k.label.toLowerCase();
+  if (!kwLabelsMap.has(key)) kwLabelsMap.set(key, []);
+  kwLabelsMap.get(key).push(k);
+});
+kwLabelsMap.forEach((nodes, label) => {
+  searchIndex.push({ label: nodes[0].label, lower: label, nodes, disciplines: nodes.map(n => n.discipline) });
+});
+
+searchBox.on('input', function() {
+  const q = this.value.toLowerCase().trim();
+  if (q.length < 2) {
+    searchResults.style('display', 'none');
+    if (q.length === 0) clearHighlight();
+    return;
+  }
+  const matches = searchIndex
+    .filter(s => s.lower.includes(q))
+    .sort((a, b) => {
+      // Exact start match first, then by discipline count (polysemous first)
+      const aStart = a.lower.startsWith(q) ? 0 : 1;
+      const bStart = b.lower.startsWith(q) ? 0 : 1;
+      if (aStart !== bStart) return aStart - bStart;
+      return b.disciplines.length - a.disciplines.length;
+    })
+    .slice(0, 15);
+
+  if (matches.length === 0) {
+    searchResults.style('display', 'none');
+    return;
+  }
+
+  searchResults.style('display', 'block');
+  searchResults.html('');
+  matches.forEach(m => {
+    const div = searchResults.append('div').attr('class', 'sr-item');
+    let html = `<span class="sr-label">${m.label}</span>`;
+    if (m.disciplines.length > 1) {
+      html += `<span class="sr-disc" style="color:${CROSS_COLOR}">${m.disciplines.length} disciplines</span>`;
+    } else {
+      html += `<span class="sr-disc">${DISC_LABELS_MAP[m.disciplines[0]] || m.disciplines[0]}</span>`;
+    }
+    div.html(html);
+    div.on('click', () => {
+      searchBox.property('value', m.label);
+      searchResults.style('display', 'none');
+      highlightKeyword(m.label);
+    });
+  });
+});
+
+searchBox.on('blur', () => {
+  setTimeout(() => searchResults.style('display', 'none'), 200);
+});
+
+searchBox.on('keydown', function(event) {
+  if (event.key === 'Escape') {
+    this.value = '';
+    searchResults.style('display', 'none');
+    clearHighlight();
+  }
+  if (event.key === 'Enter') {
+    const q = this.value.toLowerCase().trim();
+    const match = searchIndex.find(s => s.lower === q) || searchIndex.find(s => s.lower.includes(q));
+    if (match) {
+      searchResults.style('display', 'none');
+      highlightKeyword(match.label);
+    }
+  }
+});
+
+// ---------- Controls ----------
+const discSelect = d3.select('#disc-select');
+disciplines.forEach(d => {
+  discSelect.append('option').attr('value', d.discipline).text(d.label);
+});
+
+discSelect.on('change', function() {
+  const disc = this.value;
+  if (!disc) { resetView(); return; }
+  mobiusZoom(disc);
+});
+
+// Cross-edge toggle
+const btnCross = d3.select('#btn-toggle-cross');
+btnCross.on('click', function() {
+  showCross = !showCross;
+  this.textContent = showCross ? 'Cross links: ON' : 'Cross links: OFF';
+  crossPaths.transition().duration(300)
+    .attr('stroke-opacity', showCross ? 0.25 : 0);
+});
+
+// Reset button
+d3.select('#btn-reset').on('click', () => {
+  resetView();
+  svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+  discSelect.property('value', '');
+  searchBox.property('value', '');
+});
+
+// Stats
+d3.select('#stat-nodes').text(`${DATA.meta.total_nodes} nodes`);
+const crossCount = DATA.meta.cross_discipline_edges || 0;
+d3.select('#stat-edges').text(`${DATA.meta.hierarchy_edges || DATA.meta.total_edges} hierarchy + ${crossCount} cross-discipline edges`);
+d3.select('#stat-disciplines').text(`${DATA.meta.disciplines} disciplines`);
+d3.select('#title-sub').text(
+  `Poincaré disk model — ${DATA.meta.disciplines} disciplines, ~${DATA.meta.total_nodes} nodes, ${crossCount} polysemy links`
+);
+
+})();
+</script>
+</body>
+</html>

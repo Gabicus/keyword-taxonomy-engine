@@ -1,0 +1,700 @@
+{
+  "nodes": [
+    {
+      "id": "src_doe_osti",
+      "name": "DOE OSTI",
+      "column": 0,
+      "count": 59
+    },
+    {
+      "id": "src_lib_of_congress",
+      "name": "Lib of Congress",
+      "column": 0,
+      "count": 29731
+    },
+    {
+      "id": "src_mesh",
+      "name": "MeSH",
+      "column": 0,
+      "count": 31110
+    },
+    {
+      "id": "src_nasa_gcmd",
+      "name": "NASA GCMD",
+      "column": 0,
+      "count": 4849
+    },
+    {
+      "id": "src_ncbi_taxonomy",
+      "name": "NCBI Taxonomy",
+      "column": 0,
+      "count": 3044
+    },
+    {
+      "id": "src_openalex",
+      "name": "OpenAlex",
+      "column": 0,
+      "count": 31995
+    },
+    {
+      "id": "src_unesco",
+      "name": "UNESCO",
+      "column": 0,
+      "count": 4408
+    },
+    {
+      "id": "src_wos",
+      "name": "WoS",
+      "column": 0,
+      "count": 315569
+    },
+    {
+      "id": "disc_ee_me_engineering",
+      "name": "EE/ME Engineering",
+      "column": 1,
+      "count": 98990
+    },
+    {
+      "id": "disc_chemical_sciences",
+      "name": "Chemical Sciences",
+      "column": 1,
+      "count": 79791
+    },
+    {
+      "id": "disc_biological_medical",
+      "name": "Biological/Medical",
+      "column": 1,
+      "count": 61591
+    },
+    {
+      "id": "disc_math_physics",
+      "name": "Math & Physics",
+      "column": 1,
+      "count": 50142
+    },
+    {
+      "id": "disc_materials",
+      "name": "Materials",
+      "column": 1,
+      "count": 33136
+    },
+    {
+      "id": "disc_earth_environmental",
+      "name": "Earth & Environmental",
+      "column": 1,
+      "count": 31634
+    },
+    {
+      "id": "disc_computation_data",
+      "name": "Computing & Data",
+      "column": 1,
+      "count": 22307
+    },
+    {
+      "id": "disc_policy_economics",
+      "name": "Policy & Economics",
+      "column": 1,
+      "count": 18041
+    },
+    {
+      "id": "disc_fossil_energy",
+      "name": "Fossil Energy",
+      "column": 1,
+      "count": 14952
+    },
+    {
+      "id": "disc_nuclear_particle",
+      "name": "Nuclear & Particle",
+      "column": 1,
+      "count": 7249
+    },
+    {
+      "id": "disc_renewable_alternative",
+      "name": "Renewables",
+      "column": 1,
+      "count": 4336
+    },
+    {
+      "id": "disc_space_atmospheric",
+      "name": "Space & Atmospheric",
+      "column": 1,
+      "count": 934
+    },
+    {
+      "id": "disc_coal_science",
+      "name": "Coal Science",
+      "column": 1,
+      "count": 373
+    },
+    {
+      "id": "disc_natural_gas",
+      "name": "Natural Gas",
+      "column": 1,
+      "count": 305
+    },
+    {
+      "id": "prog_h2_with_carbon_management",
+      "name": "H2 with Carbon Management",
+      "column": 2,
+      "count": 1955
+    },
+    {
+      "id": "prog_carbon_transport_and_storage",
+      "name": "Carbon Transport & Storage",
+      "column": 2,
+      "count": 1152
+    },
+    {
+      "id": "prog_advanced_remediation_technology",
+      "name": "Advanced Remediation Technology",
+      "column": 2,
+      "count": 402
+    },
+    {
+      "id": "prog_mineral_sustainability",
+      "name": "Mineral Sustainability",
+      "column": 2,
+      "count": 152
+    },
+    {
+      "id": "prog_co2_conversion",
+      "name": "CO2 Conversion",
+      "column": 2,
+      "count": 72
+    },
+    {
+      "id": "prog_methane_mitigation_technologies",
+      "name": "Methane Mitigation Technologies",
+      "column": 2,
+      "count": 60
+    },
+    {
+      "id": "prog_natural_gas_decarbonization_and_hydrogen_technologies",
+      "name": "Natural Gas Decarbonization and Hydrogen Technologies",
+      "column": 2,
+      "count": 32
+    },
+    {
+      "id": "prog_co2_removal",
+      "name": "CO2 Removal",
+      "column": 2,
+      "count": 16
+    }
+  ],
+  "links": [
+    {
+      "source": "src_wos",
+      "target": "disc_ee_me_engineering",
+      "value": 87606
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_chemical_sciences",
+      "value": 68223
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_math_physics",
+      "value": 34951
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_materials",
+      "value": 32140
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_earth_environmental",
+      "value": 24832
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_biological_medical",
+      "value": 20679
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_biological_medical",
+      "value": 20079
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_computation_data",
+      "value": 19497
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_fossil_energy",
+      "value": 14722
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_biological_medical",
+      "value": 14246
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_biological_medical",
+      "value": 12874
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_math_physics",
+      "value": 12472
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_chemical_sciences",
+      "value": 11906
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_policy_economics",
+      "value": 10830
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_ee_me_engineering",
+      "value": 8125
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_ee_me_engineering",
+      "value": 8090
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_earth_environmental",
+      "value": 7489
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_nuclear_particle",
+      "value": 7088
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_policy_economics",
+      "value": 5161
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_renewable_alternative",
+      "value": 4315
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_policy_economics",
+      "value": 3808
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_math_physics",
+      "value": 3537
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_computation_data",
+      "value": 3395
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_earth_environmental",
+      "value": 3370
+    },
+    {
+      "source": "src_ncbi_taxonomy",
+      "target": "disc_biological_medical",
+      "value": 3284
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_chemical_sciences",
+      "value": 3223
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_math_physics",
+      "value": 2867
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_earth_environmental",
+      "value": 2539
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_ee_me_engineering",
+      "value": 2521
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_space_atmospheric",
+      "value": 1800
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_materials",
+      "value": 1722
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_chemical_sciences",
+      "value": 1633
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_earth_environmental",
+      "value": 1527
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_policy_economics",
+      "value": 1197
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_biological_medical",
+      "value": 1184
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_earth_environmental",
+      "value": 1176
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_policy_economics",
+      "value": 1175
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_ee_me_engineering",
+      "value": 1101
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_biological_medical",
+      "value": 875
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_policy_economics",
+      "value": 866
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_ee_me_engineering",
+      "value": 765
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_fossil_energy",
+      "value": 702
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_math_physics",
+      "value": 634
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_computation_data",
+      "value": 601
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_materials",
+      "value": 483
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_math_physics",
+      "value": 427
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_chemical_sciences",
+      "value": 414
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_computation_data",
+      "value": 399
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_coal_science",
+      "value": 361
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_materials",
+      "value": 313
+    },
+    {
+      "source": "src_wos",
+      "target": "disc_natural_gas",
+      "value": 289
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_computation_data",
+      "value": 258
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_computation_data",
+      "value": 255
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_chemical_sciences",
+      "value": 238
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_nuclear_particle",
+      "value": 220
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_renewable_alternative",
+      "value": 210
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_fossil_energy",
+      "value": 203
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_nuclear_particle",
+      "value": 175
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_fossil_energy",
+      "value": 171
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_fossil_energy",
+      "value": 165
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_materials",
+      "value": 131
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_fossil_energy",
+      "value": 121
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_nuclear_particle",
+      "value": 119
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_space_atmospheric",
+      "value": 117
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_materials",
+      "value": 98
+    },
+    {
+      "source": "src_ncbi_taxonomy",
+      "target": "disc_ee_me_engineering",
+      "value": 86
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_renewable_alternative",
+      "value": 73
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_renewable_alternative",
+      "value": 66
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_space_atmospheric",
+      "value": 60
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_renewable_alternative",
+      "value": 59
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_renewable_alternative",
+      "value": 59
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_space_atmospheric",
+      "value": 59
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_nuclear_particle",
+      "value": 48
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_nuclear_particle",
+      "value": 45
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_space_atmospheric",
+      "value": 42
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_math_physics",
+      "value": 39
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_fossil_energy",
+      "value": 28
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_earth_environmental",
+      "value": 24
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_natural_gas",
+      "value": 21
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_natural_gas",
+      "value": 21
+    },
+    {
+      "source": "src_nasa_gcmd",
+      "target": "disc_natural_gas",
+      "value": 20
+    },
+    {
+      "source": "src_mesh",
+      "target": "disc_coal_science",
+      "value": 19
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_ee_me_engineering",
+      "value": 18
+    },
+    {
+      "source": "src_openalex",
+      "target": "disc_coal_science",
+      "value": 17
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_policy_economics",
+      "value": 14
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_materials",
+      "value": 10
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_coal_science",
+      "value": 10
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_natural_gas",
+      "value": 10
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_renewable_alternative",
+      "value": 9
+    },
+    {
+      "source": "src_doe_osti",
+      "target": "disc_nuclear_particle",
+      "value": 8
+    },
+    {
+      "source": "src_lib_of_congress",
+      "target": "disc_coal_science",
+      "value": 8
+    },
+    {
+      "source": "src_ncbi_taxonomy",
+      "target": "disc_chemical_sciences",
+      "value": 7
+    },
+    {
+      "source": "src_unesco",
+      "target": "disc_natural_gas",
+      "value": 6
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_h2_with_carbon_management",
+      "value": 1955
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_carbon_transport_and_storage",
+      "value": 1152
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_advanced_remediation_technology",
+      "value": 402
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_mineral_sustainability",
+      "value": 152
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_co2_conversion",
+      "value": 72
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_methane_mitigation_technologies",
+      "value": 60
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_natural_gas_decarbonization_and_hydrogen_technologies",
+      "value": 32
+    },
+    {
+      "source": "disc_fossil_energy",
+      "target": "prog_co2_removal",
+      "value": 16
+    }
+  ],
+  "stats": {
+    "total_keywords": 105196,
+    "total_senses": 423782,
+    "polysemous_multi_discipline": 8744,
+    "polysemous_multi_source": 7898,
+    "sources": 8,
+    "disciplines": 15,
+    "netl_programs": 8
+  }
+}

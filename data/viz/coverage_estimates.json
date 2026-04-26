@@ -1,0 +1,1525 @@
+{
+  "our_data": {
+    "by_discipline": {
+      "ee_me_engineering": {
+        "senses": 98990,
+        "unique_labels": 98158
+      },
+      "chemical_sciences": {
+        "senses": 79791,
+        "unique_labels": 78609
+      },
+      "biological_medical": {
+        "senses": 61591,
+        "unique_labels": 59336
+      },
+      "math_physics": {
+        "senses": 50142,
+        "unique_labels": 49969
+      },
+      "materials": {
+        "senses": 33136,
+        "unique_labels": 32488
+      },
+      "earth_environmental": {
+        "senses": 31634,
+        "unique_labels": 30541
+      },
+      "computation_data": {
+        "senses": 22307,
+        "unique_labels": 22125
+      },
+      "policy_economics": {
+        "senses": 18041,
+        "unique_labels": 17385
+      },
+      "fossil_energy": {
+        "senses": 14952,
+        "unique_labels": 14645
+      },
+      "nuclear_particle": {
+        "senses": 7249,
+        "unique_labels": 7233
+      },
+      "renewable_alternative": {
+        "senses": 4336,
+        "unique_labels": 4294
+      },
+      "space_atmospheric": {
+        "senses": 934,
+        "unique_labels": 845
+      },
+      "coal_science": {
+        "senses": 373,
+        "unique_labels": 328
+      },
+      "natural_gas": {
+        "senses": 305,
+        "unique_labels": 258
+      },
+      "general_science": {
+        "senses": 1,
+        "unique_labels": 1
+      }
+    },
+    "by_source": {
+      "OpenAlex": 31995,
+      "MeSH": 31110,
+      "Library of Congress": 29731,
+      "NASA GCMD": 4849,
+      "UNESCO Thesaurus": 4408,
+      "NCBI Taxonomy": 3044,
+      "DOE OSTI": 59
+    },
+    "wos_categories": [],
+    "total_senses": 423782,
+    "total_labels": 416215
+  },
+  "openalex_universe": {
+    "level0_domains": [
+      {
+        "name": "Computer science",
+        "works_count": 172274361,
+        "cited_by_count": 765805267,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Physics",
+        "works_count": 86717739,
+        "cited_by_count": 642196977,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Medicine",
+        "works_count": 86347976,
+        "cited_by_count": 914584798,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Biology",
+        "works_count": 67643755,
+        "cited_by_count": 981910300,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Political science",
+        "works_count": 63787452,
+        "cited_by_count": 262856054,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Engineering",
+        "works_count": 63601295,
+        "cited_by_count": 430724363,
+        "our_discipline": "engineering"
+      },
+      {
+        "name": "Materials science",
+        "works_count": 60677231,
+        "cited_by_count": 411123546,
+        "our_discipline": "materials"
+      },
+      {
+        "name": "Chemistry",
+        "works_count": 53827726,
+        "cited_by_count": 721367836,
+        "our_discipline": "chemistry"
+      },
+      {
+        "name": "Philosophy",
+        "works_count": 49504420,
+        "cited_by_count": 256427663,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Geography",
+        "works_count": 45945079,
+        "cited_by_count": 169177042,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Mathematics",
+        "works_count": 44070934,
+        "cited_by_count": 432829725,
+        "our_discipline": "mathematics"
+      },
+      {
+        "name": "Psychology",
+        "works_count": 38144950,
+        "cited_by_count": 374794725,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Art",
+        "works_count": 37676129,
+        "cited_by_count": 70281980,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Business",
+        "works_count": 36536230,
+        "cited_by_count": 153957539,
+        "our_discipline": "economics_policy"
+      },
+      {
+        "name": "Sociology",
+        "works_count": 33502366,
+        "cited_by_count": 238828066,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Geology",
+        "works_count": 30428449,
+        "cited_by_count": 167259711,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "History",
+        "works_count": 30111610,
+        "cited_by_count": 75885085,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Environmental science",
+        "works_count": 29931431,
+        "cited_by_count": 146627268,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Economics",
+        "works_count": 24482747,
+        "cited_by_count": 251376132,
+        "our_discipline": "economics_policy"
+      }
+    ],
+    "level1_concepts": [
+      {
+        "name": "Humanities",
+        "works_count": 37892509,
+        "cited_by_count": 28021755,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Artificial intelligence",
+        "works_count": 35493811,
+        "cited_by_count": 253189642,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Internal medicine",
+        "works_count": 28093530,
+        "cited_by_count": 478343809,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Optics",
+        "works_count": 27131328,
+        "cited_by_count": 162709941,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Law",
+        "works_count": 25258123,
+        "cited_by_count": 217723253,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Biochemistry",
+        "works_count": 17944975,
+        "cited_by_count": 432337891,
+        "our_discipline": "chemistry"
+      },
+      {
+        "name": "Quantum mechanics",
+        "works_count": 17516292,
+        "cited_by_count": 299718893,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Remote sensing",
+        "works_count": 16899091,
+        "cited_by_count": 18953998,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Organic chemistry",
+        "works_count": 15933573,
+        "cited_by_count": 345354210,
+        "our_discipline": "chemistry"
+      },
+      {
+        "name": "Genetics",
+        "works_count": 14493223,
+        "cited_by_count": 330819376,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Ecology",
+        "works_count": 14367964,
+        "cited_by_count": 213650716,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Archaeology",
+        "works_count": 12801856,
+        "cited_by_count": 95041802,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Linguistics",
+        "works_count": 12225861,
+        "cited_by_count": 120106876,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Nuclear engineering",
+        "works_count": 12045839,
+        "cited_by_count": 6403996,
+        "our_discipline": "engineering"
+      },
+      {
+        "name": "Statistics",
+        "works_count": 11955215,
+        "cited_by_count": 147374214,
+        "our_discipline": "mathematics"
+      },
+      {
+        "name": "Pathology",
+        "works_count": 11874428,
+        "cited_by_count": 219716479,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Composite material",
+        "works_count": 11792354,
+        "cited_by_count": 200022257,
+        "our_discipline": "materials"
+      },
+      {
+        "name": "Programming language",
+        "works_count": 10810184,
+        "cited_by_count": 161840532,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "World Wide Web",
+        "works_count": 10540303,
+        "cited_by_count": 70081345,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Surgery",
+        "works_count": 10520748,
+        "cited_by_count": 132616336,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Data mining",
+        "works_count": 10439947,
+        "cited_by_count": 40690801,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Epistemology",
+        "works_count": 10367540,
+        "cited_by_count": 111120779,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Botany",
+        "works_count": 9886820,
+        "cited_by_count": 92058088,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Environmental resource management",
+        "works_count": 9467632,
+        "cited_by_count": 17175858,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Geometry",
+        "works_count": 9341797,
+        "cited_by_count": 122775013,
+        "our_discipline": "mathematics"
+      },
+      {
+        "name": "Operating system",
+        "works_count": 9166231,
+        "cited_by_count": 104776014,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Library science",
+        "works_count": 8579297,
+        "cited_by_count": 48020477,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Algorithm",
+        "works_count": 8513965,
+        "cited_by_count": 92302678,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Mathematical analysis",
+        "works_count": 8502518,
+        "cited_by_count": 114085613,
+        "our_discipline": "mathematics"
+      },
+      {
+        "name": "Mechanical engineering",
+        "works_count": 8207577,
+        "cited_by_count": 81023014,
+        "our_discipline": "engineering"
+      },
+      {
+        "name": "Social psychology",
+        "works_count": 8145792,
+        "cited_by_count": 114194548,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Physical geography",
+        "works_count": 8109089,
+        "cited_by_count": 10451751,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Finance",
+        "works_count": 7912362,
+        "cited_by_count": 66418842,
+        "our_discipline": "economics_policy"
+      },
+      {
+        "name": "Paleontology",
+        "works_count": 7883787,
+        "cited_by_count": 129125405,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Information retrieval",
+        "works_count": 7697334,
+        "cited_by_count": 28641724,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Electrical engineering",
+        "works_count": 7291561,
+        "cited_by_count": 80560471,
+        "our_discipline": "engineering"
+      },
+      {
+        "name": "Immunology",
+        "works_count": 7219046,
+        "cited_by_count": 155633513,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Earth science",
+        "works_count": 7212594,
+        "cited_by_count": 5288197,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Metallurgy",
+        "works_count": 7063501,
+        "cited_by_count": 100041754,
+        "our_discipline": "materials"
+      },
+      {
+        "name": "Acoustics",
+        "works_count": 7034427,
+        "cited_by_count": 47527644,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Atomic physics",
+        "works_count": 7014056,
+        "cited_by_count": 36544136,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Thermodynamics",
+        "works_count": 6961799,
+        "cited_by_count": 117265028,
+        "our_discipline": "fossil_energy"
+      },
+      {
+        "name": "Art history",
+        "works_count": 6929642,
+        "cited_by_count": 13183238,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Endocrinology",
+        "works_count": 6736401,
+        "cited_by_count": 154479053,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Telecommunications",
+        "works_count": 6672088,
+        "cited_by_count": 70652424,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Public relations",
+        "works_count": 6500136,
+        "cited_by_count": 30875270,
+        "our_discipline": "economics_policy"
+      },
+      {
+        "name": "Neuroscience",
+        "works_count": 6306622,
+        "cited_by_count": 151711520,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Psychiatry",
+        "works_count": 6293721,
+        "cited_by_count": 120500139,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Nanotechnology",
+        "works_count": 6291018,
+        "cited_by_count": 142365188,
+        "our_discipline": "materials"
+      },
+      {
+        "name": "Cell biology",
+        "works_count": 6287640,
+        "cited_by_count": 174109624,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Theology",
+        "works_count": 5971241,
+        "cited_by_count": 11025321,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Environmental health",
+        "works_count": 5891179,
+        "cited_by_count": 103450412,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Mathematics education",
+        "works_count": 5870754,
+        "cited_by_count": 35234509,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Pedagogy",
+        "works_count": 5783748,
+        "cited_by_count": 37156913,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Nuclear magnetic resonance",
+        "works_count": 5727517,
+        "cited_by_count": 14465077,
+        "our_discipline": "chemistry"
+      },
+      {
+        "name": "Economic growth",
+        "works_count": 5633504,
+        "cited_by_count": 54088732,
+        "our_discipline": "economics_policy"
+      },
+      {
+        "name": "Anatomy",
+        "works_count": 5611992,
+        "cited_by_count": 62424251,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Computer security",
+        "works_count": 5597517,
+        "cited_by_count": 51425296,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Chromatography",
+        "works_count": 5582762,
+        "cited_by_count": 105156263,
+        "our_discipline": "chemistry"
+      },
+      {
+        "name": "Meteorology",
+        "works_count": 5485027,
+        "cited_by_count": 52732607,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Computer vision",
+        "works_count": 5455473,
+        "cited_by_count": 41036171,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Marketing",
+        "works_count": 5349724,
+        "cited_by_count": 51510639,
+        "our_discipline": "economics_policy"
+      },
+      {
+        "name": "Optoelectronics",
+        "works_count": 5233076,
+        "cited_by_count": 82307685,
+        "our_discipline": "materials"
+      },
+      {
+        "name": "Gynecology",
+        "works_count": 5208962,
+        "cited_by_count": 17177699,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Visual arts",
+        "works_count": 5085602,
+        "cited_by_count": 17421458,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Nuclear physics",
+        "works_count": 5035161,
+        "cited_by_count": 33677642,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Agronomy",
+        "works_count": 5013243,
+        "cited_by_count": 42206660,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Machine learning",
+        "works_count": 4976337,
+        "cited_by_count": 81241594,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Demography",
+        "works_count": 4936927,
+        "cited_by_count": 83011926,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Molecular biology",
+        "works_count": 4882849,
+        "cited_by_count": 70552305,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Zoology",
+        "works_count": 4857837,
+        "cited_by_count": 33254107,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Food science",
+        "works_count": 4621766,
+        "cited_by_count": 53084810,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Public administration",
+        "works_count": 4582839,
+        "cited_by_count": 11987625,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Nursing",
+        "works_count": 4549589,
+        "cited_by_count": 52045486,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Pure mathematics",
+        "works_count": 4531807,
+        "cited_by_count": 57320437,
+        "our_discipline": "mathematics"
+      },
+      {
+        "name": "Database",
+        "works_count": 4530332,
+        "cited_by_count": 25504333,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Chemical engineering",
+        "works_count": 4525424,
+        "cited_by_count": 99154562,
+        "our_discipline": "fossil_energy"
+      },
+      {
+        "name": "Horticulture",
+        "works_count": 4484799,
+        "cited_by_count": 22351468,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Literature",
+        "works_count": 4460511,
+        "cited_by_count": 22216457,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Radiology",
+        "works_count": 4453819,
+        "cited_by_count": 54699195,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Management",
+        "works_count": 4444926,
+        "cited_by_count": 38502818,
+        "our_discipline": "economics_policy"
+      },
+      {
+        "name": "Medical education",
+        "works_count": 4384386,
+        "cited_by_count": 19300763,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Oceanography",
+        "works_count": 4367279,
+        "cited_by_count": 61626091,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Crystallography",
+        "works_count": 4349074,
+        "cited_by_count": 54707963,
+        "our_discipline": "materials"
+      },
+      {
+        "name": "Virology",
+        "works_count": 4301923,
+        "cited_by_count": 55342919,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Combinatorics",
+        "works_count": 4270212,
+        "cited_by_count": 43978730,
+        "our_discipline": "mathematics"
+      },
+      {
+        "name": "Mechanics",
+        "works_count": 4255649,
+        "cited_by_count": 54543002,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Cardiology",
+        "works_count": 4179097,
+        "cited_by_count": 51961170,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Computational biology",
+        "works_count": 4065948,
+        "cited_by_count": 62704243,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Pharmacology",
+        "works_count": 4024520,
+        "cited_by_count": 67094458,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Microbiology",
+        "works_count": 4012675,
+        "cited_by_count": 63031111,
+        "our_discipline": "biology_life"
+      },
+      {
+        "name": "Astronomy",
+        "works_count": 3972035,
+        "cited_by_count": 49811883,
+        "our_discipline": "physics"
+      },
+      {
+        "name": "Social science",
+        "works_count": 3953529,
+        "cited_by_count": 57347631,
+        "our_discipline": "social_behavioral"
+      },
+      {
+        "name": "Structural engineering",
+        "works_count": 3871305,
+        "cited_by_count": 36054435,
+        "our_discipline": "engineering"
+      },
+      {
+        "name": "Intensive care medicine",
+        "works_count": 3849969,
+        "cited_by_count": 45396209,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Ancient history",
+        "works_count": 3758111,
+        "cited_by_count": 9091022,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Physical chemistry",
+        "works_count": 3757724,
+        "cited_by_count": 93450340,
+        "our_discipline": "chemistry"
+      },
+      {
+        "name": "Media studies",
+        "works_count": 3754933,
+        "cited_by_count": 8083658,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Aesthetics",
+        "works_count": 3749985,
+        "cited_by_count": 18141555,
+        "our_discipline": "humanities_arts"
+      },
+      {
+        "name": "Family medicine",
+        "works_count": 3659730,
+        "cited_by_count": 33779611,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Computer network",
+        "works_count": 3547063,
+        "cited_by_count": 45321299,
+        "our_discipline": "computation_data"
+      },
+      {
+        "name": "Cartography",
+        "works_count": 3541174,
+        "cited_by_count": 22720796,
+        "our_discipline": "earth_environmental"
+      },
+      {
+        "name": "Cancer research",
+        "works_count": 3512523,
+        "cited_by_count": 70432068,
+        "our_discipline": "medicine_health"
+      },
+      {
+        "name": "Advertising",
+        "works_count": 3461259,
+        "cited_by_count": 12632780,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Economy",
+        "works_count": 3460326,
+        "cited_by_count": 9877700,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Developmental psychology",
+        "works_count": 3326992,
+        "cited_by_count": 56045002,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Stereochemistry",
+        "works_count": 3317028,
+        "cited_by_count": 41064285,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Geotechnical engineering",
+        "works_count": 3213441,
+        "cited_by_count": 38117884,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Waste management",
+        "works_count": 3208385,
+        "cited_by_count": 28064488,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Knowledge management",
+        "works_count": 3164606,
+        "cited_by_count": 26788554,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Gerontology",
+        "works_count": 3049639,
+        "cited_by_count": 30298900,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Physical therapy",
+        "works_count": 3031004,
+        "cited_by_count": 42227856,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Aerospace engineering",
+        "works_count": 3020290,
+        "cited_by_count": 29412597,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Evolutionary biology",
+        "works_count": 2952317,
+        "cited_by_count": 47751498,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Pediatrics",
+        "works_count": 2929030,
+        "cited_by_count": 37358603,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Condensed matter physics",
+        "works_count": 2918158,
+        "cited_by_count": 52526306,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Traditional medicine",
+        "works_count": 2912523,
+        "cited_by_count": 12957246,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Engineering ethics",
+        "works_count": 2859290,
+        "cited_by_count": 11989237,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Anesthesia",
+        "works_count": 2833149,
+        "cited_by_count": 41576944,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Data science",
+        "works_count": 2828972,
+        "cited_by_count": 29127672,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Forestry",
+        "works_count": 2814439,
+        "cited_by_count": 8831243,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Gender studies",
+        "works_count": 2806141,
+        "cited_by_count": 18538559,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Operations management",
+        "works_count": 2780791,
+        "cited_by_count": 16082409,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Law and economics",
+        "works_count": 2736259,
+        "cited_by_count": 8701654,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Environmental planning",
+        "works_count": 2707013,
+        "cited_by_count": 12615192,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Electronic engineering",
+        "works_count": 2668501,
+        "cited_by_count": 24514951,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Oncology",
+        "works_count": 2666634,
+        "cited_by_count": 36529466,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Macroeconomics",
+        "works_count": 2663235,
+        "cited_by_count": 43447274,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Econometrics",
+        "works_count": 2643613,
+        "cited_by_count": 39725794,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Clinical psychology",
+        "works_count": 2639183,
+        "cited_by_count": 54473398,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Inorganic chemistry",
+        "works_count": 2557907,
+        "cited_by_count": 54557992,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Fishery",
+        "works_count": 2522988,
+        "cited_by_count": 25870870,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Forensic engineering",
+        "works_count": 2517985,
+        "cited_by_count": 4706430,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Applied mathematics",
+        "works_count": 2516825,
+        "cited_by_count": 31164660,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Computer graphics (images)",
+        "works_count": 2512588,
+        "cited_by_count": 12245327,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Psychotherapist",
+        "works_count": 2398580,
+        "cited_by_count": 36366661,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Operations research",
+        "works_count": 2389397,
+        "cited_by_count": 14448008,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Gastroenterology",
+        "works_count": 2383485,
+        "cited_by_count": 37641704,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Mathematical optimization",
+        "works_count": 2376208,
+        "cited_by_count": 36670263,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Classical mechanics",
+        "works_count": 2372137,
+        "cited_by_count": 34221637,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Cognitive psychology",
+        "works_count": 2348005,
+        "cited_by_count": 49992060,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Risk analysis (engineering)",
+        "works_count": 2322323,
+        "cited_by_count": 12993302,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Biotechnology",
+        "works_count": 2255461,
+        "cited_by_count": 31464592,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Mineralogy",
+        "works_count": 2231447,
+        "cited_by_count": 20502991,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Process management",
+        "works_count": 2193736,
+        "cited_by_count": 14063300,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Accounting",
+        "works_count": 2181915,
+        "cited_by_count": 19324765,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Environmental chemistry",
+        "works_count": 2149218,
+        "cited_by_count": 41137451,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Astrophysics",
+        "works_count": 2131291,
+        "cited_by_count": 31773846,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Natural language processing",
+        "works_count": 2117918,
+        "cited_by_count": 14001500,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Anthropology",
+        "works_count": 2096113,
+        "cited_by_count": 28841038,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Psychoanalysis",
+        "works_count": 2088443,
+        "cited_by_count": 17286566,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Classics",
+        "works_count": 2076762,
+        "cited_by_count": 7622587,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Nuclear medicine",
+        "works_count": 2060442,
+        "cited_by_count": 15725372,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Systems engineering",
+        "works_count": 2027971,
+        "cited_by_count": 15182514,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Internet privacy",
+        "works_count": 1990372,
+        "cited_by_count": 7955168,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Medical emergency",
+        "works_count": 1955818,
+        "cited_by_count": 15567276,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Statistical physics",
+        "works_count": 1943975,
+        "cited_by_count": 29700588,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Dentistry",
+        "works_count": 1923570,
+        "cited_by_count": 22770649,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Dermatology",
+        "works_count": 1922357,
+        "cited_by_count": 17567813,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Physical medicine and rehabilitation",
+        "works_count": 1916637,
+        "cited_by_count": 21493353,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Discrete mathematics",
+        "works_count": 1894716,
+        "cited_by_count": 14404559,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Animal science",
+        "works_count": 1883809,
+        "cited_by_count": 20037066,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Engineering drawing",
+        "works_count": 1881277,
+        "cited_by_count": 2738962,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Human\u2013computer interaction",
+        "works_count": 1873676,
+        "cited_by_count": 16489786,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Geomorphology",
+        "works_count": 1829758,
+        "cited_by_count": 18204562,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Communication",
+        "works_count": 1820680,
+        "cited_by_count": 21850089,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Biophysics",
+        "works_count": 1799184,
+        "cited_by_count": 42851643,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Natural resource economics",
+        "works_count": 1796697,
+        "cited_by_count": 11722704,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Actuarial science",
+        "works_count": 1792929,
+        "cited_by_count": 5879182,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Political economy",
+        "works_count": 1791857,
+        "cited_by_count": 13949329,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Criminology",
+        "works_count": 1778102,
+        "cited_by_count": 10762777,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Geodesy",
+        "works_count": 1724539,
+        "cited_by_count": 17459664,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Microeconomics",
+        "works_count": 1679352,
+        "cited_by_count": 28409044,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Multimedia",
+        "works_count": 1669992,
+        "cited_by_count": 8311755,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Environmental engineering",
+        "works_count": 1657075,
+        "cited_by_count": 21406421,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Welfare economics",
+        "works_count": 1637524,
+        "cited_by_count": 519583,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Industrial organization",
+        "works_count": 1621909,
+        "cited_by_count": 15448169,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Polymer chemistry",
+        "works_count": 1615743,
+        "cited_by_count": 29731920,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Software engineering",
+        "works_count": 1614868,
+        "cited_by_count": 12871093,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "International trade",
+        "works_count": 1604058,
+        "cited_by_count": 7610722,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Applied psychology",
+        "works_count": 1588269,
+        "cited_by_count": 12718364,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Climatology",
+        "works_count": 1579824,
+        "cited_by_count": 21559677,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Environmental protection",
+        "works_count": 1570184,
+        "cited_by_count": 5839671,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Ethnology",
+        "works_count": 1560863,
+        "cited_by_count": 4136480,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "General surgery",
+        "works_count": 1552331,
+        "cited_by_count": 10257115,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Theoretical computer science",
+        "works_count": 1552142,
+        "cited_by_count": 19888880,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Automotive engineering",
+        "works_count": 1544166,
+        "cited_by_count": 9629688,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Embedded system",
+        "works_count": 1537207,
+        "cited_by_count": 17012939,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Bioinformatics",
+        "works_count": 1530629,
+        "cited_by_count": 28937720,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Environmental ethics",
+        "works_count": 1527594,
+        "cited_by_count": 7865218,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Aeronautics",
+        "works_count": 1519176,
+        "cited_by_count": 3209583,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Seismology",
+        "works_count": 1502056,
+        "cited_by_count": 13913465,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Combinatorial chemistry",
+        "works_count": 1492663,
+        "cited_by_count": 24618520,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Nuclear chemistry",
+        "works_count": 1487694,
+        "cited_by_count": 23458030,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Geochemistry",
+        "works_count": 1478108,
+        "cited_by_count": 18146884,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Civil engineering",
+        "works_count": 1455999,
+        "cited_by_count": 11346679,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Socioeconomics",
+        "works_count": 1450713,
+        "cited_by_count": 5411363,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Engineering management",
+        "works_count": 1450368,
+        "cited_by_count": 3419095,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Theoretical physics",
+        "works_count": 1444850,
+        "cited_by_count": 17148634,
+        "our_discipline": "unmapped"
+      },
+      {
+        "name": "Economic history",
+        "works_count": 1437185,
+        "cited_by_count": 4713568,
+        "our_discipline": "unmapped"
+      }
+    ],
+    "total_concepts": 65026,
+    "total_level0": 19,
+    "total_level1": 200
+  },
+  "coverage_pct": {
+    "by_discipline": {
+      "ee_me_engineering": {
+        "coverage_ratio": 1.0,
+        "our_labels": 98158,
+        "our_senses": 98990,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "chemical_sciences": {
+        "coverage_ratio": 1.0,
+        "our_labels": 78609,
+        "our_senses": 79791,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "biological_medical": {
+        "coverage_ratio": 1.0,
+        "our_labels": 59336,
+        "our_senses": 61591,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "math_physics": {
+        "coverage_ratio": 1.0,
+        "our_labels": 49969,
+        "our_senses": 50142,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "materials": {
+        "coverage_ratio": 1.0,
+        "our_labels": 32488,
+        "our_senses": 33136,
+        "estimated_oa_concepts": 3739,
+        "oa_works_share": 0.0575,
+        "oa_l1_concept_count": 5
+      },
+      "earth_environmental": {
+        "coverage_ratio": 1.0,
+        "our_labels": 30541,
+        "our_senses": 31634,
+        "estimated_oa_concepts": 6550,
+        "oa_works_share": 0.1007,
+        "oa_l1_concept_count": 8
+      },
+      "computation_data": {
+        "coverage_ratio": 1.0,
+        "our_labels": 22125,
+        "our_senses": 22307,
+        "estimated_oa_concepts": 10616,
+        "oa_works_share": 0.1633,
+        "oa_l1_concept_count": 12
+      },
+      "policy_economics": {
+        "coverage_ratio": 1.0,
+        "our_labels": 17385,
+        "our_senses": 18041,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "fossil_energy": {
+        "coverage_ratio": 1.0,
+        "our_labels": 14645,
+        "our_senses": 14952,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 2
+      },
+      "nuclear_particle": {
+        "coverage_ratio": 1.0,
+        "our_labels": 7233,
+        "our_senses": 7249,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "renewable_alternative": {
+        "coverage_ratio": 1.0,
+        "our_labels": 4294,
+        "our_senses": 4336,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "space_atmospheric": {
+        "coverage_ratio": 1.0,
+        "our_labels": 845,
+        "our_senses": 934,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "coal_science": {
+        "coverage_ratio": 1.0,
+        "our_labels": 328,
+        "our_senses": 373,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "natural_gas": {
+        "coverage_ratio": 1.0,
+        "our_labels": 258,
+        "our_senses": 305,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      },
+      "general_science": {
+        "coverage_ratio": 1.0,
+        "our_labels": 1,
+        "our_senses": 1,
+        "estimated_oa_concepts": 1,
+        "oa_works_share": 0.0,
+        "oa_l1_concept_count": 0
+      }
+    }
+  }
+}
