@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Citation Tree — Domain Ring</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #050510;
+    color: #c0c0d0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow: hidden;
+  }
+  #info {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 100;
+    font-size: 13px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  #tooltip {
+    position: fixed;
+    pointer-events: auto;
+    background: rgba(10,10,30,0.95);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    max-width: 420px;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 200;
+    backdrop-filter: blur(8px);
+  }
+  #tooltip .tt-title { color: #fff; font-weight: 600; margin-bottom: 4px; }
+  #tooltip .tt-year { color: #ffd866; }
+  #tooltip .tt-cited { color: #aaa; font-size: 11px; }
+  #tooltip .tt-doi a { color: #88aacc; text-decoration: none; font-size: 11px; }
+  #tooltip .tt-doi a:hover { text-decoration: underline; }
+  #tooltip .tt-disc { font-size: 11px; color: #aaa; margin-top: 2px; }
+  #tooltip .tt-type { font-size: 11px; margin-top: 2px; }
+  #legend {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    font-size: 12px;
+    opacity: 0.7;
+    line-height: 2;
+    z-index: 100;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  #controls {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ctrl-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #c0c0d0;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s;
+    text-align: left;
+  }
+  .ctrl-btn:hover { background: rgba(255,255,255,0.12); }
+  .ctrl-btn.active { background: rgba(255,200,50,0.15); border-color: rgba(255,200,50,0.4); color: #ffd866; }
+  #stats {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    font-size: 11px;
+    opacity: 0.5;
+    text-align: right;
+    z-index: 100;
+    line-height: 1.8;
+  }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+
+<div id="info">3D Citation Tree · Y=time, ring=domains · Orbit: drag · Zoom: scroll · Click node: pin tooltip</div>
+
+<div id="controls">
+  <button class="ctrl-btn active" data-order="1" id="btn-o1">1st order ON</button>
+  <button class="ctrl-btn" data-order="2" id="btn-o2">2nd order OFF</button>
+  <button class="ctrl-btn active" id="btn-edges">Edges ON</button>
+  <button class="ctrl-btn active" id="btn-ring">Domain ring ON</button>
+</div>
+
+<div id="legend">
+  <div><span class="legend-dot" style="background:#ffd866"></span> Center paper (trunk)</div>
+  <div><span class="legend-dot" style="background:#e8863a"></span> Roots (cited by center)</div>
+  <div><span class="legend-dot" style="background:#a0522d"></span> Deep roots</div>
+  <div><span class="legend-dot" style="background:#6eb5ff"></span> Branches (cite center)</div>
+  <div><span class="legend-dot" style="background:#9b7dd4"></span> Deep branches</div>
+</div>
+
+<div id="tooltip"></div>
+<div id="stats"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const W = window.innerWidth, H = window.innerHeight;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(W, H);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x050510);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x050510, 0.008);
+const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 800);
+camera.position.set(35, 20, 45);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 5;
+controls.maxDistance = 200;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.15));
+
+// ---- DISCIPLINE RING LAYOUT ----
+const ALL_DISCIPLINES = [
+  'materials', 'chemical_sciences', 'ee_me_engineering', 'math_physics',
+  'computation_data', 'fossil_energy', 'earth_environmental', 'biological_medical',
+  'nuclear_particle', 'renewable_alternative', 'coal_science', 'natural_gas',
+  'policy_economics'
+];
+
+const DISC_LABELS = {
+  materials: 'Materials',
+  chemical_sciences: 'Chemistry',
+  ee_me_engineering: 'Engineering',
+  math_physics: 'Math & Physics',
+  computation_data: 'Computing',
+  fossil_energy: 'Fossil Energy',
+  earth_environmental: 'Earth & Env',
+  biological_medical: 'Bio & Medical',
+  nuclear_particle: 'Nuclear',
+  renewable_alternative: 'Renewables',
+  coal_science: 'Coal Science',
+  natural_gas: 'Natural Gas',
+  policy_economics: 'Policy & Econ',
+};
+
+const DISC_COLORS = {
+  materials: 0xf0a030,
+  chemical_sciences: 0x4ecdc4,
+  ee_me_engineering: 0x6eb5ff,
+  math_physics: 0xc490f0,
+  computation_data: 0x50e070,
+  fossil_energy: 0xff6644,
+  earth_environmental: 0x88cc44,
+  biological_medical: 0xff88aa,
+  nuclear_particle: 0xffdd44,
+  renewable_alternative: 0x44ddaa,
+  coal_science: 0xaa8866,
+  natural_gas: 0x77bbff,
+  policy_economics: 0xddaaff,
+};
+
+// Each discipline gets an angle on the circle
+const discAngle = {};
+ALL_DISCIPLINES.forEach((d, i) => {
+  discAngle[d] = (i / ALL_DISCIPLINES.length) * Math.PI * 2;
+});
+
+// ---- LAYOUT PARAMS ----
+const RING_RADIUS = 25;      // radius of the domain circle
+const TRUNK_HEIGHT = 0;       // no trunk — center is just a point
+const TRUNK_RADIUS = 0;
+const YEAR_SCALE = 1.8;       // vertical pixels per year
+const SPREAD_JITTER = 0.35;   // radial jitter
+
+// Colors
+const typeColorsHex = {
+  center: '#ffd866', root: '#e8863a', deep_root: '#a0522d',
+  branch: '#6eb5ff', deep_branch: '#9b7dd4',
+};
+const typeColors3 = {
+  center: new THREE.Color(0xffd866),
+  root: new THREE.Color(0xe8863a),
+  deep_root: new THREE.Color(0xa0522d),
+  branch: new THREE.Color(0x6eb5ff),
+  deep_branch: new THREE.Color(0x9b7dd4),
+};
+
+let showEdges = true, showOrder1 = true, showOrder2 = false, showRing = true;
+let paperMeshes = [], edgeLines = [], ringObjects = [];
+let paperData = [];
+let hoveredIdx = -1;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+// Seeded random for consistent jitter
+let seed = 42;
+function srand() {
+  seed = (seed * 16807) % 2147483647;
+  return (seed - 1) / 2147483646;
+}
+
+async function init() {
+  const resp = await fetch('../data/viz/citation_tree_3d.json');
+  const data = await resp.json();
+  paperData = data.papers;
+  const edges = data.edges;
+  const centerId = data.center_id;
+
+  const centerPaper = paperData.find(p => p.openalex_id === centerId);
+  const centerYear = centerPaper ? centerPaper.year : 2013;
+
+  // ---- POSITION EACH PAPER ----
+  // Y = year offset from center (negative = roots below, positive = branches above)
+  // X,Z = polar from domain angle + radius spread
+
+  const idMap = new Map();
+
+  paperData.forEach((p, i) => {
+    p._idx = i;
+    if (p.openalex_id) idMap.set(p.openalex_id, i);
+
+    const yr = p.year || centerYear;
+    const yearOffset = yr - centerYear;
+
+    // Y position: roots below center, branches above
+    let py;
+    if (p.type === 'center') {
+      py = 0;
+    } else if (p.type === 'root' || p.type === 'deep_root') {
+      py = yearOffset * YEAR_SCALE;
+      py = Math.min(py, -0.5);
+    } else {
+      py = yearOffset * YEAR_SCALE;
+      py = Math.max(py, 0.5);
+    }
+
+    // Angular position from disciplines
+    let angle;
+    if (p.disciplines && p.disciplines.length > 0) {
+      // Average angle of matched disciplines (handle wraparound)
+      let sinSum = 0, cosSum = 0;
+      for (const d of p.disciplines) {
+        const a = discAngle[d] || 0;
+        sinSum += Math.sin(a);
+        cosSum += Math.cos(a);
+      }
+      angle = Math.atan2(sinSum / p.disciplines.length, cosSum / p.disciplines.length);
+    } else {
+      angle = srand() * Math.PI * 2;
+    }
+
+    // Radius: spread out based on year distance from center + jitter
+    const yearDist = Math.abs(yearOffset);
+    const baseRadius = Math.min(3 + yearDist * 0.8, RING_RADIUS * 0.85);
+    const jitter = (srand() - 0.5) * baseRadius * SPREAD_JITTER;
+    const radius = baseRadius + jitter;
+
+    // Add angular jitter so same-domain papers don't stack
+    angle += (srand() - 0.5) * 0.25;
+
+    const px = Math.cos(angle) * radius;
+    const pz = Math.sin(angle) * radius;
+
+    p._pos = new THREE.Vector3(px, py, pz);
+    p._angle = angle;
+    p._radius = radius;
+  });
+
+  // ---- CENTER NODE (golden dot, no trunk) ----
+  const centerDot = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 16, 12),
+    new THREE.MeshBasicMaterial({ color: 0xffd866, transparent: true, opacity: 0.9 })
+  );
+  centerDot.position.set(0, 0, 0);
+  centerDot.userData = { idx: paperData.findIndex(p => p.type === 'center'), type: 'center' };
+  scene.add(centerDot);
+  paperMeshes.push(centerDot);
+
+  // Glow halo
+  const centerHalo = new THREE.Mesh(
+    new THREE.SphereGeometry(1.2, 16, 12),
+    new THREE.MeshBasicMaterial({ color: 0xffd866, transparent: true, opacity: 0.06 })
+  );
+  scene.add(centerHalo);
+
+  // ---- DOMAIN RING ----
+  // Circle at Y=0 (trunk level) showing all disciplines
+  const ringGeo = new THREE.RingGeometry(RING_RADIUS - 0.3, RING_RADIUS + 0.3, 64);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: 0xffffff, transparent: true, opacity: 0.04, side: THREE.DoubleSide
+  });
+  const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+  ringMesh.rotation.x = -Math.PI / 2;
+  scene.add(ringMesh);
+  ringObjects.push(ringMesh);
+
+  // Discipline markers on ring
+  ALL_DISCIPLINES.forEach((disc, i) => {
+    const a = discAngle[disc];
+    const x = Math.cos(a) * RING_RADIUS;
+    const z = Math.sin(a) * RING_RADIUS;
+
+    // Dot
+    const dotGeo = new THREE.SphereGeometry(0.4, 12, 8);
+    const dotMat = new THREE.MeshBasicMaterial({
+      color: DISC_COLORS[disc],
+      transparent: true,
+      opacity: 0.7,
+    });
+    const dot = new THREE.Mesh(dotGeo, dotMat);
+    dot.position.set(x, 0, z);
+    scene.add(dot);
+    ringObjects.push(dot);
+
+    // Radial line from center to ring
+    const lineGeo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(x, 0, z),
+    ]);
+    const lineMat = new THREE.LineBasicMaterial({
+      color: DISC_COLORS[disc],
+      transparent: true,
+      opacity: 0.03,
+    });
+    const line = new THREE.LineSegments(lineGeo, lineMat);
+    scene.add(line);
+    ringObjects.push(line);
+
+    // Label
+    const canvas = document.createElement('canvas');
+    canvas.width = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    const color = '#' + DISC_COLORS[disc].toString(16).padStart(6, '0');
+    ctx.fillStyle = color;
+    ctx.globalAlpha = 0.7;
+    ctx.font = 'bold 20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(DISC_LABELS[disc], 128, 38);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.position.set(x * 1.15, 0.5, z * 1.15);
+    sprite.scale.set(6, 1.5, 1);
+    scene.add(sprite);
+    ringObjects.push(sprite);
+
+    // Sector arc wedge (subtle fill showing domain area)
+    const wedgeAngle = (Math.PI * 2) / ALL_DISCIPLINES.length;
+    const wedgeGeo = new THREE.RingGeometry(0, RING_RADIUS, 32, 1, a - wedgeAngle/2, wedgeAngle);
+    const wedgeMat = new THREE.MeshBasicMaterial({
+      color: DISC_COLORS[disc],
+      transparent: true,
+      opacity: 0.012,
+      side: THREE.DoubleSide,
+    });
+    const wedge = new THREE.Mesh(wedgeGeo, wedgeMat);
+    wedge.rotation.x = -Math.PI / 2;
+    scene.add(wedge);
+    ringObjects.push(wedge);
+  });
+
+  // ---- YEAR MARKERS ----
+  // Faint rings at key years
+  const yearMin = Math.min(...paperData.map(p => p.year || centerYear));
+  const yearMax = Math.max(...paperData.map(p => p.year || centerYear));
+  const tickStep = (yearMax - yearMin) > 40 ? 10 : 5;
+
+  for (let yr = Math.ceil(yearMin / tickStep) * tickStep; yr <= yearMax; yr += tickStep) {
+    if (yr === centerYear) continue;
+    const offset = yr - centerYear;
+    const py = offset > 0
+      ? TRUNK_HEIGHT / 2 + offset * YEAR_SCALE
+      : -(TRUNK_HEIGHT / 2) + offset * YEAR_SCALE;
+
+    // Faint circle at this year
+    const yRingGeo = new THREE.RingGeometry(RING_RADIUS * 0.05, RING_RADIUS * 0.85, 48);
+    const yRingMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff, transparent: true, opacity: 0.008, side: THREE.DoubleSide
+    });
+    const yRing = new THREE.Mesh(yRingGeo, yRingMat);
+    yRing.rotation.x = -Math.PI / 2;
+    yRing.position.y = py;
+    scene.add(yRing);
+
+    // Year label
+    const canvas = document.createElement('canvas');
+    canvas.width = 128; canvas.height = 48;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = yr === centerYear ? '#ffd866' : 'rgba(255,255,255,0.2)';
+    ctx.font = yr === centerYear ? 'bold 24px sans-serif' : '18px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(yr.toString(), 64, 32);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.position.set(-(RING_RADIUS * 0.9 + 2), py, 0);
+    sprite.scale.set(3.5, 1.2, 1);
+    scene.add(sprite);
+  }
+
+  // Center year label on trunk
+  {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#ffd866';
+    ctx.font = 'bold 28px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(centerYear.toString(), 128, 42);
+    const tex = new THREE.CanvasTexture(canvas);
+    const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.position.set(2.5, 0, 0);
+    sprite.scale.set(4, 1, 1);
+    scene.add(sprite);
+  }
+
+  // ---- PAPER NODES ----
+  const sphereGeo = new THREE.SphereGeometry(1, 10, 7);
+
+  for (const p of paperData) {
+    const type = p.type;
+    if (type === 'center') continue; // center dot already added above
+    const isDeep = type.startsWith('deep');
+    const order = isDeep ? 2 : 1;
+
+    const size = Math.max(0.08, Math.min(Math.log2((p.cited_by_count || 1) + 1) * 0.055, 0.4));
+
+    const mat = new THREE.MeshBasicMaterial({
+      color: typeColors3[type],
+      transparent: true,
+      opacity: isDeep ? 0.45 : 0.75,
+    });
+
+    const mesh = new THREE.Mesh(sphereGeo, mat.clone());
+    mesh.position.copy(p._pos);
+    mesh.scale.setScalar(size);
+    mesh.userData = { idx: p._idx, type, order };
+    mesh.visible = order === 1 ? showOrder1 : showOrder2;
+    scene.add(mesh);
+    paperMeshes.push(mesh);
+  }
+
+  // ---- EDGES ----
+  // Organic curves from parent to child, routed through trunk region
+  const edgesByType = { root: [], deep_root: [], branch: [], deep_branch: [] };
+
+  for (const e of edges) {
+    const si = idMap.get(e.source);
+    const ti = idMap.get(e.target);
+    if (si === undefined || ti === undefined) continue;
+    edgesByType[e.type] = edgesByType[e.type] || [];
+    edgesByType[e.type].push([paperData[si], paperData[ti]]);
+  }
+
+  for (const [type, pairs] of Object.entries(edgesByType)) {
+    if (!pairs.length) continue;
+    const isDeep = type.startsWith('deep');
+    const positions = [];
+    const segments = 8;
+
+    for (const [src, tgt] of pairs) {
+      const a = src._pos;
+      const b = tgt._pos;
+
+      // Route through trunk: midpoint pulled toward Y-axis
+      const mid = new THREE.Vector3(
+        (a.x + b.x) * 0.15,  // pull toward center
+        (a.y + b.y) * 0.5,
+        (a.z + b.z) * 0.15,
+      );
+
+      for (let s = 0; s <= segments; s++) {
+        const t = s / segments;
+        const mt = 1 - t;
+        // Quadratic bezier through trunk-pulled midpoint
+        const px = mt*mt*a.x + 2*mt*t*mid.x + t*t*b.x;
+        const py = mt*mt*a.y + 2*mt*t*mid.y + t*t*b.y;
+        const pz = mt*mt*a.z + 2*mt*t*mid.z + t*t*b.z;
+        positions.push(px, py, pz);
+      }
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    const indices = [];
+    for (let i = 0; i < pairs.length; i++) {
+      const base = i * (segments + 1);
+      for (let s = 0; s < segments; s++) {
+        indices.push(base + s, base + s + 1);
+      }
+    }
+    geo.setIndex(indices);
+
+    const order = isDeep ? 2 : 1;
+
+    const mat = new THREE.LineBasicMaterial({
+      color: typeColors3[type],
+      transparent: true,
+      opacity: isDeep ? 0.08 : 0.18,
+    });
+
+    const lines = new THREE.LineSegments(geo, mat);
+    lines.userData = { edgeType: type, order };
+    lines.visible = showEdges && (order === 1 ? showOrder1 : showOrder2);
+    scene.add(lines);
+    edgeLines.push(lines);
+  }
+
+  // Focus camera on trunk
+  controls.target.set(0, 0, 0);
+  camera.position.set(35, 18, 40);
+
+  // Stats
+  document.getElementById('stats').innerHTML =
+    `${paperData.length.toLocaleString()} papers<br>` +
+    `${edges.length.toLocaleString()} citation edges<br>` +
+    `${data.stats.disciplines_represented} disciplines<br>` +
+    `Y = time · Ring = domain`;
+
+  renderer.domElement.addEventListener('mousemove', onMouseMove);
+  renderer.domElement.addEventListener('click', onClick);
+
+  animate();
+}
+
+function onMouseMove(event) {
+  mouse.x = (event.clientX / W) * 2 - 1;
+  mouse.y = -(event.clientY / H) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const hits = raycaster.intersectObjects(paperMeshes.filter(m => m.visible));
+
+  if (hits.length > 0) {
+    const idx = hits[0].object.userData.idx;
+    if (idx !== hoveredIdx) {
+      // Unhighlight previous
+      if (hoveredIdx !== -1) unhighlight(hoveredIdx);
+      hoveredIdx = idx;
+      highlight(idx);
+      showTooltip(event, paperData[idx]);
+    } else {
+      moveTooltip(event);
+    }
+    renderer.domElement.style.cursor = 'pointer';
+  } else {
+    if (hoveredIdx !== -1) {
+      unhighlight(hoveredIdx);
+      hoveredIdx = -1;
+      hideTooltip();
+    }
+    renderer.domElement.style.cursor = 'default';
+  }
+}
+
+function highlight(idx) {
+  const mesh = paperMeshes.find(m => m.userData.idx === idx);
+  if (mesh) {
+    mesh.scale.multiplyScalar(3);
+    mesh.material.opacity = 1;
+  }
+}
+
+function unhighlight(idx) {
+  const p = paperData[idx];
+  const mesh = paperMeshes.find(m => m.userData.idx === idx);
+  if (mesh) {
+    const isDeep = p.type.startsWith('deep');
+    const size = Math.max(0.08, Math.min(Math.log2((p.cited_by_count || 1) + 1) * 0.055, 0.4));
+    mesh.scale.setScalar(size);
+    mesh.material.opacity = isDeep ? 0.35 : 0.65;
+  }
+}
+
+let pinnedIdx = -1;
+function onClick(event) {
+  if (hoveredIdx !== -1) {
+    pinnedIdx = hoveredIdx;
+    showTooltip(event, paperData[hoveredIdx]);
+  } else {
+    pinnedIdx = -1;
+    hideTooltip();
+  }
+}
+
+const typeLabelsMap = {
+  center: '★ Center paper',
+  root: '↓ Root (cited by center)',
+  deep_root: '↓↓ Deep root',
+  branch: '↑ Branch (cites center)',
+  deep_branch: '↑↑ Deep branch',
+};
+
+function showTooltip(event, p) {
+  const tt = document.getElementById('tooltip');
+  let html = p.title
+    ? `<div class="tt-title">${p.title}</div>`
+    : `<div class="tt-title" style="opacity:0.4">[No title]</div>`;
+  if (p.year) html += `<div class="tt-year">${p.year}</div>`;
+  if (p.cited_by_count) html += `<div class="tt-cited">Cited by ${p.cited_by_count.toLocaleString()} papers</div>`;
+  if (p.doi) html += `<div class="tt-doi"><a href="https://doi.org/${p.doi}" target="_blank">DOI: ${p.doi} ↗</a></div>`;
+  if (p.disciplines && p.disciplines.length)
+    html += `<div class="tt-disc">Domains: ${p.disciplines.map(d => d.replace(/_/g,' ')).join(', ')}</div>`;
+  const orderLabel = p.type === 'center' ? 'Center' : p.type.startsWith('deep') ? '2nd order' : '1st order';
+  html += `<div class="tt-type" style="color:${typeColorsHex[p.type] || '#888'}">${typeLabelsMap[p.type] || ''} · ${orderLabel}</div>`;
+  if (p.doi) html += `<div class="tt-doi"><a href="https://doi.org/${p.doi}" target="_blank" rel="noopener">DOI: ${p.doi} ↗</a></div>`;
+  if (p.openalex_id) {
+    const oaUrl = p.openalex_id.startsWith('http') ? p.openalex_id : 'https://openalex.org/' + p.openalex_id;
+    html += `<div class="tt-doi"><a href="${oaUrl}" target="_blank" rel="noopener" style="opacity:0.6">OpenAlex ↗</a></div>`;
+  }
+  if (p.n_matches) html += `<div class="tt-disc" style="opacity:0.4">${p.n_matches} keyword matches positioned this node</div>`;
+  tt.innerHTML = html;
+  tt.style.opacity = 1;
+  moveTooltip(event);
+}
+
+function moveTooltip(event) {
+  const tt = document.getElementById('tooltip');
+  tt.style.left = Math.min(event.clientX + 15, W - 440) + 'px';
+  tt.style.top = (event.clientY - 12) + 'px';
+}
+
+function hideTooltip() {
+  if (pinnedIdx === -1) {
+    document.getElementById('tooltip').style.opacity = 0;
+  }
+}
+
+// Toggles
+function updateVisibility() {
+  paperMeshes.forEach(m => {
+    const o = m.userData.order;
+    if (o === undefined) { m.visible = true; return; } // center
+    m.visible = o === 1 ? showOrder1 : showOrder2;
+  });
+  edgeLines.forEach(l => {
+    const o = l.userData.order;
+    l.visible = showEdges && (o === 1 ? showOrder1 : showOrder2);
+  });
+}
+
+document.getElementById('btn-o1').addEventListener('click', function() {
+  showOrder1 = !showOrder1;
+  this.textContent = showOrder1 ? '1st order ON' : '1st order OFF';
+  this.classList.toggle('active', showOrder1);
+  updateVisibility();
+});
+
+document.getElementById('btn-o2').addEventListener('click', function() {
+  showOrder2 = !showOrder2;
+  this.textContent = showOrder2 ? '2nd order ON' : '2nd order OFF';
+  this.classList.toggle('active', showOrder2);
+  updateVisibility();
+});
+
+document.getElementById('btn-edges').addEventListener('click', function() {
+  showEdges = !showEdges;
+  this.textContent = showEdges ? 'Edges ON' : 'Edges OFF';
+  this.classList.toggle('active', showEdges);
+  updateVisibility();
+});
+
+document.getElementById('btn-ring').addEventListener('click', function() {
+  showRing = !showRing;
+  this.textContent = showRing ? 'Domain ring ON' : 'Domain ring OFF';
+  this.classList.toggle('active', showRing);
+  ringObjects.forEach(o => o.visible = showRing);
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+init();
+
+window.addEventListener('resize', () => {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+});
+</script>
+</body>
+</html>
