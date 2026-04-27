@@ -1467,7 +1467,38 @@ Expanding from 7 to potentially 15+ pillars. Downloading raw source data:
 | Inspec | Physics/eng. | 20,000 | Unknown | Checking access |
 | EuroVoc | EU policy | 7,000 | SKOS/RDF | Downloading |
 | STW | Economics | 6,000 | N-Triples | Downloading |
-| FAST | Faceted subjects | 1,800,000 | N-Triples | Downloading |
+| FAST | Faceted subjects | 1,800,000 | N-Triples | 403 error |
 
+Updated status: AGROvoc ✓ (90MB), ERIC ✓ (9MB XML), IEEE ✓ (1.4MB CSV), STW ✓ (15MB NT), EuroVoc ✓ (400KB CSV). GeoRef paywalled. Inspec $200-500. FAST 403.
 Parsers will reuse SKOS/N-Triples patterns from LoC LCSH parser.
-Raw data cached in `data/raw/{name}/`, DB ingestion after DOI lookup completes.
+Raw data cached in `data/raw/{name}/`. **Parsers + ingestion = next priority.**
+
+### Step 3.38: Citation Tree Visualizations (session 7c)
+
+Built two citation tree visualizations for the HEA review paper (6,804 citations):
+
+1. **2D Cross-Section Tree** (`scripts/citation_tree_viz.html`):
+   - 4-level deep: deep roots → roots → center → branches → deep branches
+   - 2,656 nodes (293 roots, 600 branches, 762 deep roots, 1000 deep branches)
+   - Organic S-curve Bézier edges with year-band condensation toward trunk
+   - Warm palette (orange/sienna) for roots, cool (blue/purple) for branches
+   - Clickable DOI + OpenAlex links in hover tooltips
+   - Depth toggle (2-level vs 4-level), D3 zoom/pan
+   - User loved this — "incredible"
+
+2. **3D Domain-Ring Tree** (`scripts/citation_tree_3d.html`):
+   - Papers positioned by domain angle (13 disciplines on ring) × year height
+   - 1,761 unique papers, 2,655 citation edges
+   - Built via OpenAlex topic matching → keyword UMAP coordinates → average position
+   - Per-order toggles (1st/2nd order independently), click-to-pin tooltip
+   - Domain ring with colored sector wedges, year markers
+   - Center = golden dot (no trunk per user feedback)
+
+Data scripts: `scripts/crawl_alloy_deep.py` (deep crawl), `scripts/build_3d_citation_tree.py` (domain positioning).
+
+Year anomalies: 15 papers have dates after papers that cite them (book re-editions in OpenAlex metadata).
+
+### Step 3.39: Priority Reset — Keywords First
+
+User directive: lock down keyword taxonomy before exploring more DOI/citation work.
+Next: write parsers for 5 downloaded taxonomies → ingest → discipline assignment → cross-taxonomy alignment.

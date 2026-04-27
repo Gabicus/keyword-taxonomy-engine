@@ -1,41 +1,40 @@
 # Keyword Taxonomy Engine · primer
 
-Updated: 2026-04-26 12:00pm EDT
+Updated: 2026-04-26 5:30pm EDT
 Repo: https://github.com/Gabicus/keyword-taxonomy-engine
 
 ## Current status
 
-**Phase 3 ACTIVE — Paper discovery + citation network + validation suite.** 7 pillars + 230K WoS pubs + 8K OpenAlex pubs. 423,782 senses, 2,581,302 relationships (6.09 rels/sense). 0.03% orphans. 5 lens query CLI commands. Citation network fetching (~400K edges). Validation suite with 4 figures. Quality scorecard 97.8/100 (A+). 178 tests passing.
+**Phase 3 — Expanding taxonomy + locking down keywords.** 7 pillars + 5 new downloaded (not yet parsed). 424K senses, 2.58M relationships, 14 disciplines, 97 lenses. Validation suite complete (A+ scorecard). Citation network + 7 interactive visualizations built. **Priority: finish keyword taxonomy before exploring more DOI/citation work.**
 
 ## What this is
 
-Universal scientific keyword taxonomy engine. Ingests authoritative keyword hierarchies from 7 global sources ("pillars"), normalizes into unified schema, stores in DuckDB. Multi-perspective ontology with "vector bundle" keyword senses — same keyword carries different meaning depending on origin, domain context, and who's asking.
+Universal scientific keyword taxonomy engine. Ingests authoritative keyword hierarchies from multiple global sources ("pillars"), normalizes into unified schema, stores in DuckDB. Multi-perspective ontology with "vector bundle" keyword senses — same keyword carries different meaning depending on origin, domain context, and who's asking.
 
-End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energy at center. Users stand around a sphere looking in through composed lenses (Role × Org × Discipline × Interest).
+End goal: multi-modal analysis tool (VOSviewer x1000) with DOE/NETL/fossil energy at center.
 
 ## Key Commands
 ```bash
-python -m src.cli lens fossil_energy --search "carbon"    # query through lens
-python -m src.cli lens-explore "combustion" --discipline materials  # explore relationships
+python -m src.cli lens fossil_energy --search "carbon"
+python -m src.cli lens-explore "combustion" --discipline materials
 python -m src.cli lens-compare "methane" --lenses hat:fossil_energy:researcher hat:earth_environmental:director
-python -m src.cli lens-papers fossil_energy --search "carbon"  # NEW: find papers through lens
-python -m src.cli lens-list --role researcher  # list 97 available lenses
-python -m src.cli search "climate"      # basic keyword search
+python -m src.cli lens-papers fossil_energy --search "carbon"
+python -m src.cli lens-list --role researcher
+python -m src.cli search "climate"
 python -m pytest tests/ -v              # 178 tests passing
 python3 -u scripts/validation_suite.py  # run full validation suite
-python3 -u scripts/citation_coherence.py  # citation coherence analysis
 ```
 
-## Data lake
+## Data lake (7 pillars ingested)
 
 | Source | Unified | Raw | Notes |
 |---|---|---|---|
-| OpenAlex | 31,995 | 4,798 | 4 domains → 27K keywords. works_count ranking signal |
-| MeSH (NIH) | 31,110 | 31,110 | 16 categories, 97% definitions, avg 7.6 synonyms |
-| Library of Congress | 29,731 | 29,731 | Science + Technology subtrees, bulk SKOS |
-| NASA GCMD | 4,849 | 4,849 | 6 keyword types, 80% enriched |
-| UNESCO Thesaurus | 4,408 | 4,408 | English filter |
-| NCBI Taxonomy | 3,044 | 3,044 | Capped at Order rank |
+| OpenAlex | 31,995 | 4,798 | 4 domains → 27K keywords |
+| MeSH (NIH) | 31,110 | 31,110 | 16 categories, 97% definitions |
+| Library of Congress | 29,731 | 29,731 | Bulk SKOS N-Triples |
+| NASA GCMD | 4,849 | 4,849 | 6 keyword types |
+| UNESCO | 4,408 | 4,408 | English filter |
+| NCBI | 3,044 | 3,044 | Capped at Order rank |
 | DOE OSTI | 59 | 59 | 45 categories + 9 groups |
 | **Total** | **105,196** | **77,999** | |
 
@@ -44,161 +43,114 @@ python3 -u scripts/citation_coherence.py  # citation coherence analysis
 | Table | Count | Notes |
 |---|---|---|
 | keyword_senses | 423,782 | 105K base + 263K natlab WoS + 14K NETL WoS + 3.6K vocab + 1.9K OpenAlex pub + 1K meta |
-| sense_relationships | 2,581,302 | 6.09 rels/sense. subtopic_of + related_to + co_occurrence + bridges + equivalent + ai_reasoning |
-| co_occurrence edges | 137,117 | NEW: from OpenAlex pub keyword pairs (73% cross-discipline) |
+| sense_relationships | 2,581,302 | 6.09 rels/sense |
+| co_occurrence edges | 137,117 | OpenAlex pub keyword pairs (73% cross-discipline) |
 | disciplines | 14 | 4 resolution tiers |
-| hierarchy_envelopes | 107 | NETL org structure |
 | ontology_lenses | 97 | 42 primary + 54 intersection + 1 baseline |
-| orphan senses | 142 (0.03%) | Down from 93% → 0.03% via ML + AI reasoning |
+| orphan senses | 142 (0.03%) | Down from 93% via ML + AI reasoning |
 | semantic embeddings | 63,434 × 384 dim | all-MiniLM-L6-v2 |
-| T1 sub-ontology | 18 subcategories | carbon_capture, combustion, gasification, fuel_cells, etc. |
-| polysemous labels | 14,206 (3.5%) | Terms in 2+ sources — cross-domain bridges |
-
-## Publication data
-
-| Table | Rows | DOIs | Notes |
-|---|---|---|---|
-| raw_wos_publications | 6,019 | NO (backfill needed) | DOE/NETL pubs, keywords, abstracts |
-| raw_wos_natlab_publications | 224,081 | NO (backfill needed) | 21 cols, 91% abstracts, 10 national labs |
-| raw_openalex_publications | 7,983 | 7,761 (97%) | titles, years, citations, funders, topics |
-| openalex_pub_keywords | 68,855 | — | keyword-to-paper mappings with relevance scores |
-| openalex_citations | ~400K+ | — | NEW: citation network (citing→cited), in_corpus flag |
-| raw_wos_keywords_plus_vocab | 7,488 | — | Unique Keywords Plus terms |
-| raw_wos_netl_tech | 3,877 | — | Pub-to-NETL org structure mapping |
-
-## Validation suite (NEW)
-
-| Artifact | Value | Notes |
-|---|---|---|
-| Gold-standard sample | 343 items | 6 AI strategy strata, ready for human annotation |
-| Sensitivity (Jaccard) | 0.863 | 10% corruption → 14% result change. computation_data=1.0, earth_env=0.72 |
-| Coherence (NPMI) | 0.762 | Strong vs published baselines (0.3-0.8 typical) |
-| Lens divergence (Spearman) | 0.454 | Range -0.31 to 1.0 — lenses genuinely diverge |
-| Citation coherence | PENDING | Waiting on citation fetch to complete |
-
-Figures in `figures/validation/`:
-- fig2_sensitivity.png — Jaccard stability under 10% corruption
-- fig3_coherence.png — NPMI distribution + by-discipline breakdown
-- fig4_lens_divergence.png — pairwise Spearman heatmap across lenses
-- fig5_citation_coherence.png — PENDING
-
-## Architecture
-
-```
-Sources (7 pillars + WoS + OpenAlex publications)
-  ├── NASA GCMD ─────────┐
-  ├── UNESCO Thesaurus ──┤
-  ├── NCBI Taxonomy ─────┤
-  ├── LoC LCSH ──────────┤──→ Parsers ──→ DuckDB (21 tables)
-  ├── DOE OSTI ──────────┤           │
-  ├── OpenAlex Topics ───┤     ┌─────┴──────────────┐
-  └── MeSH (NIH) ───────┘     │  Ontology Layer     │
-                               │  14 disciplines     │
-  WoS NETL (6K pubs) ───────→ │  424K senses        │
-  WoS NatLabs (224K pubs) ──→ │  2.58M relations    │
-  OpenAlex (8K pubs) ────────→│  97 lens hats       │
-  OpenAlex Citations ────────→│  ~400K+ cite edges  │
-                               │  69K pub-kw links   │
-                               └─────┬──────────────┘
-                                     │
-                            Composed lens queries
-                            (Role × Org × Disc × Interest)
-                            lens / lens-explore / lens-compare
-                            lens-papers / lens-list
-
-                            Validation Suite
-                            gold-standard / sensitivity / coherence
-                            lens divergence / citation coherence
-```
+| T1 sub-ontology | 18 subcategories | carbon_capture, combustion, gasification, etc. |
+| polysemous labels | 14,206 (3.5%) | Terms in 2+ sources |
 
 ## Quality scorecard: 97.8/100 (A+)
 
-| Metric | Score | Value |
-|---|---|---|
-| Source Coverage | 10.0 | 7 authoritative pillars |
-| Relationship Density | 10.0 | 6.09 rels/sense (was 5.79) |
-| Orphan Rate | 10.0 | 0.03% (142 true orphans, all tagged) |
-| Cross-Domain Bridges | 10.0 | 13K+ bridges + 101K cross-disc co-occurrence |
-| Polysemy Coverage | 8.8 | 3.5% (14,206 labels in 2+ sources) |
-| Discipline Balance | 10.0 | 14 disciplines, 4 tiers |
-| Provenance Diversity | 10.0 | 25+ provenance types |
-| Enrichment Depth | 10.0 | abstract_freq + title_freq on 45K senses |
-| Hierarchy Depth | 10.0 | NETL envelopes + T1 sub-ontology |
-| Semantic Embeddings | 10.0 | 63K × 384-dim |
+## Validation suite (complete)
+
+| Metric | Value |
+|---|---|
+| Gold-standard sample | 343 items (6 AI strata) |
+| Sensitivity (Jaccard) | 0.863 |
+| Coherence (NPMI) | 0.762 |
+| Lens divergence (Spearman) | 0.454 |
+| Citation coherence | 17× keyword overlap (p≈0) |
+
+5 figures in `figures/validation/`
+
+## Visualizations built (session 7b-c)
+
+| Viz | File | Status | Notes |
+|---|---|---|---|
+| Citation tree (2D) | `scripts/citation_tree_viz.html` | ✓ Working | 4-level organic tree, warm/cool colors, clickable DOIs, year-bands |
+| Citation tree (3D) | `scripts/citation_tree_3d.html` | ✓ Working | Cylindrical domain-ring layout, per-order toggles, click-to-pin tooltip |
+| 3D Nebula | `scripts/nebula_viz.html` | ✓ Shell ready | Three.js 63K points + 97 lens dots, needs UMAP refresh |
+| Poincaré disk | `scripts/poincare_viz.html` | ✓ Working | Hyperbolic layout, gold cross-disc arcs, Möbius zoom, search |
+| Chord diagram | `scripts/chord_viz.html` | ✓ Working | D3 circular, oversimplified — replace with HEB later |
+| HEB | Not built | Planned | THE "see everything" diagram with ghost arcs |
+| Coverage est. | `scripts/estimate_coverage.py` | Data ready | Our data vs OpenAlex universe |
+
+User loved: citation tree 2D (organic roots, warm/cool palette), 3D domain-ring concept.
+User feedback: chord too simple → replace with HEB. Poincaré missing some cross-disc edges.
+
+## Next up — PRIORITY ORDER
+
+### A. KEYWORD TAXONOMY (DO FIRST)
+1. [ ] **Write parsers for 5 downloaded taxonomies**:
+   - AGROvoc (~40K, SKOS N-Triples, `data/raw/agrovoc/agrovoc_lod.nt.zip`)
+   - ERIC (~12K, XML, `data/raw/eric/ERICThesaurus2025.xml`)
+   - IEEE (~10K, CSV, `data/raw/ieee_thesaurus/ieee-thesaurus_2023.csv`)
+   - STW (~6K, N-Triples, `data/raw/stw/stw.nt`)
+   - EuroVoc (~7K, CSV, `data/raw/eurovoc/eurovoc_concepts.csv`)
+   - Reuse SKOS/N-Triples patterns from LoC parser
+2. [ ] **Ingest new taxonomies** into DuckDB + ontology layer (unified + raw tables)
+3. [ ] **Discipline assignment** for new senses (don't leave as general_science)
+4. [ ] **Cross-taxonomy alignment** — run embedding-based matching for new pillars
+5. [ ] **Orphan check** — ensure new senses get relationships
+6. [ ] **Update quality scorecard** — source coverage should jump to 12 pillars
+7. [ ] **Re-run validation suite** with expanded taxonomy
+8. [ ] **Regenerate semantic embeddings** — include new taxonomy keywords
+
+### B. COVERAGE & COMPLETENESS
+9. [ ] **Complete WoS category list** — all 254 subjects (have 201), identify 53 gaps
+10. [ ] **Run coverage estimation** vs OpenAlex universe
+11. [ ] **Investigate FAST** — got 403, may need registration for bulk download
+
+### C. VISUALIZATIONS (CIRCLE BACK)
+12. [ ] **HEB (Hierarchical Edge Bundling)** — concentric rings + ghost arcs for gaps
+13. [ ] **Fix Poincaré** — natural gas ↔ chemical engineering gap
+14. [ ] **Regenerate viz data** — chord, Poincaré, UMAP with expanded taxonomy
+15. [ ] **Polish 3D citation tree** — more filters, analytical controls per user feedback
+
+### D. DOI/CITATION (AFTER KEYWORDS LOCKED)
+16. [~] **WoS DOI→OpenAlex lookup** — PAUSED at batch 300/3959 (14,841 bridges, 596K citations). Resume: `python3 -u scripts/lookup_wos_dois_in_openalex.py`
+17. [ ] **lens-citations CLI** — bidirectional citation tree traversal command
+18. [ ] **Add metadata to openalex_citations** — title, year, DOI columns
+
+### E. LONG-TERM
+19. [ ] **Methodology paper** — vector bundle semantics, cross-walk, validation
+20. [ ] **Benchmark vs VOSviewer/CiteSpace**
+21. [ ] **API/query interface** — REST or GraphQL
+22. [ ] **Paywalled taxonomies** — GeoRef ($), Inspec ($200-500), INIS (web-only)
+
+## Downloaded taxonomy data (not yet ingested)
+
+| Taxonomy | Terms | Format | File | Size |
+|---|---|---|---|---|
+| AGROvoc | ~40K | SKOS N-Triples | `data/raw/agrovoc/agrovoc_lod.nt.zip` | 90MB |
+| ERIC | ~12K | XML | `data/raw/eric/ERICThesaurus2025.xml` | 9MB |
+| IEEE | ~10K | CSV | `data/raw/ieee_thesaurus/ieee-thesaurus_2023.csv` | 1.4MB |
+| STW | ~6K | N-Triples | `data/raw/stw/stw.nt` | 15MB |
+| EuroVoc | ~7K | CSV | `data/raw/eurovoc/eurovoc_concepts.csv` | 400KB |
+
+## Year anomaly note (2026-04-26)
+
+15 papers in citation tree have dates AFTER papers that cite them. Cause: OpenAlex assigns current edition dates to books (e.g., "Binary Alloy Phase Diagrams" 2016 edition cited by 2013 paper). Not actionable yet but noted.
 
 ## Performance pitfalls (AVOID)
 
 - **NOT EXISTS on sense_relationships = infinite CPU.** Use LEFT JOIN with CTE.
-- **DuckDB executemany with VARCHAR[] = pathologically slow.** Use temp tables + SQL INSERT...SELECT.
-- **Python fetchall() for 422K rows → dict = slow.** Use SQL-native JOINs instead.
-- **DuckDB `?` param binding = SQL text order, not definition order.** When CTEs precede the main query, params must match CTE order.
-- **N-gram set intersection** for text extraction (not label×text scanning). 37× faster.
+- **DuckDB executemany with VARCHAR[] = pathologically slow.** Use temp tables.
+- **DuckDB `?` param binding = SQL text order, not definition order.**
 - **`python3 -u`** for unbuffered output in background scripts.
 - **Kill stale background processes** before launching new DB queries.
-- **Always use `duckdb` CLI** (installed v1.5.2) instead of Python wrappers for queries.
-
-## Next up
-
-1. [x] Embedding-based fuzzy matching (50K semantic edges)
-2. [x] T1 Fossil Energy deep sub-ontology (18 subcategories)
-3. [x] Orphan reduction (93% → 0.03%)
-4. [x] Grant agency entity resolution (12 canonical groups)
-5. [x] Agentic orphan resolution (AI reasoning, 6,535 connected)
-6. [x] Lens query engine (4 CLI commands)
-7. [x] OpenAlex co-occurrence edges (137K edges, SQL-native)
-8. [x] Paper discovery through lens (lens-papers command)
-9. [x] Validation suite (gold-standard, sensitivity, coherence, lens divergence)
-10. [x] **Citation network** — 444,259 edges fetched, 32,301 in-corpus
-11. [x] **Citation coherence analysis** — citing 0.228 vs random 0.013 (17×, p≈0). Fig 5 generated.
-12. [x] **WoS DOI backfill** — 7 columns added to both WoS tables from Hyper + NETL xlsx
-13. [x] **Expanded natlab ingestion** — 227,433 rows, 61 cols loaded
-14. [x] **WoS category mappings** — 201 subject→discipline mappings loaded
-15. [~] **WoS DOI→OpenAlex lookup** — PAUSED at batch 300/3959, 14,841 bridges, 596K citations. Resumable: `python3 -u scripts/lookup_wos_dois_in_openalex.py` (skips already-bridged DOIs)
-16. [ ] **Run viz data scripts** — chord, Poincaré v2, UMAP nebula, coverage estimation (blocked on DB lock)
-
-### Visualizations (NEW — session 7b)
-17. [x] **Nebula HTML shell** — Three.js 3D point cloud + lens dots on sphere, needs UMAP data
-18. [x] **Poincaré disk v2 HTML** — hyperbolic layout + cross-discipline gold arcs + search + Möbius zoom
-19. [x] **Chord diagram HTML** — D3 circular chord replacing simple Sankey, needs data extraction
-20. [ ] **UMAP 3D projection** — script ready (scripts/compute_umap_nebula.py), needs DB access
-21. [ ] **HEB (Hierarchical Edge Bundling)** — concentric rings with bundled edges, ghost arcs for gaps. THE primary "see everything" diagram. Not yet built.
-22. [x] **Citation tree viz** — 4-level deep organic tree, 2,656 nodes, warm roots/cool branches, clickable DOIs, depth toggle, year-band condensation
-
-### New taxonomy pillars (downloading NOW)
-23. [~] **AGROvoc** — agriculture/FAO (~40K terms), downloading SKOS
-24. [~] **ERIC** — education (~12K terms), downloading
-25. [~] **GeoRef** — geosciences (~30K terms), checking access (may be paywalled)
-26. [~] **IEEE Thesaurus** — electrical engineering, checking access
-27. [~] **Inspec** — physics/engineering (~20K terms), checking access
-28. [~] **EuroVoc** — EU multilingual (~7K concepts), downloading SKOS
-29. [~] **STW** — economics (~6K terms), downloading
-30. [~] **FAST** — faceted subjects (~1.8M terms from LCSH), downloading
-31. [ ] **Write parsers** for each new taxonomy (reuse SKOS/N-Triples patterns from LoC parser)
-32. [ ] **Ingest new taxonomies** into DuckDB + ontology layer
-
-### Coverage & completeness
-33. [ ] **Coverage estimation** — script ready, needs DB. Maps our data vs OpenAlex universe.
-34. [ ] **Complete WoS category list** — all 254 subjects (we have 201), identify 53 gaps
-35. [ ] **Ghost arc visualization** — show gaps in HEB diagram as dim/dashed arcs
-
-### Remaining
-36. [ ] **lens-citations CLI** — bidirectional citation tree traversal command
-37. [ ] **Methodology paper** — vector bundle semantics, 7-pillar cross-walk, lens composition, AI curation, validation
-38. [ ] **Benchmark vs VOSviewer/CiteSpace** — comparative analysis
-39. [ ] **API/query interface** — REST or GraphQL
+- **Always use `duckdb` CLI** (v1.5.2) instead of Python wrappers for queries.
 
 ## Don't forget
 
 - ALWAYS be devil's advocate — challenge assumptions, no glass castles
 - Audit between large steps for errors and gaps
 - Push before destructive operations (always)
-- Use SQL-first for all DuckDB queries (duckdb CLI, not Python wrappers)
-- Use LEFT JOIN for orphan detection (NOT EXISTS = CPU death)
-- DuckDB ? params bind in SQL text order, not definition order
-- Use `python3 -u` for background scripts (unbuffered stdout)
-- Kill stale background processes before new DB queries
-- Cross-domain references are FIRST CLASS
 - Keywords are vector bundles — same word, different meaning per context
-- Save WORKLOG.md proactively at natural breakpoints
 - New senses need discipline assignment (don't leave as general_science)
-- Gold-standard sample in data/validation/ needs 2 human annotators
+- Gold-standard sample needs 2 human annotators
+- Cross-domain references are FIRST CLASS
+- **Lock down keywords BEFORE more DOI/citation exploration**
